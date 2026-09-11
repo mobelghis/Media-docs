@@ -1,0 +1,1156 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:x="urn:schemas-microsoft-com:office:excel"
+xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<title>ADLM Jira</title>
+<style type="text/css">
+table {
+    mso-displayed-decimal-separator:"\.";
+    mso-displayed-thousand-separator:"\,";
+}
+body
+{
+    margin: 0px;
+    font-size: 12px;
+    font-family: Arial, sans-serif;
+    color:black;
+}
+
+</style>
+<META HTTP-EQUIV="Content-Type" Content="application/vnd.ms-excel; charset=UTF-8">
+<!-- JRA-7598 - ensure fields (e.g. description) occupy only one cell - even fields containing newlines. -->
+<!--
+Vertical align all cells to the top, in order to align all issue rows of issuetable to the top,
+since Excel does not use or save the css files it is hardcoded here.
+-->
+<style>
+@page
+{
+mso-page-orientation:landscape;
+margin:.25in .25in .5in .25in;
+mso-header-margin:.5in;
+mso-footer-margin:.25in;
+mso-footer-data:"&R&P of &N";
+mso-horizontal-page-align:center;
+mso-vertical-page-align:center;
+}
+
+td.issuekey,
+td.issuetype,
+td.status {
+    mso-style-parent: "";
+    mso-number-format: \@;
+    text-align: left;
+}
+br
+{
+    mso-data-placement:same-cell;
+}
+
+td
+{
+    vertical-align: top;
+}
+</style>
+
+<!--[if gte mso 9]><xml>
+<x:ExcelWorkbook>
+<x:ExcelWorksheets>
+<x:ExcelWorksheet>
+<x:Name>general_report</x:Name>
+<x:WorksheetOptions>
+<x:Print>
+<x:ValidPrinterInfo/>
+</x:Print>
+</x:WorksheetOptions>
+</x:ExcelWorksheet>
+</x:ExcelWorksheets>
+</x:ExcelWorkbook>
+</xml><![endif]-->
+</head>
+<body>
+
+<table border="1">
+    <tr bgcolor="#060b45" height="60">
+        <td colspan="13">
+            <img src="https://adlm.nielseniq.com/jira/jira-logo-scaled.png" width="132" height="60" border="0" alt="ADLM Jira">
+        </td>
+    </tr>
+    <tr>
+        <td colspan="13">
+            <a href="https://adlm.nielseniq.com/jira/issues/?jql=%22Parent+Link%22+%3D+CR-40737">ADLM Jira</a>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="13">
+            Displaying <strong>30</strong> issues at <strong>11/Sep/2026 5:14 PM</strong>.
+        </td>
+    </tr>
+</table>
+
+
+
+
+                            <issuetable-web-component data-content="issues">
+                <table id="issuetable"  border="1" cellpadding="3" cellspacing="1" width="100%">
+                        <thead>
+        <tr class="rowHeader">
+            
+                                                            <th scope="col" class="colHeaderLink headerrow-issuekey" data-id="issuekey">
+                            Key
+                                                    </th>
+                                                
+                                                            <th scope="col" class="colHeaderLink headerrow-priority" data-id="priority">
+                            Priority
+                                                    </th>
+                                                
+                                                            <th scope="col" class="colHeaderLink headerrow-summary" data-id="summary">
+                            Summary
+                                                    </th>
+                                                
+                                                            <th scope="col" class="colHeaderLink headerrow-customfield_10002" data-id="customfield_10002">
+                            Story Points
+                                                    </th>
+                                                
+                                                            <th scope="col" class="colHeaderLink headerrow-assignee" data-id="assignee">
+                            Assignee
+                                                    </th>
+                                                
+                                                            <th scope="col" class="colHeaderLink headerrow-customfield_23400" data-id="customfield_23400">
+                            Development
+                                                    </th>
+                                                
+                                                            <th scope="col" class="colHeaderLink headerrow-status" data-id="status">
+                            Status
+                                                    </th>
+                                                
+                                                            <th scope="col" class="colHeaderLink headerrow-created" data-id="created">
+                            Created
+                                                    </th>
+                                                
+                                                            <th scope="col" class="colHeaderLink headerrow-resolutiondate" data-id="resolutiondate">
+                            Resolved
+                                                    </th>
+                                                
+                                                            <th scope="col" class="colHeaderLink headerrow-issuetype" data-id="issuetype">
+                            Issue Type
+                                                    </th>
+                                                
+                                                            <th scope="col" class="colHeaderLink headerrow-customfield_10004" data-id="customfield_10004">
+                            Sprint
+                                                    </th>
+                                                
+                                                            <th scope="col" class="colHeaderLink headerrow-customfield_36005" data-id="customfield_36005">
+                            PI / Quarter
+                                                    </th>
+                                                
+                                                            <th scope="col" class="colHeaderLink headerrow-customfield_10006" data-id="customfield_10006">
+                            Epic Link
+                                                    </th>
+                                                                    </tr>
+    </thead>
+    <tbody>
+                    
+
+                <tr id="issuerow10050035" rel="10050035" data-issuekey="CR-41564" class="issuerow">
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="CR-41564" href="https://adlm.nielseniq.com/jira/browse/CR-41564">CR-41564</a>
+</td>
+                                            <td class="priority">           High
+    </td>
+                                            <td class="summary"><p>
+                Unlimitail - Segmentation - expand the offline export to support larger shopper exports
+    </p>
+</td>
+                                            <td class="customfield_10002"></td>
+                                            <td class="assignee">            Tal Martsiano Shkedi
+    </td>
+                                            <td class="customfield_23400">    <div class='dev-status-column-view-wrapper'></div>
+</td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-default jira-issue-status-lozenge-new aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" title="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" tabindex="0">Draft</span>    </td>
+                                            <td class="created"> 09/Sep/2026 9:57 AM </td>
+                                            <td class="resolutiondate"> &nbsp; </td>
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="customfield_10004"></td>
+                                            <td class="customfield_36005">
+
+
+    <div class="shorten" id="customfield_36005-field">
+        							<span>2026.4</span>			            </div>
+</td>
+                                            <td class="customfield_10006"></td>
+                    </tr>
+
+
+                <tr id="issuerow10002534" rel="10002534" data-issuekey="CR-40955" class="issuerow">
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="CR-40955" href="https://adlm.nielseniq.com/jira/browse/CR-40955">CR-40955</a>
+</td>
+                                            <td class="priority">           High
+    </td>
+                                            <td class="summary"><p>
+                Placeholder: Unlimitail - Indexing requirements
+    </p>
+</td>
+                                            <td class="customfield_10002"></td>
+                                            <td class="assignee">    <em>Unassigned</em>
+</td>
+                                            <td class="customfield_23400">    <div class='dev-status-column-view-wrapper'></div>
+</td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-default jira-issue-status-lozenge-new aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" title="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" tabindex="0">Draft</span>    </td>
+                                            <td class="created"> 27/Aug/2026 8:59 AM </td>
+                                            <td class="resolutiondate"> &nbsp; </td>
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="customfield_10004"></td>
+                                            <td class="customfield_36005">
+
+
+    <div class="shorten" id="customfield_36005-field">
+        							<span>2026.4</span>			            </div>
+</td>
+                                            <td class="customfield_10006"></td>
+                    </tr>
+
+
+                <tr id="issuerow9995339" rel="9995339" data-issuekey="CR-40906" class="issuerow">
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="CR-40906" href="https://adlm.nielseniq.com/jira/browse/CR-40906">CR-40906</a>
+</td>
+                                            <td class="priority">           High
+    </td>
+                                            <td class="summary"><p>
+                Mo Placeholder - Planning and optimisation guidance
+    </p>
+</td>
+                                            <td class="customfield_10002"></td>
+                                            <td class="assignee">    <em>Unassigned</em>
+</td>
+                                            <td class="customfield_23400">    <div class='dev-status-column-view-wrapper'></div>
+</td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-default jira-issue-status-lozenge-new aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" title="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" tabindex="0">Draft</span>    </td>
+                                            <td class="created"> 25/Aug/2026 8:58 PM </td>
+                                            <td class="resolutiondate"> &nbsp; </td>
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="customfield_10004"></td>
+                                            <td class="customfield_36005">
+
+
+    <div class="shorten" id="customfield_36005-field">
+        							<span>2027.1</span>			            </div>
+</td>
+                                            <td class="customfield_10006"></td>
+                    </tr>
+
+
+                <tr id="issuerow9995338" rel="9995338" data-issuekey="CR-40905" class="issuerow">
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="CR-40905" href="https://adlm.nielseniq.com/jira/browse/CR-40905">CR-40905</a>
+</td>
+                                            <td class="priority">           High
+    </td>
+                                            <td class="summary"><p>
+                Mo Placeholder - Decomposition of the incremental result
+    </p>
+</td>
+                                            <td class="customfield_10002"></td>
+                                            <td class="assignee">    <em>Unassigned</em>
+</td>
+                                            <td class="customfield_23400">    <div class='dev-status-column-view-wrapper'></div>
+</td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-default jira-issue-status-lozenge-new aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" title="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" tabindex="0">Draft</span>    </td>
+                                            <td class="created"> 25/Aug/2026 8:58 PM </td>
+                                            <td class="resolutiondate"> &nbsp; </td>
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="customfield_10004"></td>
+                                            <td class="customfield_36005">
+
+
+    <div class="shorten" id="customfield_36005-field">
+        							<span>2027.1</span>			            </div>
+</td>
+                                            <td class="customfield_10006"></td>
+                    </tr>
+
+
+                <tr id="issuerow9995337" rel="9995337" data-issuekey="CR-40904" class="issuerow">
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="CR-40904" href="https://adlm.nielseniq.com/jira/browse/CR-40904">CR-40904</a>
+</td>
+                                            <td class="priority">           High
+    </td>
+                                            <td class="summary"><p>
+                Mo Placeholder - Modelled measurement where no control exists
+    </p>
+</td>
+                                            <td class="customfield_10002"></td>
+                                            <td class="assignee">    <em>Unassigned</em>
+</td>
+                                            <td class="customfield_23400">    <div class='dev-status-column-view-wrapper'></div>
+</td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-default jira-issue-status-lozenge-new aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" title="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" tabindex="0">Draft</span>    </td>
+                                            <td class="created"> 25/Aug/2026 8:58 PM </td>
+                                            <td class="resolutiondate"> &nbsp; </td>
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="customfield_10004"></td>
+                                            <td class="customfield_36005">
+
+
+    <div class="shorten" id="customfield_36005-field">
+        							<span>2027.1</span>			            </div>
+</td>
+                                            <td class="customfield_10006"></td>
+                    </tr>
+
+
+                <tr id="issuerow9995336" rel="9995336" data-issuekey="CR-40903" class="issuerow">
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="CR-40903" href="https://adlm.nielseniq.com/jira/browse/CR-40903">CR-40903</a>
+</td>
+                                            <td class="priority">           High
+    </td>
+                                            <td class="summary"><p>
+                Mo Placeholder - Effect reporting
+    </p>
+</td>
+                                            <td class="customfield_10002"></td>
+                                            <td class="assignee">    <em>Unassigned</em>
+</td>
+                                            <td class="customfield_23400">    <div class='dev-status-column-view-wrapper'></div>
+</td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-default jira-issue-status-lozenge-new aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" title="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" tabindex="0">Draft</span>    </td>
+                                            <td class="created"> 25/Aug/2026 8:58 PM </td>
+                                            <td class="resolutiondate"> &nbsp; </td>
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="customfield_10004"></td>
+                                            <td class="customfield_36005">
+
+
+    <div class="shorten" id="customfield_36005-field">
+        							<span>2027.1</span>			            </div>
+</td>
+                                            <td class="customfield_10006"></td>
+                    </tr>
+
+
+                <tr id="issuerow9995334" rel="9995334" data-issuekey="CR-40902" class="issuerow">
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="CR-40902" href="https://adlm.nielseniq.com/jira/browse/CR-40902">CR-40902</a>
+</td>
+                                            <td class="priority">           High
+    </td>
+                                            <td class="summary"><p>
+                Mo Placeholder - Incremental effect measurement
+    </p>
+</td>
+                                            <td class="customfield_10002"></td>
+                                            <td class="assignee">    <em>Unassigned</em>
+</td>
+                                            <td class="customfield_23400">    <div class='dev-status-column-view-wrapper'></div>
+</td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-default jira-issue-status-lozenge-new aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" title="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" tabindex="0">Draft</span>    </td>
+                                            <td class="created"> 25/Aug/2026 8:58 PM </td>
+                                            <td class="resolutiondate"> &nbsp; </td>
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="customfield_10004"></td>
+                                            <td class="customfield_36005">
+
+
+    <div class="shorten" id="customfield_36005-field">
+        							<span>2027.1</span>			            </div>
+</td>
+                                            <td class="customfield_10006"></td>
+                    </tr>
+
+
+                <tr id="issuerow9995333" rel="9995333" data-issuekey="CR-40901" class="issuerow">
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="CR-40901" href="https://adlm.nielseniq.com/jira/browse/CR-40901">CR-40901</a>
+</td>
+                                            <td class="priority">           High
+    </td>
+                                            <td class="summary"><p>
+                Mo Placeholder - Export and advertiser-facing views
+    </p>
+</td>
+                                            <td class="customfield_10002"></td>
+                                            <td class="assignee">    <em>Unassigned</em>
+</td>
+                                            <td class="customfield_23400">    <div class='dev-status-column-view-wrapper'></div>
+</td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-default jira-issue-status-lozenge-new aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" title="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" tabindex="0">Draft</span>    </td>
+                                            <td class="created"> 25/Aug/2026 8:58 PM </td>
+                                            <td class="resolutiondate"> &nbsp; </td>
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="customfield_10004"></td>
+                                            <td class="customfield_36005">
+
+
+    <div class="shorten" id="customfield_36005-field">
+        							<span>2026.4</span>			            </div>
+</td>
+                                            <td class="customfield_10006"></td>
+                    </tr>
+
+
+                <tr id="issuerow9995331" rel="9995331" data-issuekey="CR-40900" class="issuerow">
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="CR-40900" href="https://adlm.nielseniq.com/jira/browse/CR-40900">CR-40900</a>
+</td>
+                                            <td class="priority">           High
+    </td>
+                                            <td class="summary"><p>
+                Mo Placeholder - Data health monitoring
+    </p>
+</td>
+                                            <td class="customfield_10002"></td>
+                                            <td class="assignee">    <em>Unassigned</em>
+</td>
+                                            <td class="customfield_23400">    <div class='dev-status-column-view-wrapper'></div>
+</td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-default jira-issue-status-lozenge-new aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" title="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" tabindex="0">Draft</span>    </td>
+                                            <td class="created"> 25/Aug/2026 8:58 PM </td>
+                                            <td class="resolutiondate"> &nbsp; </td>
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="customfield_10004"></td>
+                                            <td class="customfield_36005">
+
+
+    <div class="shorten" id="customfield_36005-field">
+        							<span>2026.4</span>			            </div>
+</td>
+                                            <td class="customfield_10006"></td>
+                    </tr>
+
+
+                <tr id="issuerow9995329" rel="9995329" data-issuekey="CR-40899" class="issuerow">
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="CR-40899" href="https://adlm.nielseniq.com/jira/browse/CR-40899">CR-40899</a>
+</td>
+                                            <td class="priority">           High
+    </td>
+                                            <td class="summary"><p>
+                Mo Placeholder - Provenance for every figure
+    </p>
+</td>
+                                            <td class="customfield_10002"></td>
+                                            <td class="assignee">    <em>Unassigned</em>
+</td>
+                                            <td class="customfield_23400">    <div class='dev-status-column-view-wrapper'></div>
+</td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-default jira-issue-status-lozenge-new aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" title="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" tabindex="0">Draft</span>    </td>
+                                            <td class="created"> 25/Aug/2026 8:58 PM </td>
+                                            <td class="resolutiondate"> &nbsp; </td>
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="customfield_10004"></td>
+                                            <td class="customfield_36005">
+
+
+    <div class="shorten" id="customfield_36005-field">
+        							<span>2026.4</span>			            </div>
+</td>
+                                            <td class="customfield_10006"></td>
+                    </tr>
+
+
+                <tr id="issuerow9995327" rel="9995327" data-issuekey="CR-40898" class="issuerow">
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="CR-40898" href="https://adlm.nielseniq.com/jira/browse/CR-40898">CR-40898</a>
+</td>
+                                            <td class="priority">           High
+    </td>
+                                            <td class="summary"><p>
+                Mo Placeholder - Reconciliation reporting
+    </p>
+</td>
+                                            <td class="customfield_10002"></td>
+                                            <td class="assignee">    <em>Unassigned</em>
+</td>
+                                            <td class="customfield_23400">    <div class='dev-status-column-view-wrapper'></div>
+</td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-default jira-issue-status-lozenge-new aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" title="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" tabindex="0">Draft</span>    </td>
+                                            <td class="created"> 25/Aug/2026 8:58 PM </td>
+                                            <td class="resolutiondate"> &nbsp; </td>
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="customfield_10004"></td>
+                                            <td class="customfield_36005">
+
+
+    <div class="shorten" id="customfield_36005-field">
+        							<span>2026.4</span>			            </div>
+</td>
+                                            <td class="customfield_10006"></td>
+                    </tr>
+
+
+                <tr id="issuerow9995326" rel="9995326" data-issuekey="CR-40897" class="issuerow">
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="CR-40897" href="https://adlm.nielseniq.com/jira/browse/CR-40897">CR-40897</a>
+</td>
+                                            <td class="priority">           High
+    </td>
+                                            <td class="summary"><p>
+                Mo Placeholder - Delivery and outcome detail reporting
+    </p>
+</td>
+                                            <td class="customfield_10002"></td>
+                                            <td class="assignee">    <em>Unassigned</em>
+</td>
+                                            <td class="customfield_23400">    <div class='dev-status-column-view-wrapper'></div>
+</td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-default jira-issue-status-lozenge-new aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" title="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" tabindex="0">Draft</span>    </td>
+                                            <td class="created"> 25/Aug/2026 8:58 PM </td>
+                                            <td class="resolutiondate"> &nbsp; </td>
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="customfield_10004"></td>
+                                            <td class="customfield_36005">
+
+
+    <div class="shorten" id="customfield_36005-field">
+        							<span>2026.4</span>			            </div>
+</td>
+                                            <td class="customfield_10006"></td>
+                    </tr>
+
+
+                <tr id="issuerow9995325" rel="9995325" data-issuekey="CR-40896" class="issuerow">
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="CR-40896" href="https://adlm.nielseniq.com/jira/browse/CR-40896">CR-40896</a>
+</td>
+                                            <td class="priority">           High
+    </td>
+                                            <td class="summary"><p>
+                Mo Placeholder - Campaign list and campaign result reporting
+    </p>
+</td>
+                                            <td class="customfield_10002"></td>
+                                            <td class="assignee">    <em>Unassigned</em>
+</td>
+                                            <td class="customfield_23400">    <div class='dev-status-column-view-wrapper'></div>
+</td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-default jira-issue-status-lozenge-new aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" title="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" tabindex="0">Draft</span>    </td>
+                                            <td class="created"> 25/Aug/2026 8:58 PM </td>
+                                            <td class="resolutiondate"> &nbsp; </td>
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="customfield_10004"></td>
+                                            <td class="customfield_36005">
+
+
+    <div class="shorten" id="customfield_36005-field">
+        							<span>2026.4</span>			            </div>
+</td>
+                                            <td class="customfield_10006"></td>
+                    </tr>
+
+
+                <tr id="issuerow9995324" rel="9995324" data-issuekey="CR-40895" class="issuerow">
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="CR-40895" href="https://adlm.nielseniq.com/jira/browse/CR-40895">CR-40895</a>
+</td>
+                                            <td class="priority">           High
+    </td>
+                                            <td class="summary"><p>
+                Mo Placeholder - Data quality floors and figure suppression
+    </p>
+</td>
+                                            <td class="customfield_10002"></td>
+                                            <td class="assignee">    <em>Unassigned</em>
+</td>
+                                            <td class="customfield_23400">    <div class='dev-status-column-view-wrapper'></div>
+</td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-default jira-issue-status-lozenge-new aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" title="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" tabindex="0">Draft</span>    </td>
+                                            <td class="created"> 25/Aug/2026 8:58 PM </td>
+                                            <td class="resolutiondate"> &nbsp; </td>
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="customfield_10004"></td>
+                                            <td class="customfield_36005">
+
+
+    <div class="shorten" id="customfield_36005-field">
+        							<span>2026.4</span>			            </div>
+</td>
+                                            <td class="customfield_10006"></td>
+                    </tr>
+
+
+                <tr id="issuerow9995322" rel="9995322" data-issuekey="CR-40894" class="issuerow">
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="CR-40894" href="https://adlm.nielseniq.com/jira/browse/CR-40894">CR-40894</a>
+</td>
+                                            <td class="priority">           High
+    </td>
+                                            <td class="summary"><p>
+                Mo Placeholder - Measure library
+    </p>
+</td>
+                                            <td class="customfield_10002"></td>
+                                            <td class="assignee">    <em>Unassigned</em>
+</td>
+                                            <td class="customfield_23400">    <div class='dev-status-column-view-wrapper'></div>
+</td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-default jira-issue-status-lozenge-new aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" title="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" tabindex="0">Draft</span>    </td>
+                                            <td class="created"> 25/Aug/2026 8:58 PM </td>
+                                            <td class="resolutiondate"> &nbsp; </td>
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="customfield_10004"></td>
+                                            <td class="customfield_36005">
+
+
+    <div class="shorten" id="customfield_36005-field">
+        							<span>2026.4</span>			            </div>
+</td>
+                                            <td class="customfield_10006"></td>
+                    </tr>
+
+
+                <tr id="issuerow9995321" rel="9995321" data-issuekey="CR-40893" class="issuerow">
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="CR-40893" href="https://adlm.nielseniq.com/jira/browse/CR-40893">CR-40893</a>
+</td>
+                                            <td class="priority">           High
+    </td>
+                                            <td class="summary"><p>
+                Mo Placeholder - Measurement dataset
+    </p>
+</td>
+                                            <td class="customfield_10002"></td>
+                                            <td class="assignee">    <em>Unassigned</em>
+</td>
+                                            <td class="customfield_23400">    <div class='dev-status-column-view-wrapper'></div>
+</td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-default jira-issue-status-lozenge-new aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" title="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" tabindex="0">Draft</span>    </td>
+                                            <td class="created"> 25/Aug/2026 8:58 PM </td>
+                                            <td class="resolutiondate"> &nbsp; </td>
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="customfield_10004"></td>
+                                            <td class="customfield_36005">
+
+
+    <div class="shorten" id="customfield_36005-field">
+        							<span>2026.4</span>			            </div>
+</td>
+                                            <td class="customfield_10006"></td>
+                    </tr>
+
+
+                <tr id="issuerow9995320" rel="9995320" data-issuekey="CR-40892" class="issuerow">
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="CR-40892" href="https://adlm.nielseniq.com/jira/browse/CR-40892">CR-40892</a>
+</td>
+                                            <td class="priority">           High
+    </td>
+                                            <td class="summary"><p>
+                Mo Placeholder - Test and control assignment
+    </p>
+</td>
+                                            <td class="customfield_10002"></td>
+                                            <td class="assignee">    <em>Unassigned</em>
+</td>
+                                            <td class="customfield_23400">    <div class='dev-status-column-view-wrapper'></div>
+</td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-default jira-issue-status-lozenge-new aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" title="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" tabindex="0">Draft</span>    </td>
+                                            <td class="created"> 25/Aug/2026 8:58 PM </td>
+                                            <td class="resolutiondate"> &nbsp; </td>
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="customfield_10004"></td>
+                                            <td class="customfield_36005">
+
+
+    <div class="shorten" id="customfield_36005-field">
+        							<span>2026.4</span>			            </div>
+</td>
+                                            <td class="customfield_10006"></td>
+                    </tr>
+
+
+                <tr id="issuerow9995319" rel="9995319" data-issuekey="CR-40891" class="issuerow">
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="CR-40891" href="https://adlm.nielseniq.com/jira/browse/CR-40891">CR-40891</a>
+</td>
+                                            <td class="priority">           High
+    </td>
+                                            <td class="summary"><p>
+                Mo Placeholder - Single-person view across banners
+    </p>
+</td>
+                                            <td class="customfield_10002"></td>
+                                            <td class="assignee">    <em>Unassigned</em>
+</td>
+                                            <td class="customfield_23400">    <div class='dev-status-column-view-wrapper'></div>
+</td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-default jira-issue-status-lozenge-new aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" title="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" tabindex="0">Draft</span>    </td>
+                                            <td class="created"> 25/Aug/2026 8:58 PM </td>
+                                            <td class="resolutiondate"> &nbsp; </td>
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="customfield_10004"></td>
+                                            <td class="customfield_36005">
+
+
+    <div class="shorten" id="customfield_36005-field">
+        							<span>2026.4</span>			            </div>
+</td>
+                                            <td class="customfield_10006"></td>
+                    </tr>
+
+
+                <tr id="issuerow9995318" rel="9995318" data-issuekey="CR-40890" class="issuerow">
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="CR-40890" href="https://adlm.nielseniq.com/jira/browse/CR-40890">CR-40890</a>
+</td>
+                                            <td class="priority">           High
+    </td>
+                                            <td class="summary"><p>
+                Mo Placeholder - Audience export extension for measurement
+    </p>
+</td>
+                                            <td class="customfield_10002"></td>
+                                            <td class="assignee">    <em>Unassigned</em>
+</td>
+                                            <td class="customfield_23400">    <div class='dev-status-column-view-wrapper'></div>
+</td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-default jira-issue-status-lozenge-new aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" title="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" tabindex="0">Draft</span>    </td>
+                                            <td class="created"> 25/Aug/2026 8:58 PM </td>
+                                            <td class="resolutiondate"> &nbsp; </td>
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="customfield_10004"></td>
+                                            <td class="customfield_36005">
+
+
+    <div class="shorten" id="customfield_36005-field">
+        							<span>2026.4</span>			            </div>
+</td>
+                                            <td class="customfield_10006"></td>
+                    </tr>
+
+
+                <tr id="issuerow9995317" rel="9995317" data-issuekey="CR-40889" class="issuerow">
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="CR-40889" href="https://adlm.nielseniq.com/jira/browse/CR-40889">CR-40889</a>
+</td>
+                                            <td class="priority">           High
+    </td>
+                                            <td class="summary"><p>
+                Mo Placeholder - Product mapping and campaign product scope
+    </p>
+</td>
+                                            <td class="customfield_10002"></td>
+                                            <td class="assignee">    <em>Unassigned</em>
+</td>
+                                            <td class="customfield_23400">    <div class='dev-status-column-view-wrapper'></div>
+</td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-default jira-issue-status-lozenge-new aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" title="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" tabindex="0">Draft</span>    </td>
+                                            <td class="created"> 25/Aug/2026 8:58 PM </td>
+                                            <td class="resolutiondate"> &nbsp; </td>
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="customfield_10004"></td>
+                                            <td class="customfield_36005">
+
+
+    <div class="shorten" id="customfield_36005-field">
+        							<span>2026.4</span>			            </div>
+</td>
+                                            <td class="customfield_10006"></td>
+                    </tr>
+
+
+                <tr id="issuerow9995316" rel="9995316" data-issuekey="CR-40888" class="issuerow">
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="CR-40888" href="https://adlm.nielseniq.com/jira/browse/CR-40888">CR-40888</a>
+</td>
+                                            <td class="priority">           High
+    </td>
+                                            <td class="summary"><p>
+                Mo Placeholder - Shopper identity resolution and match monitoring
+    </p>
+</td>
+                                            <td class="customfield_10002"></td>
+                                            <td class="assignee">    <em>Unassigned</em>
+</td>
+                                            <td class="customfield_23400">    <div class='dev-status-column-view-wrapper'></div>
+</td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-default jira-issue-status-lozenge-new aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" title="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" tabindex="0">Draft</span>    </td>
+                                            <td class="created"> 25/Aug/2026 8:58 PM </td>
+                                            <td class="resolutiondate"> &nbsp; </td>
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="customfield_10004"></td>
+                                            <td class="customfield_36005">
+
+
+    <div class="shorten" id="customfield_36005-field">
+        							<span>2026.4</span>			            </div>
+</td>
+                                            <td class="customfield_10006"></td>
+                    </tr>
+
+
+                <tr id="issuerow9995315" rel="9995315" data-issuekey="CR-40887" class="issuerow">
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="CR-40887" href="https://adlm.nielseniq.com/jira/browse/CR-40887">CR-40887</a>
+</td>
+                                            <td class="priority">           High
+    </td>
+                                            <td class="summary"><p>
+                Mo Placeholde - Retail media data ingestion and campaign onboarding
+    </p>
+</td>
+                                            <td class="customfield_10002"></td>
+                                            <td class="assignee">    <em>Unassigned</em>
+</td>
+                                            <td class="customfield_23400">    <div class='dev-status-column-view-wrapper'></div>
+</td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-default jira-issue-status-lozenge-new aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" title="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" tabindex="0">Draft</span>    </td>
+                                            <td class="created"> 25/Aug/2026 8:57 PM </td>
+                                            <td class="resolutiondate"> &nbsp; </td>
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="customfield_10004"></td>
+                                            <td class="customfield_36005">
+
+
+    <div class="shorten" id="customfield_36005-field">
+        							<span>2026.4</span>			            </div>
+</td>
+                                            <td class="customfield_10006"></td>
+                    </tr>
+
+
+                <tr id="issuerow9922138" rel="9922138" data-issuekey="CR-39954" class="issuerow">
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="CR-39954" href="https://adlm.nielseniq.com/jira/browse/CR-39954">CR-39954</a>
+</td>
+                                            <td class="priority">           High
+    </td>
+                                            <td class="summary"><p>
+                Placeholder - Unlimitail - Integration of segments &amp; audiences builder with MediaRithmics CDP
+    </p>
+</td>
+                                            <td class="customfield_10002"></td>
+                                            <td class="assignee">            Tal Martsiano Shkedi
+    </td>
+                                            <td class="customfield_23400">    <div class='dev-status-column-view-wrapper'></div>
+</td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-default jira-issue-status-lozenge-new aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" title="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" tabindex="0">Draft</span>    </td>
+                                            <td class="created"> 05/Aug/2026 7:17 AM </td>
+                                            <td class="resolutiondate"> &nbsp; </td>
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="customfield_10004"></td>
+                                            <td class="customfield_36005">
+
+
+    <div class="shorten" id="customfield_36005-field">
+        							<span>2026.4</span>			            </div>
+</td>
+                                            <td class="customfield_10006"></td>
+                    </tr>
+
+
+                <tr id="issuerow9921652" rel="9921652" data-issuekey="CR-39951" class="issuerow">
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="CR-39951" href="https://adlm.nielseniq.com/jira/browse/CR-39951">CR-39951</a>
+</td>
+                                            <td class="priority">           High
+    </td>
+                                            <td class="summary"><p>
+                Placeholder - Unlimitail - export segment ID as part of segments &amp; audiences builder
+    </p>
+</td>
+                                            <td class="customfield_10002"></td>
+                                            <td class="assignee">            Tal Martsiano Shkedi
+    </td>
+                                            <td class="customfield_23400">    <div class='dev-status-column-view-wrapper'></div>
+</td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-default jira-issue-status-lozenge-new aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" title="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" tabindex="0">Draft</span>    </td>
+                                            <td class="created"> 05/Aug/2026 6:25 AM </td>
+                                            <td class="resolutiondate"> &nbsp; </td>
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="customfield_10004"></td>
+                                            <td class="customfield_36005">
+
+
+    <div class="shorten" id="customfield_36005-field">
+        							<span>2026.4</span>			            </div>
+</td>
+                                            <td class="customfield_10006"></td>
+                    </tr>
+
+
+                <tr id="issuerow9921288" rel="9921288" data-issuekey="CR-39948" class="issuerow">
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="CR-39948" href="https://adlm.nielseniq.com/jira/browse/CR-39948">CR-39948</a>
+</td>
+                                            <td class="priority">           High
+    </td>
+                                            <td class="summary"><p>
+                Placeholder - Unlimitail - Banner handling in segments &amp; audiences builder (Brazil)
+    </p>
+</td>
+                                            <td class="customfield_10002"></td>
+                                            <td class="assignee">            Tal Martsiano Shkedi
+    </td>
+                                            <td class="customfield_23400">    <div class='dev-status-column-view-wrapper'></div>
+</td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-default jira-issue-status-lozenge-new aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" title="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" tabindex="0">Draft</span>    </td>
+                                            <td class="created"> 05/Aug/2026 5:40 AM </td>
+                                            <td class="resolutiondate"> &nbsp; </td>
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="customfield_10004"></td>
+                                            <td class="customfield_36005">
+
+
+    <div class="shorten" id="customfield_36005-field">
+        							<span>2026.4</span>			            </div>
+</td>
+                                            <td class="customfield_10006"></td>
+                    </tr>
+
+
+                <tr id="issuerow9920903" rel="9920903" data-issuekey="CR-39945" class="issuerow">
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="CR-39945" href="https://adlm.nielseniq.com/jira/browse/CR-39945">CR-39945</a>
+</td>
+                                            <td class="priority">           High
+    </td>
+                                            <td class="summary"><p>
+                Placeholder - Unlimitail - Segmentation Control group selection + add Control indicator to export
+    </p>
+</td>
+                                            <td class="customfield_10002"></td>
+                                            <td class="assignee">            Tal Martsiano Shkedi
+    </td>
+                                            <td class="customfield_23400">    <div class='dev-status-column-view-wrapper'></div>
+</td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-default jira-issue-status-lozenge-new aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" title="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" tabindex="0">Draft</span>    </td>
+                                            <td class="created"> 05/Aug/2026 3:59 AM </td>
+                                            <td class="resolutiondate"> &nbsp; </td>
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="customfield_10004"></td>
+                                            <td class="customfield_36005">
+
+
+    <div class="shorten" id="customfield_36005-field">
+        							<span>2026.4</span>			            </div>
+</td>
+                                            <td class="customfield_10006"></td>
+                    </tr>
+
+
+                <tr id="issuerow9909165" rel="9909165" data-issuekey="CR-39883" class="issuerow">
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="CR-39883" href="https://adlm.nielseniq.com/jira/browse/CR-39883">CR-39883</a>
+</td>
+                                            <td class="priority">           High
+    </td>
+                                            <td class="summary"><p>
+                Placeholder - Unlimitail - Retail Media measurement report (Data)
+    </p>
+</td>
+                                            <td class="customfield_10002"></td>
+                                            <td class="assignee">            Noam Davidovich
+    </td>
+                                            <td class="customfield_23400">    <div class='dev-status-column-view-wrapper'></div>
+</td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-default jira-issue-status-lozenge-new aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" title="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" tabindex="0">Draft</span>    </td>
+                                            <td class="created"> 02/Aug/2026 4:19 AM </td>
+                                            <td class="resolutiondate"> &nbsp; </td>
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="customfield_10004"></td>
+                                            <td class="customfield_36005">
+
+
+    <div class="shorten" id="customfield_36005-field">
+        							<span>2026.4</span>			            </div>
+</td>
+                                            <td class="customfield_10006"></td>
+                    </tr>
+
+
+                <tr id="issuerow9909163" rel="9909163" data-issuekey="CR-39882" class="issuerow">
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="CR-39882" href="https://adlm.nielseniq.com/jira/browse/CR-39882">CR-39882</a>
+</td>
+                                            <td class="priority">           High
+    </td>
+                                            <td class="summary"><p>
+                Placeholder - Unlimitail - Retail Media measurement report - Non walled Gardens(BE + FE)
+    </p>
+</td>
+                                            <td class="customfield_10002"></td>
+                                            <td class="assignee">            Tal Martsiano Shkedi
+    </td>
+                                            <td class="customfield_23400">    <div class='dev-status-column-view-wrapper'></div>
+</td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-default jira-issue-status-lozenge-new aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" title="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" tabindex="0">Draft</span>    </td>
+                                            <td class="created"> 02/Aug/2026 4:16 AM </td>
+                                            <td class="resolutiondate"> &nbsp; </td>
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="customfield_10004"></td>
+                                            <td class="customfield_36005">
+
+
+    <div class="shorten" id="customfield_36005-field">
+        							<span>2026.4</span>			            </div>
+</td>
+                                            <td class="customfield_10006"></td>
+                    </tr>
+
+
+                <tr id="issuerow9909162" rel="9909162" data-issuekey="CR-39881" class="issuerow">
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="CR-39881" href="https://adlm.nielseniq.com/jira/browse/CR-39881">CR-39881</a>
+</td>
+                                            <td class="priority">           High
+    </td>
+                                            <td class="summary"><p>
+                Placeholder - Unlimitail - Permission to hide Shopper IDs as part of the seg &amp; aud. builder export
+    </p>
+</td>
+                                            <td class="customfield_10002"></td>
+                                            <td class="assignee">            Tal Martsiano Shkedi
+    </td>
+                                            <td class="customfield_23400">    <div class='dev-status-column-view-wrapper'></div>
+</td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-default jira-issue-status-lozenge-new aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" title="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;Draft&lt;/span&gt;" tabindex="0">Draft</span>    </td>
+                                            <td class="created"> 02/Aug/2026 4:08 AM </td>
+                                            <td class="resolutiondate"> &nbsp; </td>
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="customfield_10004"></td>
+                                            <td class="customfield_36005">
+
+
+    <div class="shorten" id="customfield_36005-field">
+        							<span>2026.4</span>			            </div>
+</td>
+                                            <td class="customfield_10006"></td>
+                    </tr>
+
+
+                <tr id="issuerow9770410" rel="9770410" data-issuekey="CR-38684" class="issuerow">
+                                            <td class="issuekey">
+
+    <a class="issue-link" data-issue-key="CR-38684" href="https://adlm.nielseniq.com/jira/browse/CR-38684">CR-38684</a>
+</td>
+                                            <td class="priority">           High
+    </td>
+                                            <td class="summary"><p>
+                Unlimitail: User‑Controlled Lookback Periods 
+    </p>
+</td>
+                                            <td class="customfield_10002"></td>
+                                            <td class="assignee">    <em>Unassigned</em>
+</td>
+                                            <td class="customfield_23400">    <div class='dev-status-column-view-wrapper'></div>
+</td>
+                                            <td class="status">
+                <span class=" jira-issue-status-lozenge aui-lozenge jira-issue-status-lozenge-inprogress jira-issue-status-lozenge-indeterminate aui-lozenge-subtle jira-issue-status-lozenge-max-width-medium" data-tooltip="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;In Review&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;jira-issue-status-tooltip-desc&quot;&gt;In Review&lt;/span&gt;" title="&lt;span class=&quot;jira-issue-status-tooltip-title&quot;&gt;In Review&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;jira-issue-status-tooltip-desc&quot;&gt;In Review&lt;/span&gt;" tabindex="0">In Review</span>    </td>
+                                            <td class="created"> 28/Jun/2026 8:56 AM </td>
+                                            <td class="resolutiondate"> &nbsp; </td>
+                                            <td class="issuetype">    Epic
+</td>
+                                            <td class="customfield_10004"></td>
+                                            <td class="customfield_36005">
+
+
+    <div class="shorten" id="customfield_36005-field">
+        							<span>2026.4</span>			            </div>
+</td>
+                                            <td class="customfield_10006"></td>
+                    </tr>
+                </tbody>
+    </table>
+    </issuetable-web-component>
+    <div class="end-of-stable-message"></div>
+            <table border="1" >
+<tr>
+    <td bgcolor="#dddddd" colspan="13"><font size="1">
+        Generated at Fri Sep 11 17:14:33 EDT 2026 by Mohammad Belghiszadeh using Jira 10.3.23#10030023-sha1:74ea987e7ff96a3139b59e980b62a395d79305f2.
+    </font></td>
+</tr>
+</table>
+
+</body>
+</html>
