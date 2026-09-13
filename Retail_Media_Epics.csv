@@ -1,0 +1,761 @@
+﻿"Ready for Jira import. Epic Name and Summary are identical, as in the existing epics. Modules is Retail Media throughout. PI / Quarter is left blank for the planning conversation to set.",,,,,,,,,,,,,
+Issue Type,Epic Name,Summary,Description,Modules,Component/s,Labels,Priority,Phase,UX Required,Customer facing change,Generic,PI / Quarter,Parent Link
+Epic,Retail media data ingestion and campaign onboarding,Mo Placeholde - Retail media data ingestion and campaign onboarding,"h3. Context
+Retail media measurement begins with data arriving from the media partner. Today nothing is ingested: exposure, spend, their attributed results and campaign metadata all sit in the partner's environment and are read manually if at all.
+
+h3. Problem / opportunity
+Without an automated, reconciled ingestion of what the partner returns, every measurement is a one-off assembled by hand, cannot be reproduced, and cannot be trusted when a number is challenged.
+
+h3. Objective
+Land everything the media partner returns, daily and unattended, in a form that can be reconciled to what we sent and reproduced months later.
+
+h3. Business outcome / value
+* Measurement becomes repeatable rather than a manual exercise per campaign
+* The number of campaigns that can be measured stops depending on analyst availability
+* A past campaign can be re-measured to the same numbers, which is what makes a result defensible
+
+h3. In scope
+* Automated daily ingestion of shopper-level exposure, impressions, clicks and placement
+* Ingestion of media spend, including fixed-placement spend held separately, unioned so cost is complete
+* Ingestion of the partner's own attributed results, stored separately from our figures and retaining their model name and window
+* Ingestion of campaign metadata, including our programme identifier where the partner writes it
+* A daily snapshot of partner reference data, so historical reporting does not rewrite itself when their dimensions change
+* A load register recording every feed, its row counts and its outcome
+* Re-running a load produces no duplicates
+
+h3. Out of scope
+* Any transformation or interpretation of partner figures. They are stored as received
+* The partner-side work of producing the feed
+* Identity resolution, which is a separate epic
+
+h3. Acceptance criteria
+* A day of exposure, spend and attributed results lands without manual intervention and the load register records it
+* Fixed-placement spend is provably included in the total cost for a campaign
+* A change in partner reference data is visible as two dated snapshots rather than as a silent overwrite
+* Re-running any load leaves the data unchanged
+* Partner attributed figures are retrievable with the model and window they were produced under
+
+h3. Measure of success
+* Daily loads complete unattended for four consecutive weeks
+* Row counts received reconcile to row counts the partner reports sending
+* Zero manual steps between the partner publishing and the data being queryable
+
+h3. Dependencies and open issues
+# Access at a tier that exposes shopper-level data rather than aggregated reporting only
+# A specification of what the return contains, which does not exist today
+# Confirmation of whether we receive transaction-level detail or an aggregated reporting layer",Retail Media,Retail Media,retail-media phase-1,High,Phase 1,No,Yes,Yes,2026.4,https://adlm.nielseniq.com/jira/browse/CR-40737
+Epic,Shopper identity resolution and match monitoring,Mo Placeholder - Shopper identity resolution and match monitoring,"h3. Context
+We hold and export the loyalty identifier. The partner's platform resolves it to their own shopper identifier, and exposure returns keyed on theirs. Every measurement depends on joining the two back together.
+
+h3. Problem / opportunity
+If exposure cannot be resolved back to our own shopper identity, nothing can be joined to transactions and no shopper-level measurement of any kind is possible. Identity quality is also inherited rather than controlled, which makes it a monitoring obligation rather than a one-off check.
+
+h3. Objective
+Resolve returned exposure to our loyalty identifier on ingestion, and publish the match rate as a daily measure from the first day.
+
+h3. Business outcome / value
+* Every downstream figure is keyed on an identity we own and control
+* Degradation in match quality is visible immediately rather than discovered as unexplained figures
+* A clear, defensible answer exists to the question of how much of the audience we can actually measure
+
+h3. In scope
+* Resolution applied during ingestion, so exposure carries our shopper identity
+* A daily identity match rate with a defined floor and an alert when breached
+* Unresolved identifiers retained and counted rather than discarded, so losses are visible
+* Match rate available per feed and per campaign
+
+h3. Out of scope
+* Changing how the partner resolves identity. Their resolution is theirs and we inherit its quality
+* Any attempt to re-identify a shopper from partner data
+
+h3. Acceptance criteria
+* Exposure records resolve to our shopper identity at or above the agreed floor
+* Unresolved rows are counted and retained, never silently dropped
+* The match rate is published daily before any reporting screen exists
+* A simulated drop in match quality raises an alert the same day
+
+h3. Measure of success
+* Match rate published every day with no gaps
+* Match rate at or above the agreed floor for four consecutive weeks
+* Every campaign report can state what share of its audience was matchable
+
+h3. Dependencies and open issues
+# Confirmation of which identifier we export and which the partner returns
+# The partner returning the mapping, or exposure carrying our identifier directly",Retail Media,Retail Media,retail-media phase-1,High,Phase 1,No,Yes,Yes,2026.4,https://adlm.nielseniq.com/jira/browse/CR-40738
+Epic,Product mapping and campaign product scope,Mo Placeholder - Product mapping and campaign product scope,"h3. Context
+A campaign promotes a set of products. To say whether shoppers bought those products, we need to know which they were, and we need the partner's product codes to map to ours.
+
+h3. Problem / opportunity
+Neither the campaign's product scope nor the mapping between product coding systems is specified on either side today. Without both, no outcome measure has anything to compute over, and the gap is invisible until the first campaign is measured.
+
+h3. Objective
+Establish, for every campaign, the set of our own product codes it promoted, and publish the match rate of the mapping that produced it.
+
+h3. Business outcome / value
+* Sales, units and margin can be attributed to the products a campaign actually promoted
+* A campaign whose scope cannot be established is identified before it is reported on, rather than after
+* The commercial figures that differentiate this product become computable at all
+
+h3. In scope
+* Ingestion or derivation of each campaign's product scope
+* A mapping between the partner's product codes and ours, with a published match rate
+* Per-campaign reporting of unmapped products, so scope gaps are visible
+* A campaign with no usable product scope is marked unmeasurable rather than measured against everything
+
+h3. Out of scope
+* Reconciling the partner's product hierarchy with ours beyond what the mapping requires
+* Product data quality work in the source catalogue
+
+h3. Acceptance criteria
+* A campaign resolves to a list of our product codes
+* The product match rate is published with its floor
+* A campaign with no usable scope is labelled unmeasurable and produces no outcome figure
+* Unmapped products are listed per campaign rather than silently excluded
+
+h3. Measure of success
+* Product match rate at or above the agreed floor across live campaigns
+* Every measured campaign has a stated product scope
+* No campaign produces a sales figure without a resolved product set
+
+h3. Dependencies and open issues
+# How campaign product scope is received from the partner — not specified today
+# How product codes map between the two sides — not specified today
+# These two questions are the largest source of estimating uncertainty in the whole programme",Retail Media,Retail Media,retail-media phase-1,High,Phase 1,No,Yes,Yes,2026.4,https://adlm.nielseniq.com/jira/browse/CR-40739
+Epic,Audience export extension for measurement,Mo Placeholder - Audience export extension for measurement,"h3. Context
+Audiences are already exported to the partner. Measurement needs three additions to every exported row so that exposure can later be traced back to the audience a shopper came from.
+
+h3. Problem / opportunity
+Exposure data returns without the audience identifier, so exposed shoppers cannot be connected to the audience they originated from. Incrementality by audience is impossible, and so is comparing an exposed group to the right control.
+
+h3. Objective
+Carry the audience identifier, banner and country on every exported shopper row, and record the export so returns can be reconciled against it.
+
+h3. Business outcome / value
+* Results become answerable by audience rather than only by campaign
+* Reach and results can be reported by banner and country where those matter
+* Discrepancies between what we sent and what came back become detectable
+
+h3. In scope
+* Audience identifier on every exported shopper row, across all export types
+* Banner and country columns where required
+* A record of every export with its row count, for reconciliation
+* A control flag on the export, if the agreed control mechanism requires one
+* Membership retained as exported, so what was targeted is recoverable later
+
+h3. Out of scope
+* Changing how audiences are defined or selected
+* Any change to the maximum number of shoppers an export may contain
+
+h3. Acceptance criteria
+* Every exported row carries its audience identifier
+* The maximum exportable record count is unchanged from before the additional columns
+* Export row counts are recorded and comparable to what returns
+* Membership as exported is recoverable for any past export
+
+h3. Measure of success
+* Audience identifier present on one hundred per cent of exported rows
+* Export and return counts reconcile exactly for four consecutive weeks
+* At least one campaign reports results broken down by audience
+
+h3. Dependencies and open issues
+# Whether country is required, and for which countries
+# One agreed name for the banner attribute, which is currently named two ways
+# The control mechanism decision, if a control flag is to be included
+# The partner returning the audience identifier on exposure, which is a separate agreement",Retail Media,Retail Media,retail-media phase-1,High,Phase 1,No,Yes,Yes,2026.4,https://adlm.nielseniq.com/jira/browse/CR-40740
+Epic,Single-person view across banners,Mo Placeholder - Single-person view across banners,"h3. Context
+In countries where a retailer operates several banners, one person can hold a separate shopper identity in each. Reach, response and control assignment are all computed per identity today.
+
+h3. Problem / opportunity
+Counting identities rather than people overstates reach, and lets the same person be treated as exposed in one banner and held back in another. Both distort the result, and neither is visible without de-duplication.
+
+h3. Objective
+Resolve several banner identities to one person, so reach is counted on people and control assignment cannot conflict.
+
+h3. Business outcome / value
+* Reach figures reflect people rather than cards, which is what an advertiser assumes they are buying
+* Test and control assignment stays sound in multi-banner countries
+* Banner comparisons compare populations of the same shape
+
+h3. In scope
+* Resolution of several banner identities to one person
+* A published de-duplication rate, so the size of the effect is known
+* The person identifier carried through to reporting and to control assignment
+* Applied only in countries where several banners operate
+
+h3. Out of scope
+* Countries operating a single banner, where this adds nothing
+* Any change to how identities are created in the source systems
+
+h3. Acceptance criteria
+* Reach computed on people differs measurably from reach computed on identities, and the difference is reported
+* One person cannot appear in opposing groups for the same campaign
+* The de-duplication rate is published per country
+
+h3. Measure of success
+* De-duplication rate published and stable
+* Zero cases of a person in opposing groups across banners
+* Reach figures for multi-banner countries stated on a person basis
+
+h3. Dependencies and open issues
+# Whether the partner's platform already de-duplicates across banners, and whether that resolution returns to us
+# Banner populated consistently on the shopper record",Retail Media,Retail Media,retail-media phase-1,High,Phase 1,No,Yes,Yes,2026.4,https://adlm.nielseniq.com/jira/browse/CR-40741
+Epic,Test and control assignment,Mo Placeholder - Test and control assignment,"h3. Context
+To say a campaign caused something, a comparable group of people must not have seen it, chosen at random before the campaign runs. Two routes are possible: we withhold the control from the export, or the partner withholds it at serve time and returns the list.
+
+h3. Problem / opportunity
+No mechanism exists today, and the decision cannot be applied retrospectively. Every campaign that runs without an assignment recorded before exposure is permanently descriptive, no matter what is built afterwards.
+
+h3. Objective
+Record a randomised test and control assignment for every campaign, before first exposure, reproducibly, whichever route is agreed.
+
+h3. Business outcome / value
+* The single dependency that makes causal measurement possible at all
+* Campaigns running now become measurable later rather than being lost
+* Assignment can be shown to be sound when an advertiser's analysts examine it
+
+h3. In scope
+* Storage of assignment per shopper per campaign, with the seed and method used
+* Randomisation implemented separately from any targeting or optimisation logic
+* A balance check across groups, computed and stored per campaign
+* Reproduction of any past assignment from its stored seed
+* Detection of a person assigned to opposing groups across audiences in the same period
+
+h3. Out of scope
+* The choice of mechanism itself, which is a commercial and partner decision
+* Any use of the assignment in reporting, which is a later epic
+
+h3. Acceptance criteria
+* An assignment reproduces exactly from its stored seed
+* Assignment timestamps prove the decision preceded first exposure
+* A balance report is produced and stored for every campaign
+* A deliberately biased assignment is detected by the balance check
+
+h3. Measure of success
+* Every campaign after go-live has an assignment recorded before exposure
+* Balance checks pass on the agreed attributes
+* Any past campaign's assignment can be regenerated on demand
+
+h3. Dependencies and open issues
+# Agreement on which of the two control routes is used
+# Single-person view, in multi-banner countries, so assignment is made on the person",Retail Media,Retail Media,retail-media phase-1,High,Phase 1,No,Yes,Yes,2026.4,https://adlm.nielseniq.com/jira/browse/CR-40742
+Epic,Measurement dataset,Mo Placeholder - Measurement dataset,"h3. Context
+Exposure, assignment, transactions and margin currently live in four places. Every figure the product reports needs them joined.
+
+h3. Problem / opportunity
+Without a single joined dataset per campaign, every figure is computed by a different route, two people get different answers, and a past campaign cannot be re-measured to the same numbers.
+
+h3. Objective
+Produce one record per shopper per campaign joining exposure, assignment, purchases and margin, frozen when the campaign is measured.
+
+h3. Business outcome / value
+* Every figure in the product derives from one place, so figures agree with each other by construction
+* A past campaign re-measures identically, which is what makes a result defensible months later
+* Adding a new measure becomes a small job rather than a new pipeline
+
+h3. In scope
+* One record per shopper per campaign, joining exposure, group assignment, purchases and margin
+* Purchase outcomes computed over the campaign's product scope
+* Basket outcomes computed over all products, kept separate from product outcomes
+* Freezing at measurement time, with the freeze recorded
+* A rebuild check proving a past campaign reproduces exactly
+
+h3. Out of scope
+* The measures themselves, which are a separate epic
+* Any reporting surface
+
+h3. Acceptance criteria
+* One record exists per shopper per campaign for a completed campaign
+* A campaign rebuilt from frozen inputs produces identical numbers
+* Product outcomes and basket outcomes are separately computed and separately labelled
+* The dataset carries country, banner and audience so results can be cut by them
+
+h3. Measure of success
+* Rebuild of any past campaign matches the original exactly
+* Build completes within the nightly window at production volume
+* Every published figure traces to this dataset
+
+h3. Dependencies and open issues
+# Ingestion, identity resolution, product scope and export extension all in place",Retail Media,Retail Media,retail-media phase-1,High,Phase 1,No,Yes,Yes,2026.4,https://adlm.nielseniq.com/jira/browse/CR-40743
+Epic,Measure library,Mo Placeholder - Measure library,"h3. Context
+Roughly thirty-four measures are needed before any modelling: delivery, reach, frequency, spend efficiency, purchase outcomes, commercial outcomes and the partner's own reported figures.
+
+h3. Problem / opportunity
+Measures defined in reports rather than in one place drift apart. Two teams compute the same metric differently, both believe they are right, and the discrepancy surfaces in front of an advertiser.
+
+h3. Objective
+Define every measure once, in one place, with its formula, grain and supported breakdowns, so that two people computing it independently obtain the same answer.
+
+h3. Business outcome / value
+* Figures agree across every screen and export because they come from one definition
+* A measure can be changed in one place and every consumer follows
+* A published figure can always state which version of a definition produced it
+
+h3. In scope
+* All phase one measures: delivery, reach, spend efficiency, purchase outcome, commercial outcome, partner-reported
+* A registry recording each measure's formula, grain and supported breakdowns
+* Breakdown by campaign, audience, banner, country, placement and product where the measure supports it
+* Results stored with the definition version that produced them
+* A test per measure that fails when the calculation is deliberately broken
+
+h3. Out of scope
+* Any measure requiring a control group or a model
+* Presentation of the measures
+
+h3. Acceptance criteria
+* Every phase one measure in the agreed catalogue is computable and stored
+* Each measure fails its test when the calculation is broken on purpose
+* Results carry the definition version they were computed under
+* Partner-reported figures are stored under the partner's name and window and are never recomputed
+
+h3. Measure of success
+* All catalogue measures available for every measurable campaign
+* Two independent implementations of any measure agree
+* No figure exists in the product that is not defined in the registry
+
+h3. Dependencies and open issues
+# The measurement dataset",Retail Media,Retail Media,retail-media phase-1,High,Phase 1,No,Yes,Yes,2026.4,https://adlm.nielseniq.com/jira/browse/CR-40744
+Epic,Data quality floors and figure suppression,Mo Placeholder - Data quality floors and figure suppression,"h3. Context
+Several measures determine whether anything else can be published at all: identity match, product match, reconciliation between what was sent and returned, and feed freshness.
+
+h3. Problem / opportunity
+A product that degrades quietly is worse than one that stops. Without floors and automatic suppression, figures continue to be published on incomplete data and the failure is discovered by an advertiser rather than by us.
+
+h3. Objective
+Compute the quality measures daily, hold each against a floor, and withhold dependent figures automatically when a floor is breached.
+
+h3. Business outcome / value
+* A wrong number is never published in place of a missing one
+* Problems surface within a day rather than in a quarterly review
+* Every campaign can state up front what can honestly be reported about it
+
+h3. In scope
+* Daily computation of identity match, product match, export-to-return reconciliation and feed freshness
+* A defined floor per measure, with breach detection and alerting
+* Automatic suppression of figures whose inputs are below floor, with the reason retained
+* A measurability status per campaign, stating what can be reported and why
+* Breach history, so a degrading trend is visible before it becomes a breach
+
+h3. Out of scope
+* Fixing the underlying data quality, which sits with the source systems
+* Presentation, which is a separate epic
+
+h3. Acceptance criteria
+* A breached floor withholds the affected figures automatically, with the reason available
+* Measurability status is computed per campaign before any figure is displayed
+* A simulated breach is detectable end to end within the same day
+* No suppressed figure is rendered as a zero or a blank anywhere
+
+h3. Measure of success
+* Floors computed and published every day with no gaps
+* Every suppression carries a stated reason
+* No incident in which a figure was published on data below floor
+
+h3. Dependencies and open issues
+# Ingestion, identity resolution, product mapping and export extension",Retail Media,Retail Media,retail-media phase-1,High,Phase 1,No,Yes,Yes,2026.4,https://adlm.nielseniq.com/jira/browse/CR-40745
+Epic,Campaign list and campaign result reporting,Mo Placeholder - Campaign list and campaign result reporting,"h3. Context
+No reporting surface exists for retail media measurement. The result of a campaign is the artefact an advertiser sees, usually in a meeting, usually while being challenged.
+
+h3. Problem / opportunity
+Without a reporting surface there is no product. And a surface that presents figures without their method and uncertainty produces confident readings of numbers that do not support them, which is worse than no reporting at all.
+
+h3. Objective
+Deliver the two screens an advertiser conversation runs on: a list of campaigns showing what can be said about each, and a result screen for one campaign.
+
+h3. Business outcome / value
+* The commercial artefact of the product, and the reason an advertiser renews
+* Results become self-service rather than assembled by an analyst per request
+* Every figure shown carries what qualifies it, so nothing can be quoted out of context
+
+h3. In scope
+* A new campaign list page: filterable and sortable, showing for each campaign its advertiser, flight, spend, shoppers reached, and what can honestly be reported about it
+* A new campaign result page carrying: a plain-language statement of what the campaign did; the headline figures for shoppers reached, spend, purchase outcome and commercial outcome; a profit view showing margin generated against media cost; summaries of delivery and of the comparison with the partner's own figure
+* Each figure labelled with how it was produced, so a counted figure is visibly different from an estimated one
+* A fixed statement of basis on every result page: method, window, population and the date the data was current
+* Printing to a single page without losing any label, interval or basis
+* Loading, empty, error and withheld states on both pages
+
+h3. Out of scope
+* Any figure requiring a control group, which arrives in a later epic
+* Cross-campaign aggregation, which would combine figures produced by different methods
+
+h3. Acceptance criteria
+* A reader seeing only the opening statement and the headline figures states correctly what the campaign achieved
+* Measurability is visible in the list without opening a campaign
+* Printing preserves every label and qualifier
+* No figure renders without its method label
+* Where a figure is withheld, the reason appears in its place rather than a blank or a zero
+* Every phase one measure in the agreed catalogue has a home on a screen. A measure that is computed and never displayed is treated as an incomplete epic, not as a future enhancement
+
+h3. Measure of success
+* An advertiser conversation runs from this screen without a supporting spreadsheet
+* Time from campaign end to a shareable result drops to the stated reporting window
+* No incident in which a figure was quoted without its qualifier
+
+h3. Dependencies and open issues
+# Measure library and quality floors
+# Access to the design system",Retail Media,Retail Media,retail-media phase-1,High,Phase 1,Yes,Yes,Yes,2026.4,https://adlm.nielseniq.com/jira/browse/CR-40746
+Epic,Delivery and outcome detail reporting,Mo Placeholder - Delivery and outcome detail reporting,"h3. Context
+Beneath the headline result sit two questions: how the advertising was delivered and what it cost, and what exposed shoppers went on to buy.
+
+h3. Problem / opportunity
+Without these, the result screen is a set of figures nobody can interrogate, and every follow-up question becomes an analyst request.
+
+h3. Objective
+Deliver two detail pages that answer the delivery and outcome questions without support.
+
+h3. Business outcome / value
+* Follow-up questions are answered in the product rather than by a person
+* Poor delivery is distinguishable from poor response, which are different problems with different owners
+* Spend that carries no measurable return becomes visible rather than assumed
+
+h3. In scope
+* A new delivery page carrying every delivery, reach, frequency and spend-efficiency measure in the phase one catalogue: pacing against the flight, shoppers reached against the audience published, how often they were reached, the spread of that frequency, where the advertising ran, and what each placement cost per thousand, per click and per shopper reached
+* A new outcome page carrying every purchase, commercial and behaviour measure in the phase one catalogue: how many exposed shoppers bought, at what rate, what they bought, what it was worth, what margin it carried, margin against media cost, basket value, units per buyer, how quickly purchases followed exposure, and how many buyers were new to the brand
+* A standing statement on the outcome page that these figures describe what happened and do not establish what the campaign caused
+* A statement per campaign of which channels it ran on and what can be reported for each
+
+h3. Out of scope
+* Any comparison between exposed shoppers and shoppers who were not exposed, in any form
+* Effect figures, which require a control group
+
+h3. Acceptance criteria
+* Every delivery, spend, outcome and behaviour measure in the phase one catalogue appears on one of these two pages
+* Every figure carries its method label
+* The outcome page states its own limits without the reader having to know them
+* No route exists, through any filter or export, to compare exposed against unexposed shoppers
+* Channels with no measurable return are shown as such rather than omitted
+
+h3. Measure of success
+* A measurable drop in support requests for delivery and outcome questions
+* Channels carrying spend with no return are identified and acted on
+
+h3. Dependencies and open issues
+# Measure library
+# Campaign result reporting",Retail Media,Retail Media,retail-media phase-1,High,Phase 1,Yes,Yes,Yes,2026.4,https://adlm.nielseniq.com/jira/browse/CR-40747
+Epic,Reconciliation reporting,Mo Placeholder - Reconciliation reporting,"h3. Context
+The media partner reports its own attributed result on its own window and model. Ours will differ, and an advertiser will see both.
+
+h3. Problem / opportunity
+Two credible organisations reporting different numbers for the same campaign, with no explanation of why, damages trust in both. The difference is expected and explainable, but only if it is explained deliberately.
+
+h3. Objective
+Show both figures side by side and explain the difference, in terms an advertiser can repeat to their own team.
+
+h3. Business outcome / value
+* Removes the most common objection in a retail media conversation before it is raised
+* Positions us as explaining rather than correcting, which protects the partner relationship
+* Turns a discrepancy into evidence of rigour
+
+h3. In scope
+* A new reconciliation page showing both figures, each labelled with the method and window that produced it
+* A step-by-step view of the difference, naming each cause: different window, different attribution basis, and later, incrementality
+* A check of the partner's attributed sales against transactions for the same products and period
+* A plain-language explanation generated from the components rather than written by hand
+
+h3. Out of scope
+* Adjusting either figure to agree with the other
+* Any presentation that frames the partner's figure as incorrect
+
+h3. Acceptance criteria
+* Every partner-reported measure in the phase one catalogue appears here or on the result page, under the partner's name and window
+* A reader can state why the two numbers differ without asking anyone
+* The page reads as an explanation and never as a correction
+* Both figures retain their own method and window wherever they appear
+
+h3. Measure of success
+* The reconciliation view is used in advertiser conversations
+* Attribution differences stop being raised as data quality incidents
+
+h3. Dependencies and open issues
+# Measure library
+# Ingestion of partner attributed results",Retail Media,Retail Media,retail-media phase-1,High,Phase 1,Yes,Yes,Yes,2026.4,https://adlm.nielseniq.com/jira/browse/CR-40748
+Epic,Provenance for every figure,Mo Placeholder - Provenance for every figure,"h3. Context
+Every figure in this product will at some point be challenged, usually by someone who was not in the room when it was produced.
+
+h3. Problem / opportunity
+A figure that cannot be traced to its basis cannot be defended, and in practice will not be believed. Provenance added later is never complete.
+
+h3. Objective
+Make the basis of any number reachable in one action, from anywhere it appears.
+
+h3. Business outcome / value
+* Any figure can be defended on the spot rather than after an investigation
+* Reduces the analyst time spent reconstructing how a number was produced
+* Makes internal review of a new measure possible without reading code
+
+h3. In scope
+* A panel, opened from any figure, giving its definition, how it was calculated, the campaign and population behind it, the window applied, the data it was computed from, and how to reproduce it
+* Reachable from every figure on every page, without losing the reader's place
+* A figure that cannot produce this does not display
+
+h3. Out of scope
+* Exposing underlying shopper-level records
+* A general query or exploration tool
+
+h3. Acceptance criteria
+* Every figure in the product opens its basis in one action
+* The panel states the method, the window and the date the data was current
+* A figure with no available basis is not rendered
+
+h3. Measure of success
+* Challenges to figures are resolved within the conversation
+* No published figure lacks a retrievable basis
+
+h3. Dependencies and open issues
+# Measure library",Retail Media,Retail Media,retail-media phase-1,High,Phase 1,Yes,Yes,Yes,2026.4,https://adlm.nielseniq.com/jira/browse/CR-40749
+Epic,Data health monitoring,Mo Placeholder - Data health monitoring,"h3. Context
+The quality floors decide daily whether figures can be published. Someone has to be able to see that at a glance, before an advertiser does.
+
+h3. Problem / opportunity
+Without a monitoring surface, a quality breach is discovered as a missing or wrong figure downstream, usually by the person least equipped to diagnose it.
+
+h3. Objective
+Give operations one page answering whether today's numbers can be published, and if not, why.
+
+h3. Business outcome / value
+* Problems are caught internally rather than externally
+* Reduces time to diagnose a reporting issue from days to minutes
+* Trend degradation is visible before it becomes a breach
+
+h3. In scope
+* A new data health page showing each quality measure against its floor over time
+* What is currently withheld, why, and which campaigns are affected
+* Feed status and how current each is
+* Breach history
+
+h3. Out of scope
+* Fixing the underlying data quality issues
+* Alerting configuration, which belongs to operations tooling
+
+h3. Acceptance criteria
+* Every operational measure in the phase one catalogue appears here or, for measurability, on the campaign list
+* An operator can answer whether today is publishable from one page
+* A breach is visible here before it appears as a missing figure elsewhere
+* Every current suppression is listed with its cause
+
+h3. Measure of success
+* Quality issues detected internally before any external report is affected
+* Mean time to diagnose a reporting issue measurably reduced
+
+h3. Dependencies and open issues
+# Data quality floors and figure suppression",Retail Media,Retail Media,retail-media phase-1,High,Phase 1,Yes,Yes,Yes,2026.4,https://adlm.nielseniq.com/jira/browse/CR-40750
+Epic,Export and advertiser-facing views,Mo Placeholder - Export and advertiser-facing views,"h3. Context
+Results leave the product. They are printed, pasted into decks, and sent to advertisers, often by someone who did not produce them.
+
+h3. Problem / opportunity
+A figure that loses its qualifier on the way out is a figure that will be quoted without it. Once that happens the product cannot control what is claimed on its behalf.
+
+h3. Objective
+Make every exported artefact carry what qualifies its figures, and make an advertiser-facing view that is generated rather than hand-assembled.
+
+h3. Business outcome / value
+* Protects the product's credibility outside its own screens
+* Removes the manual step of preparing an advertiser report, and the errors that come with it
+* Ensures what an advertiser receives is defensible by construction
+
+h3. In scope
+* A printable result view
+* A data export carrying method, window, population, currency date and every qualifier
+* An advertiser-facing view containing only figures that can be defended, generated automatically
+* Refusal to produce an export that would lose a qualifier, stating what is missing
+
+h3. Out of scope
+* Scheduled distribution or email delivery
+* Advertiser access to the product itself, if that is decided separately
+
+h3. Acceptance criteria
+* No export can lose an interval or a method label
+* The advertiser view requires no manual editing before it is sent
+* An export that would drop a qualifier fails and says why
+
+h3. Measure of success
+* Advertiser reports produced without manual assembly
+* No instance of an exported figure being quoted without its qualifier
+
+h3. Dependencies and open issues
+# Campaign result reporting",Retail Media,Retail Media,retail-media phase-1,High,Phase 1,Yes,Yes,Yes,2026.4,https://adlm.nielseniq.com/jira/browse/CR-40751
+Epic,Incremental effect measurement,Mo Placeholder - Incremental effect measurement,"h3. Context
+Everything in phase one describes what happened. Whether the campaign caused it requires comparing exposed shoppers to a group deliberately held back at random.
+
+h3. Problem / opportunity
+Without incremental measurement the product reports the same class of figures as the media partner, and competes on their ground. Incremental margin against a held-out control is the figure no advertising network can produce.
+
+h3. Objective
+Compute incremental purchasers, sales, units, margin and return, each with a confidence interval and a statement of whether the result is conclusive.
+
+h3. Business outcome / value
+* The figure that justifies a price and wins a renewal conversation
+* Advertiser analytics teams can verify the method, which no competitor currently allows
+* Wasted spend becomes identifiable rather than assumed
+
+h3. In scope
+* Incremental purchasers, sales, units, margin, return on spend and profit return
+* A confidence interval on every effect figure
+* A statement of whether a result is conclusive, and if not, the smallest effect the campaign could have detected
+* Effect broken down by audience, by how often shoppers were reached, and by placement
+* Our figure computed on both our window and the partner's, so the effect of the window is visible
+* A step-by-step explanation of the gap between the partner's figure and ours
+* Verification that a known effect is recovered and that a null result stays null
+
+h3. Out of scope
+* Any modelling. This epic is arithmetic against a control group
+* Explaining where incremental sales came from, which is decomposition and comes later
+
+h3. Acceptance criteria
+* A planted effect is recovered and a null result stays null
+* Every effect figure carries an interval and a statement of whether it is conclusive
+* An underpowered campaign reports as not conclusive and cannot be read as a small effect
+* Effect by audience is available wherever the audience identifier returned
+
+h3. Measure of success
+* Three campaigns measured end to end with balance checks passing
+* Incremental figures used in at least one renewal conversation
+* No effect figure published without its interval
+
+h3. Dependencies and open issues
+# Test and control assignment, and the agreed mechanism
+# The audience identifier returned on exposure, for the audience breakdown
+# A written definition of what is being estimated, agreed with data science",Retail Media,Retail Media,retail-media phase-2,High,Phase 2,No,Yes,Yes,2027.1,https://adlm.nielseniq.com/jira/browse/CR-40752
+Epic,Effect reporting,Mo Placeholder - Effect reporting,"h3. Context
+Incremental results are the most consequential and most misread figures in the product. How they are presented determines whether they are understood or over-read.
+
+h3. Problem / opportunity
+Published research is consistent that readers misinterpret every common presentation of uncertainty. A result presented conventionally will be read as more certain than it is, and an inconclusive result will be read as a weak positive.
+
+h3. Objective
+Present incremental effect so that a non-technical reader correctly distinguishes a conclusive result from an inconclusive one, without being told which is which.
+
+h3. Business outcome / value
+* Protects every other figure in the product: one over-claimed result damages all of them
+* Makes the strongest commercial figure usable by people who are not analysts
+* Removes the need for a caveat conversation alongside every report
+
+h3. In scope
+* A new effect page showing the estimate, its uncertainty, whether it is conclusive, and the smallest effect the campaign could have detected
+* A breakdown page showing effect by audience, by frequency and by placement, with uncertainty on each, so that overlapping results are visible rather than implied by ranking
+* Extension of the reconciliation view to include the incremental step
+* Period-over-period comparison, now permissible because it sits alongside a control group
+* An inconclusive result presented as a stated verdict rather than as a small figure
+
+h3. Out of scope
+* Modelled estimates, which are presented differently and arrive later
+
+h3. Acceptance criteria
+* A non-technical reader correctly separates a conclusive result from an inconclusive one in testing
+* Overlap between audiences is visible rather than implied by their order
+* An inconclusive result cannot be read as a positive one anywhere on the page or in an export
+
+h3. Measure of success
+* Comprehension tested with real advertisers and passing
+* No instance of an inconclusive result being reported as an effect
+
+h3. Dependencies and open issues
+# Incremental effect measurement
+# Research on how the uncertainty display is read",Retail Media,Retail Media,retail-media phase-2,High,Phase 2,Yes,Yes,Yes,2017.1,https://adlm.nielseniq.com/jira/browse/CR-40753
+Epic,Modelled measurement where no control exists,Mo Placeholder - Modelled measurement where no control exists,"h3. Context
+Some campaigns will run without a control group, and some channels can never provide one because they return no shopper-level exposure.
+
+h3. Problem / opportunity
+The choice is between reporting nothing for those campaigns and reporting an estimate. An estimate is useful if it is honestly labelled and dangerous if it is not.
+
+h3. Objective
+Produce a modelled estimate where no control existed, presented so that it can never be mistaken for a measured result.
+
+h3. Business outcome / value
+* Extends coverage to campaigns and channels that would otherwise be unreportable
+* Keeps the distinction between measured and modelled visible, protecting the measured figures
+* Gives a defensible answer where the alternative is silence or a bad comparison
+
+h3. In scope
+* An estimate produced by comparing exposed shoppers to comparable unexposed shoppers
+* Published diagnostics showing how comparable the two groups actually were
+* A store-level comparison where shoppers cannot be identified at all
+* Distinct presentation, carried through every screen and every export
+
+h3. Out of scope
+* Presenting a modelled estimate as measured effect, in any circumstance
+
+h3. Acceptance criteria
+* A modelled figure cannot be mistaken for a measured one in any view or export
+* Diagnostics are published alongside every modelled estimate
+* The assumptions behind the estimate are stated wherever it appears
+
+h3. Measure of success
+* Campaigns without a control are reported rather than omitted
+* No modelled figure quoted as a measured result
+
+h3. Dependencies and open issues
+# Measurement dataset
+# Reason codes for non-exposure, if available",Retail Media,Retail Media,retail-media phase-3,High,Phase 3,Yes,Yes,Yes,2027.1,https://adlm.nielseniq.com/jira/browse/CR-40754
+Epic,Decomposition of the incremental result,Mo Placeholder - Decomposition of the incremental result,"h3. Context
+Lift on a promoted product is not the same as value to the retailer. Sales may have moved from a neighbouring product, or been brought forward from next month.
+
+h3. Problem / opportunity
+A brand that lifts its own product by taking sales from the one beside it has generated nothing for the retailer, and the current figures cannot tell the difference. This is the question a sophisticated buyer asks second.
+
+h3. Objective
+Explain where incremental sales came from: taken from neighbouring products, gained across the brand, brought forward in time, and what remains as genuine category growth.
+
+h3. Business outcome / value
+* Answers the retailer's question rather than only the advertiser's
+* Protects the category from campaigns that appear to work and do not
+* Differentiates the product from anything an advertising network can offer
+
+h3. In scope
+* Estimation of sales taken from neighbouring products
+* Estimation of gains across the rest of the brand
+* Estimation of purchases brought forward rather than added
+* A combined view showing how the incremental figure resolves into net category effect
+* Observation extending beyond the campaign window, far enough to see purchases brought forward
+
+h3. Out of scope
+* Publishing any component on its own, which is misleading without the others
+
+h3. Acceptance criteria
+* The components reconcile to the net effect
+* Reporting extends past the measurement window far enough to observe acceleration
+* The assumptions behind the baseline are stated
+
+h3. Measure of success
+* Decomposition reproduced on two campaigns with its error characterised
+* Used in at least one category-level conversation with the retailer
+
+h3. Dependencies and open issues
+# Incremental effect measurement
+# A decision on whether the existing promotional baseline method can be reused, which would substantially reduce this work",Retail Media,Retail Media,retail-media phase-3,High,Phase 3,Yes,Yes,Yes,2027.1,https://adlm.nielseniq.com/jira/browse/CR-40755
+Epic,Planning and optimisation guidance,Mo Placeholder - Planning and optimisation guidance,"h3. Context
+Once several campaigns have been measured, the results become inputs to the next campaign rather than a record of the last one.
+
+h3. Problem / opportunity
+Measurement that only describes the past leaves the planning decision unchanged. The commercial position shifts substantially when the measurement layer becomes the thing planning depends on.
+
+h3. Objective
+Turn accumulated measured results into guidance: which audiences respond, how much advertising is worth buying, and how large a holdout a given campaign needs.
+
+h3. Business outcome / value
+* Moves the product from reporting to advising, which is a different position in the value chain
+* Improves the return on every subsequent campaign
+* Quantifies exactly how small a control group can be, which strengthens the conversation with the partner
+
+h3. In scope
+* The relationship between how often shoppers are reached and the effect produced
+* The point beyond which additional advertising produces no detectable effect
+* A forecast for a proposed campaign, with its uncertainty, and a refusal where history is too thin
+* Guidance on where additional budget produces the most incremental return
+* The minimum holdout needed to detect an effect of a given size
+
+h3. Out of scope
+* Automated budget allocation or campaign execution
+* Any recommendation presented without its uncertainty
+
+h3. Acceptance criteria
+* A forecast refuses rather than guessing where history is insufficient
+* Every recommendation carries its uncertainty
+* The holdout calculation is reproducible and documented
+
+h3. Measure of success
+* Guidance used in planning at least one campaign
+* Demonstrable improvement in incremental return on campaigns planned with it
+
+h3. Dependencies and open issues
+# Several campaigns measured under incremental effect measurement",Retail Media,Retail Media,retail-media phase-3,High,Phase 3,Yes,Yes,Yes,2027.1,https://adlm.nielseniq.com/jira/browse/CR-40756
