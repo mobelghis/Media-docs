@@ -1,0 +1,231 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Story Engine Architecture</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#111820;--i2:#41505F;--i3:#78899A;--paper:#EFF1EF;--rule:#D3D8D6;--r2:#E5E9E7;
+--teal:#0F6E5C;--tealw:#E4EFEC;--purple:#463BA0;--purplew:#E8E6F4;--amber:#A8741A;--amberw:#F6EEDD}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 'IBM Plex Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:36px 24px 70px}
+h1{font-family:'IBM Plex Sans Condensed',sans-serif;font-size:32px;margin:0;letter-spacing:-.015em}
+h2{font-family:'IBM Plex Sans Condensed',sans-serif;font-size:20px;margin:40px 0 4px}
+.lbl{font-family:'IBM Plex Sans Condensed',sans-serif;text-transform:uppercase;letter-spacing:.09em;font-weight:600;font-size:11px;color:var(--i3)}
+.sub{color:var(--i2);font-size:14.5px;margin:8px 0 0;max-width:80ch}
+.note{font-size:12.5px;color:var(--i3);line-height:1.6;margin:10px 0 0;max-width:90ch}
+.card{background:#fff;border:1px solid var(--rule);padding:20px 22px;margin-top:14px}
+svg{display:block;width:100%;height:auto}
+.key{display:flex;gap:18px;flex-wrap:wrap;margin-top:14px;font-size:12.5px;color:var(--i2)}
+.key i{width:13px;height:13px;display:inline-block;margin-right:6px;vertical-align:-2px}
+.tw{overflow-x:auto;max-width:100%}
+table{border-collapse:collapse;width:100%;margin-top:12px;min-width:560px}
+th{font-family:'IBM Plex Sans Condensed',sans-serif;text-transform:uppercase;letter-spacing:.06em;font-size:10px;font-weight:600;color:var(--i3);background:#F7F8F7;border-bottom:1px solid var(--rule);padding:8px 10px;text-align:left}
+td{padding:9px 10px;border-bottom:1px solid var(--r2);font-size:13px;vertical-align:top}
+td.n{text-align:right;font-family:'IBM Plex Mono',monospace}
+tr.tot td{background:#F7F8F7;font-weight:600}
+@media(max-width:700px){.wrap{padding:22px 14px 50px}h1{font-size:25px}.card{padding:14px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="lbl">Retail media measurement</div>
+  <h1>How the whole thing fits together</h1>
+  <p class="sub">Three layers. The numbers are worked out in code and never by a language model. Only the wording and the slide layout use AI, and only for the handful of findings that actually get said.</p>
+
+  <h2>The system</h2>
+  <div class="card">
+  <svg viewBox="0 0 1100 700" role="img" aria-label="Architecture: three layers from the warehouse through the engine to the screens">
+    <defs>
+      <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="#78899A"/></marker>
+      <marker id="at" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="#0F6E5C"/></marker>
+      <marker id="ap" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="#463BA0"/></marker>
+    </defs>
+
+    <!-- ===== layer 1: data ===== -->
+    <rect x="20" y="20" width="1060" height="118" fill="#fff" stroke="#D3D8D6"/>
+    <text x="36" y="44" font-family="'IBM Plex Sans Condensed'" font-size="12" font-weight="600" fill="#78899A" letter-spacing="1">1 · WHERE THE NUMBERS LIVE</text>
+    <g font-family="'IBM Plex Sans'" font-size="12.5" fill="#111820">
+      <rect x="36" y="58" width="196" height="60" fill="#EFF1EF" stroke="#D3D8D6"/>
+      <text x="48" y="80" font-weight="600">Till and web receipts</text>
+      <text x="48" y="99" font-size="11.5" fill="#41505F">every basket, every UPC</text>
+
+      <rect x="248" y="58" width="196" height="60" fill="#EFF1EF" stroke="#D3D8D6"/>
+      <text x="260" y="80" font-weight="600">Ad server events</text>
+      <text x="260" y="99" font-size="11.5" fill="#41505F">impressions, clicks, spend</text>
+
+      <rect x="460" y="58" width="196" height="60" fill="#EFF1EF" stroke="#D3D8D6"/>
+      <text x="472" y="80" font-weight="600">Audience exports</text>
+      <text x="472" y="99" font-size="11.5" fill="#41505F">who was sent, who was targeted</text>
+
+      <rect x="672" y="58" width="196" height="60" fill="#fff" stroke="#463BA0" stroke-dasharray="4 3"/>
+      <text x="684" y="80" font-weight="600" fill="#463BA0">Partner files</text>
+      <text x="684" y="99" font-size="11.5" fill="#41505F">totals only — no shopper ids</text>
+
+      <rect x="884" y="58" width="180" height="60" fill="#EFF1EF" stroke="#D3D8D6"/>
+      <text x="896" y="80" font-weight="600">Plan and invoice</text>
+      <text x="896" y="99" font-size="11.5" fill="#41505F">booked spend, booked reach</text>
+    </g>
+
+    <line x1="550" y1="138" x2="550" y2="168" stroke="#78899A" stroke-width="1.5" marker-end="url(#a)"/>
+
+    <!-- ===== layer 2: engine ===== -->
+    <rect x="20" y="172" width="1060" height="330" fill="#fff" stroke="#D3D8D6"/>
+    <text x="36" y="196" font-family="'IBM Plex Sans Condensed'" font-size="12" font-weight="600" fill="#78899A" letter-spacing="1">2 · THE ENGINE</text>
+
+    <!-- query engine -->
+    <rect x="36" y="210" width="1028" height="52" fill="#111820"/>
+    <text x="52" y="233" font-family="'IBM Plex Sans'" font-size="13.5" font-weight="600" fill="#fff">One query engine</text>
+    <text x="52" y="251" font-family="'IBM Plex Sans'" font-size="11.5" fill="#B9C2CC">"give me these measures, split by these things, for these filters" — every screen and every finding rests on this one ability</text>
+
+    <line x1="550" y1="262" x2="550" y2="286" stroke="#78899A" stroke-width="1.5" marker-end="url(#a)"/>
+
+    <!-- the six roles -->
+    <g font-family="'IBM Plex Sans'" font-size="12">
+      <!-- code roles -->
+      <rect x="36" y="290" width="150" height="86" fill="#E4EFEC" stroke="#0F6E5C"/>
+      <text x="48" y="312" font-weight="700" font-size="13">1 Scout</text>
+      <text x="48" y="330" font-size="11" fill="#41505F">every slice of every</text>
+      <text x="48" y="345" font-size="11" fill="#41505F">breakdown</text>
+      <text x="48" y="366" font-family="'IBM Plex Mono'" font-size="10.5" fill="#0F6E5C">~50 raised</text>
+
+      <rect x="198" y="290" width="150" height="86" fill="#E4EFEC" stroke="#0F6E5C"/>
+      <text x="210" y="312" font-weight="700" font-size="13">2 Skeptic</text>
+      <text x="210" y="330" font-size="11" fill="#41505F">base size, separation,</text>
+      <text x="210" y="345" font-size="11" fill="#41505F">provenance, maturity</text>
+      <text x="210" y="366" font-family="'IBM Plex Mono'" font-size="10.5" fill="#0F6E5C">~25 survive</text>
+
+      <rect x="360" y="290" width="150" height="86" fill="#E4EFEC" stroke="#0F6E5C"/>
+      <text x="372" y="312" font-weight="700" font-size="13">5 Editor</text>
+      <text x="372" y="330" font-size="11" fill="#41505F">picks, de-duplicates,</text>
+      <text x="372" y="345" font-size="11" fill="#41505F">orders</text>
+      <text x="372" y="366" font-family="'IBM Plex Mono'" font-size="10.5" fill="#0F6E5C">9 chosen</text>
+
+      <!-- the gate -->
+      <rect x="522" y="290" width="92" height="86" fill="#F6EEDD" stroke="#A8741A"/>
+      <text x="534" y="312" font-weight="700" font-size="12" fill="#8A5E10">The gate</text>
+      <text x="534" y="330" font-size="10.5" fill="#5C4A24">only what</text>
+      <text x="534" y="344" font-size="10.5" fill="#5C4A24">is chosen</text>
+      <text x="534" y="358" font-size="10.5" fill="#5C4A24">gets words</text>
+
+      <!-- ai roles -->
+      <rect x="626" y="290" width="138" height="86" fill="#E8E6F4" stroke="#463BA0"/>
+      <text x="638" y="312" font-weight="700" font-size="13" fill="#463BA0">3 Advisor</text>
+      <text x="638" y="330" font-size="11" fill="#41505F">sums in code,</text>
+      <text x="638" y="345" font-size="11" fill="#41505F">wording by AI</text>
+      <text x="638" y="366" font-family="'IBM Plex Mono'" font-size="10.5" fill="#463BA0">9 calls</text>
+
+      <rect x="776" y="290" width="138" height="86" fill="#E8E6F4" stroke="#463BA0"/>
+      <text x="788" y="312" font-weight="700" font-size="13" fill="#463BA0">4 Explainer</text>
+      <text x="788" y="330" font-size="11" fill="#41505F">one sentence from</text>
+      <text x="788" y="345" font-size="11" fill="#41505F">given numbers</text>
+      <text x="788" y="366" font-family="'IBM Plex Mono'" font-size="10.5" fill="#463BA0">9 calls</text>
+
+      <rect x="926" y="290" width="138" height="86" fill="#E8E6F4" stroke="#463BA0"/>
+      <text x="938" y="312" font-weight="700" font-size="13" fill="#463BA0">6 Composer</text>
+      <text x="938" y="330" font-size="11" fill="#41505F">which findings</text>
+      <text x="938" y="345" font-size="11" fill="#41505F">share a slide</text>
+      <text x="938" y="366" font-family="'IBM Plex Mono'" font-size="10.5" fill="#463BA0">1 call</text>
+    </g>
+    <g stroke="#78899A" stroke-width="1.5" marker-end="url(#a)">
+      <line x1="186" y1="333" x2="194" y2="333"/>
+      <line x1="348" y1="333" x2="356" y2="333"/>
+      <line x1="510" y1="333" x2="518" y2="333"/>
+    </g>
+    <g stroke="#463BA0" stroke-width="1.5" marker-end="url(#ap)">
+      <line x1="614" y1="333" x2="622" y2="333"/>
+      <line x1="764" y1="333" x2="772" y2="333"/>
+      <line x1="914" y1="333" x2="922" y2="333"/>
+    </g>
+
+    <!-- number check -->
+    <rect x="626" y="390" width="438" height="44" fill="#fff" stroke="#A8741A" stroke-dasharray="4 3"/>
+    <text x="640" y="409" font-family="'IBM Plex Sans'" font-size="12" font-weight="600" fill="#8A5E10">The number check</text>
+    <text x="640" y="426" font-family="'IBM Plex Sans'" font-size="11" fill="#5C4A24">a figure we did not send back means the sentence is thrown away and a template is used</text>
+    <line x1="845" y1="376" x2="845" y2="388" stroke="#A8741A" stroke-width="1.5" marker-end="url(#a)"/>
+
+    <!-- storage -->
+    <g font-family="'IBM Plex Sans'" font-size="12">
+      <rect x="36" y="390" width="474" height="44" fill="#EFF1EF" stroke="#D3D8D6"/>
+      <text x="50" y="409" font-weight="600">Nothing is ever deleted</text>
+      <text x="50" y="426" font-size="11" fill="#41505F">every candidate, every kill and its reason, every edit, every removal — kept</text>
+    </g>
+
+    <!-- outputs of the engine -->
+    <rect x="36" y="448" width="1028" height="40" fill="#0F6E5C"/>
+    <text x="52" y="473" font-family="'IBM Plex Sans'" font-size="13" font-weight="600" fill="#fff">A story: 9 findings, each with its numbers, its chart, its sentence, its recommendation and its grade of evidence</text>
+
+    <line x1="550" y1="502" x2="550" y2="528" stroke="#0F6E5C" stroke-width="1.5" marker-end="url(#at)"/>
+
+    <!-- ===== layer 3: screens ===== -->
+    <rect x="20" y="532" width="1060" height="148" fill="#fff" stroke="#D3D8D6"/>
+    <text x="36" y="556" font-family="'IBM Plex Sans Condensed'" font-size="12" font-weight="600" fill="#78899A" letter-spacing="1">3 · WHAT PEOPLE SEE</text>
+    <g font-family="'IBM Plex Sans'" font-size="12.5">
+      <rect x="36" y="570" width="236" height="92" fill="#EFF1EF" stroke="#D3D8D6"/>
+      <text x="48" y="592" font-weight="700">Program</text>
+      <text x="48" y="611" font-size="11" fill="#41505F">what needs you today</text>
+      <text x="48" y="628" font-size="11" fill="#41505F">decomposition, campaign list</text>
+      <text x="48" y="649" font-family="'IBM Plex Mono'" font-size="10" fill="#78899A">no AI</text>
+
+      <rect x="288" y="570" width="236" height="92" fill="#EFF1EF" stroke="#D3D8D6"/>
+      <text x="300" y="592" font-weight="700">Campaign · Brief</text>
+      <text x="300" y="611" font-size="11" fill="#41505F">is the data good enough,</text>
+      <text x="300" y="628" font-size="11" fill="#41505F">what is this report for</text>
+      <text x="300" y="649" font-family="'IBM Plex Mono'" font-size="10" fill="#78899A">no AI · a person signs off</text>
+
+      <rect x="540" y="570" width="236" height="92" fill="#E4EFEC" stroke="#0F6E5C"/>
+      <text x="552" y="592" font-weight="700">Campaign · Story</text>
+      <text x="552" y="611" font-size="11" fill="#41505F">the findings, editable words,</text>
+      <text x="552" y="628" font-size="11" fill="#41505F">locked numbers</text>
+      <text x="552" y="649" font-family="'IBM Plex Mono'" font-size="10" fill="#0F6E5C">the engine's output</text>
+
+      <rect x="792" y="570" width="272" height="92" fill="#E4EFEC" stroke="#0F6E5C"/>
+      <text x="804" y="592" font-weight="700">Campaign · Deck</text>
+      <text x="804" y="611" font-size="11" fill="#41505F">slides composed, PowerPoint</text>
+      <text x="804" y="628" font-size="11" fill="#41505F">and PDF written in code</text>
+      <text x="804" y="649" font-family="'IBM Plex Mono'" font-size="10" fill="#0F6E5C">layout from the Composer</text>
+    </g>
+  </svg>
+  <div class="key">
+    <span><i style="background:#E4EFEC;border:1px solid #0F6E5C"></i>Arithmetic — no AI</span>
+    <span><i style="background:#E8E6F4;border:1px solid #463BA0"></i>AI writes the words only</span>
+    <span><i style="background:#F6EEDD;border:1px solid #A8741A"></i>Where the spend is controlled</span>
+    <span><i style="background:#fff;border:1px dashed #463BA0"></i>Walled garden — totals only</span>
+  </div>
+  </div>
+
+  <h2>Where the money goes</h2>
+  <p class="sub">One full report, nine findings. The gate in the middle of the diagram is why this is small: the Scout raises about fifty candidates and only the nine the Editor chooses ever earn a sentence.</p>
+  <div class="card">
+    <div class="tw"><table>
+      <thead><tr><th>Stage</th><th>What it does</th><th class="n">Calls</th><th class="n">In</th><th class="n">Out</th></tr></thead>
+      <tbody>
+        <tr><td>Scout, Skeptic, Advisor sums</td><td>finds candidates, kills most, does the money arithmetic</td><td class="n">0</td><td class="n">—</td><td class="n">—</td></tr>
+        <tr><td>Explainer</td><td>three sentence options for each chosen finding</td><td class="n">9</td><td class="n">1,100</td><td class="n">1,600</td></tr>
+        <tr><td>Advisor wording</td><td>the recommendation, in the document's tone</td><td class="n">9</td><td class="n">900</td><td class="n">700</td></tr>
+        <tr><td>Editor</td><td>the headline</td><td class="n">1</td><td class="n">250</td><td class="n">30</td></tr>
+        <tr><td>Composer</td><td>which findings share a slide</td><td class="n">1</td><td class="n">400</td><td class="n">250</td></tr>
+        <tr class="tot"><td>Per report</td><td>about three quarters of the input caches</td><td class="n">20</td><td class="n">2,650</td><td class="n">2,580</td></tr>
+        <tr><td>Rebuild after changing the document type</td><td>sentences are reused; only recommendations and the headline change</td><td class="n">4</td><td class="n">560</td><td class="n">330</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">Nine small-model calls and two mid-model calls. Nothing in the normal path needs a large model. The nine run in parallel, so a report takes two to four seconds rather than the sum of its parts.</p>
+  </div>
+
+  <h2>The one rule the diagram exists to show</h2>
+  <div class="card">
+    <p class="sub" style="font-size:17px;margin:0"><b>The computer counts. The AI writes.</b></p>
+    <p class="note">Every figure in the finished deck comes out of a database query. The AI is handed finished, formatted numbers and asked only to say them well — and then a check pulls the numbers back out of what it wrote and compares them. A figure we did not send means the sentence is discarded and a plain template is used instead.</p>
+    <p class="note">That check is what lets the deck go in front of the supplier's own analyst, which is the only test of this product that matters.</p>
+  </div>
+</div>
+</body>
+</html>
+
+</body></html>

@@ -1,0 +1,2241 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Retail Media Measurement Console</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#111820;--i2:#41505F;--i3:#78899A;--paper:#EFF1EF;--card:#fff;--rule:#D3D8D6;--r2:#E5E9E7;
+  --teal:#0F6E5C;--tealw:#E4EFEC;--purple:#463BA0;--purplew:#E8E6F4;--amber:#A8741A;--amberw:#F6EEDD;--red:#A33A2A;--redw:#F7E7E4;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font:15px/1.5 'IBM Plex Sans',system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
+button,select,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.n,.v,.mono{font-family:'IBM Plex Mono',monospace;font-variant-numeric:tabular-nums}
+.lbl{font-family:'IBM Plex Sans Condensed',sans-serif;text-transform:uppercase;letter-spacing:.09em;font-weight:600;font-size:11px;color:var(--i3)}
+h1,h2,h3{font-family:'IBM Plex Sans Condensed',sans-serif;margin:0;letter-spacing:-.005em}
+.grow{flex-grow:1}
+.note{font-size:12px;color:var(--i3);line-height:1.55;margin:0}
+.empty{padding:26px;text-align:center;color:var(--i3);background:var(--card);border:1px dashed var(--rule)}
+.wrap{max-width:1180px;margin:0 auto;padding:20px 24px 60px}
+.linkb{background:0;border:0;color:var(--teal);text-decoration:underline;cursor:pointer;padding:0}
+
+/* header */
+.top{background:var(--ink);color:#DDE3E4;position:sticky;top:0;z-index:20}
+.topin{display:flex;gap:15px;align-items:center;padding:10px 24px;flex-wrap:wrap}
+.mk{font-family:'IBM Plex Sans Condensed',sans-serif;font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:12px;color:#fff}
+.mk span{color:var(--i3)}
+.pk{display:flex;gap:7px;align-items:baseline;border-left:1px solid #2C3742;padding-left:14px}
+.pk b{font-size:13px;color:#fff;font-weight:600}
+.pk .lbl{color:#7C8C99}
+.pk select{background:#1E2A36;color:#fff;border:1px solid #33414F;height:28px;padding:0 6px;font-size:12.5px}
+.sy{font-size:11.5px;color:#8E9DA8;display:flex;align-items:center;gap:7px}
+.dot{width:7px;height:7px;border-radius:50%;background:#3FA97F}
+.tabs{background:#1A242E;display:flex;align-items:center;gap:2px;padding:0 24px;border-top:1px solid #26323D;overflow-x:auto}
+.tabs button{background:0;border:0;color:#94A4B1;font-family:'IBM Plex Sans Condensed',sans-serif;text-transform:uppercase;letter-spacing:.08em;font-weight:600;font-size:12px;padding:11px 14px;cursor:pointer;border-bottom:2px solid transparent;display:flex;gap:7px;align-items:center;white-space:nowrap}
+.tabs button:hover{color:#fff}
+.tabs button.on{color:#fff;border-bottom-color:var(--amber)}
+.cnt{font-family:'IBM Plex Mono',monospace;font-size:10.5px;background:#2A3744;padding:1px 5px;letter-spacing:0}
+.tabs button.on .cnt{background:var(--amber);color:#fff}
+.hint{font-size:11.5px;color:#8E9DA8}
+
+/* agent bar */
+.agentbar{background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--purple);padding:11px 16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:16px}
+.agentbar.running{border-left-color:var(--amber);background:#FCFBF7}
+.abl{display:flex;align-items:center;gap:7px;font-family:'IBM Plex Sans Condensed',sans-serif;text-transform:uppercase;letter-spacing:.08em;font-weight:700;font-size:11.5px;color:var(--purple)}
+.astep{display:flex;align-items:baseline;gap:7px;font-size:12.5px}
+.an{font-family:'IBM Plex Sans Condensed',sans-serif;text-transform:uppercase;letter-spacing:.06em;font-weight:600;font-size:11px;color:var(--i3)}
+.av{font-family:'IBM Plex Mono',monospace;font-size:17px;font-weight:500}
+.al{color:var(--i2);font-size:12px}
+.al em{font-style:normal;color:var(--red)}
+.arrow{color:#C3CBD2;display:flex}
+.scanned{font-size:11.5px;color:var(--i3);font-family:'IBM Plex Mono',monospace}
+
+/* goals */
+.goals{background:var(--card);border:1px solid var(--rule);padding:14px 16px;margin-bottom:18px}
+.gbtns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:9px 0 10px}
+.gbtns button{text-align:left;background:#fff;border:1px solid var(--rule);padding:10px 12px;cursor:pointer;display:block}
+.gbtns button:hover{border-color:var(--i3)}
+.gbtns button.on{border:2px solid var(--teal);background:#F7FBFA;padding:9px 11px}
+.gbtns b{display:block;font-family:'IBM Plex Sans Condensed',sans-serif;font-size:14px}
+.gbtns span{display:block;font-size:11.5px;color:var(--i3);line-height:1.45;margin-top:2px}
+
+/* headline */
+.headline{margin:0 0 18px}
+.headline h1{font-size:28px;line-height:1.2;margin-top:5px;max-width:30ch}
+.headline .sub{color:var(--i2);font-size:13.5px;margin:8px 0 0;max-width:80ch}
+
+/* finding cards */
+.fcards{display:flex;flex-direction:column;gap:14px}
+.fcard{background:var(--card);border:1px solid var(--rule);display:flex;border-left:4px solid var(--teal)}
+.fcard.down{border-left-color:var(--amber)}
+.fcard.opportunity{border-left-color:var(--purple)}
+.fcard.caveat{border-left-color:#B9BFC4}
+.fnum{width:42px;flex-shrink:0;display:flex;justify-content:center;padding-top:16px;font-family:'IBM Plex Mono',monospace;color:var(--i3);font-size:13px}
+.fmain{flex-grow:1;min-width:0;padding:14px 18px 0 0}
+.fhead{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
+.fhead h3{font-size:19px;line-height:1.25;margin-top:3px}
+.facts{display:flex;gap:2px;flex-shrink:0}
+.ico{width:24px;height:24px;border:0;background:0;color:#AEB8C0;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0}
+.ico:hover{color:var(--ink)}
+.ico.del:hover{color:var(--red)}
+.fbody{display:grid;grid-template-columns:minmax(0,1fr) 430px;gap:22px;margin-top:12px;align-items:start}
+.said{font-size:14.5px;line-height:1.6;color:var(--i2)}
+.said b{color:var(--ink);font-weight:600}
+.said[contenteditable]:focus{outline:none;background:#F7FBFA;box-shadow:0 0 0 2px #B6D8D1}
+.reco{margin-top:12px;background:#F7FBFA;border:1px solid #CFE3DE;padding:10px 12px;font-size:13.5px;line-height:1.55;color:var(--i2)}
+.reco b{color:var(--ink)}
+.rl{display:block;font-family:'IBM Plex Sans Condensed',sans-serif;text-transform:uppercase;letter-spacing:.08em;font-weight:600;font-size:10px;color:var(--teal);margin-bottom:4px}
+.opp{margin-top:10px;border:1px solid var(--purplew);background:#FAF9FD;padding:10px 12px}
+.opl{font-family:'IBM Plex Sans Condensed',sans-serif;text-transform:uppercase;letter-spacing:.08em;font-weight:600;font-size:10px;color:var(--purple);margin-bottom:6px}
+.oprow{display:flex;gap:8px;align-items:baseline;font-size:12.5px;color:var(--i3);padding:3px 0;flex-wrap:wrap}
+.oprow b{font-family:'IBM Plex Mono',monospace;color:var(--purple);font-size:14px}
+.caveats{margin-top:10px;font-size:11.5px;color:var(--i3);line-height:1.5}
+.caveats div{display:flex;gap:6px;align-items:flex-start;padding:2px 0}
+.forced{margin-top:8px;font-size:11.5px;color:var(--amber);font-style:italic}
+.fchart{min-width:0}
+.ffoot{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--r2);margin-top:14px;padding:9px 0}
+.why{font-family:'IBM Plex Sans Condensed',sans-serif;text-transform:uppercase;letter-spacing:.07em;font-weight:600;font-size:10.5px;color:var(--i3);cursor:pointer;display:inline-flex;gap:4px;align-items:center}
+.why:hover{color:var(--ink)}
+.why-panel{border-top:1px solid var(--r2);padding:12px 0 14px}
+table.kv{border-collapse:collapse;width:100%;max-width:560px;margin:7px 0 9px}
+table.kv td{padding:5px 0;border-bottom:1px solid var(--r2);font-size:12.5px;color:var(--i2)}
+table.kv td.n{text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--ink)}
+.p{font-family:'IBM Plex Sans Condensed',sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:.06em;font-weight:600;padding:2px 7px;display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
+.p.meas{background:var(--tealw);color:var(--teal)}
+.p.part{background:var(--amberw);color:#8A5E10}
+.p.lock{background:var(--paper);color:var(--i3);border:1px dashed #B9BFC4}
+.removedbar{margin-top:14px;font-size:12.5px;color:var(--i3);background:var(--card);border:1px dashed var(--rule);padding:10px 14px}
+.endbar{display:flex;gap:9px;justify-content:flex-end;margin-top:20px}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:34px;padding:0 13px;border:1px solid var(--rule);background:#fff;font-family:'IBM Plex Sans Condensed',sans-serif;text-transform:uppercase;letter-spacing:.07em;font-weight:600;font-size:11.5px;cursor:pointer;white-space:nowrap}
+.btn:hover{border-color:var(--ink)}
+.btn.pri{background:var(--ink);border-color:var(--ink);color:#fff}
+.btn.sm{height:28px;padding:0 9px;font-size:10.5px}
+.btnrow{display:flex;gap:8px;align-items:center}
+
+/* evidence */
+.etabs{display:flex;gap:7px;margin-bottom:16px;flex-wrap:wrap}
+.etabs button{background:#fff;border:1px solid var(--rule);padding:8px 12px;cursor:pointer;font-family:'IBM Plex Sans Condensed',sans-serif;text-transform:uppercase;letter-spacing:.06em;font-weight:600;font-size:11px;display:flex;gap:7px;align-items:center}
+.etabs button.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.etabs .cnt{background:var(--paper);color:var(--i2)}
+.etabs button.on .cnt{background:#2A3744;color:#fff}
+.egroup{background:var(--card);border:1px solid var(--rule);margin-bottom:12px}
+.egroup h3{font-size:14px;padding:11px 15px;border-bottom:1px solid var(--r2);background:#F7F8F7;display:flex;justify-content:space-between;align-items:center}
+.egn{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--i3);font-weight:400}
+.erow{padding:10px 15px;border-bottom:1px solid var(--r2);display:grid;grid-template-columns:270px minmax(0,1fr);gap:18px;align-items:baseline}
+.erow:last-child{border-bottom:0}
+.et{font-weight:600;font-size:13px}
+.em{display:block;font-weight:400;font-size:11px;color:var(--i3);font-family:'IBM Plex Mono',monospace;margin-top:2px}
+.ew{font-size:12.5px;color:var(--i2);line-height:1.55}
+.sc{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--i3)}
+.agents{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.acard{background:var(--card);border:1px solid var(--rule);padding:14px 16px;display:flex;gap:13px}
+.anum{width:28px;height:28px;background:var(--purplew);color:var(--purple);display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:13px;flex-shrink:0}
+.acard h3{font-size:15px}
+.acard p{margin:4px 0 0;font-size:12.5px;color:var(--i2);line-height:1.5}
+.astat{margin-top:8px;font-size:12px;color:var(--i3);font-family:'IBM Plex Mono',monospace}
+.astat b{color:var(--ink)}
+.rulebox{background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--teal);padding:15px 18px;margin-top:12px}
+.rulebox h3{font-size:15px}
+.rulebox p{margin:5px 0 0;font-size:13px;color:var(--i2);line-height:1.6;max-width:80ch}
+
+/* deck */
+.deckbar{background:var(--card);border:1px solid var(--rule);padding:14px 18px;display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:16px;flex-wrap:wrap}
+.h2{font-size:20px}
+.deck{display:flex;flex-direction:column;gap:14px}
+.slide{background:#fff;border:1px solid var(--rule);padding:24px 28px;display:flex;flex-direction:column;box-shadow:0 1px 3px rgba(17,24,32,.05)}
+.sh{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:14px}
+.sh h2{font-size:20px}
+.scols{display:grid;grid-template-columns:minmax(220px,.85fr) minmax(0,1.15fr);gap:24px;align-items:start;flex-grow:1}
+.ins{font-size:13.5px;line-height:1.6;color:var(--i2);margin:0}
+.ins b{color:var(--ink);font-weight:600}
+.reco-s{margin-top:11px;padding-top:10px;border-top:1px solid var(--r2)}
+.src{font-size:9px;color:#8E9DA8;border-top:1px solid var(--r2);padding-top:7px;margin-top:16px;line-height:1.45}
+.cover{min-height:260px;justify-content:space-between}
+.cover .big{font-size:32px;margin-top:8px}
+.covmeta{font-size:15px;color:var(--i2);margin-top:14px;line-height:1.5;max-width:60ch}
+.covfoot{display:flex;gap:12px;align-items:center;border-top:1px solid var(--r2);padding-top:12px}
+.recos{margin:0;padding-left:20px;font-size:13.5px;color:var(--i2);line-height:1.65}
+.recos li{margin-bottom:8px}
+.recos b{color:var(--ink)}
+
+/* modal */
+.scrim{position:fixed;inset:0;background:rgba(17,24,32,.55);display:flex;align-items:center;justify-content:center;z-index:40;padding:24px}
+.sheet{background:#fff;border:1px solid var(--rule);padding:24px 26px;max-width:620px;width:100%;max-height:84vh;overflow:auto}
+.sheet h3{font-size:18px;font-family:'IBM Plex Mono',monospace;font-weight:500}
+.sheet .note{margin:8px 0 14px}
+.manifest{margin:0;padding-left:20px;font-size:12.5px;color:var(--i2);line-height:1.85}
+.manifest b{color:var(--ink)}
+.mfoot{display:flex;justify-content:space-between;align-items:center;gap:16px;border-top:1px solid var(--r2);margin-top:16px;padding-top:14px}
+
+/* responsive */
+@media(max-width:980px){
+  .fbody,.scols{grid-template-columns:minmax(0,1fr)}
+  .gbtns{grid-template-columns:minmax(0,1fr)}
+  .erow{grid-template-columns:minmax(0,1fr);gap:4px}
+  .hint{display:none}
+}
+@media(max-width:640px){
+  .wrap{padding:16px 14px 50px}
+  .headline h1{font-size:22px}
+  .fnum{width:30px}
+  .fmain{padding-right:12px}
+  .agentbar{gap:10px}
+  .arrow{display:none}
+}
+
+/* print = the deck */
+@media print{
+  @page{size:A4 landscape;margin:10mm}
+  .top,.agentbar,.goals,.deckbar,.etabs,.endbar,.removedbar,.scrim{display:none!important}
+  body{background:#fff}
+  .wrap{max-width:none;padding:0}
+  .slide{border:0;box-shadow:none;page-break-after:always;break-after:page;min-height:155mm;padding:0 0 10mm}
+}
+
+/* ---------- program landing ---------- */
+.filters{background:var(--card);border:1px solid var(--rule);padding:12px 16px;display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap;margin-bottom:16px}
+.fgroup{display:flex;flex-direction:column;gap:5px;min-width:0}
+.fgroup.end{margin-left:auto;align-items:flex-end;gap:8px}
+.frow{display:flex;gap:6px;align-items:center}
+.frow .to{font-size:11.5px;color:var(--i3)}
+.filters select{border:1px solid var(--rule);background:#fff;font-size:12.5px;padding:3px 6px;min-width:140px}
+.filters select[multiple]{min-width:190px;max-width:230px}
+.fcount{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--i3)}
+.kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);margin-bottom:16px}
+.kpi{background:#fff;padding:12px 14px}
+.kv{font-family:'IBM Plex Mono',monospace;font-size:23px;font-weight:500;line-height:1.15;margin-top:4px}
+.ks{font-size:11px;color:var(--i3);margin-top:3px}
+.cols2{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:14px;margin-bottom:14px}
+.panel{background:var(--card);border:1px solid var(--rule);padding:14px 16px 16px;margin-bottom:14px}
+.phead{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:12px}
+.phead h2{font-size:17px}
+.phead select{border:1px solid var(--rule);background:#fff;font-size:12px;height:28px}
+.crumbs{display:flex;align-items:center;gap:4px;margin-top:5px;flex-wrap:wrap}
+.crumb{background:0;border:0;padding:0;font-family:'IBM Plex Sans Condensed',sans-serif;text-transform:uppercase;letter-spacing:.06em;font-weight:600;font-size:10.5px;color:var(--teal);cursor:pointer}
+.crumb.on{color:var(--ink);cursor:default}
+.csep{color:#C3CBD2;display:flex}
+.dbars{display:flex;flex-direction:column;gap:5px}
+.dbar{display:grid;grid-template-columns:155px minmax(0,1fr) 78px 16px;gap:10px;align-items:center;background:0;border:0;padding:4px 2px;text-align:left;cursor:default;font:inherit}
+.dbar.can{cursor:pointer}
+.dbar.can:hover .dfill{background:var(--purple)}
+.dbar.can:hover .dname{color:var(--ink)}
+.dname{font-family:'IBM Plex Sans Condensed',sans-serif;font-size:12px;font-weight:600;color:var(--i2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dtrack{background:var(--r2);height:17px;display:block}
+.dfill{background:var(--teal);height:17px;display:block}
+.dval{font-family:'IBM Plex Mono',monospace;font-size:12px;text-align:right}
+.dgo{color:#C3CBD2;display:flex}
+.tw{overflow-x:auto}
+table.dt{border-collapse:collapse;width:100%;min-width:620px}
+table.dt th{font-family:'IBM Plex Sans Condensed',sans-serif;text-transform:uppercase;letter-spacing:.06em;font-size:10px;font-weight:600;color:var(--i3);background:#F7F8F7;border-bottom:1px solid var(--rule);padding:8px 9px;text-align:left;white-space:nowrap}
+table.dt td{padding:9px;border-bottom:1px solid var(--r2);font-size:12.5px;vertical-align:top;line-height:1.45}
+table.dt td.n,table.dt th.n{text-align:right;font-family:'IBM Plex Mono',monospace;font-variant-numeric:tabular-nums}
+table.dt tr.tot{background:#F7F8F7}
+table.dt tr.sel{background:#F2F8F6}
+table.dt tr.muted td{color:var(--i3)}
+table.dt .sub{font-size:11px;color:var(--i3);margin-top:2px}
+th.sortable{cursor:pointer}
+th.sortable:hover{color:var(--ink)}
+th.sorted{color:var(--ink);background:#EDF2F0}
+.p.live{background:var(--purplew);color:var(--purple)}
+.p.fin{background:#E8ECF1;color:#3A4756}
+.p.plan{background:var(--paper);color:var(--i3);border:1px dashed #B9BFC4}
+.btn.in{background:var(--tealw);border-color:var(--teal);color:var(--teal)}
+.btn.add{background:var(--teal);border-color:var(--teal);color:#fff}
+
+/* ---------- deep dive ---------- */
+.chooser{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--r2)}
+.chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+.chip{background:#fff;border:1px solid var(--rule);padding:4px 9px;font-size:11.5px;cursor:pointer;display:inline-flex;gap:5px;align-items:center}
+.chip:hover{border-color:var(--i3)}
+.chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.chip .ord{font-family:'IBM Plex Mono',monospace;font-size:9.5px;background:var(--amber);padding:0 4px}
+.deepfoot{display:flex;gap:12px;align-items:center;margin-top:12px;flex-wrap:wrap}
+.deepfoot .note{flex:1 1 320px}
+table.dt.sticky thead th{position:sticky;top:0;z-index:2}
+
+/* ---------- composer / deck ---------- */
+.composernote{background:#FAF9FD;border:1px solid var(--purplew);border-left:4px solid var(--purple);padding:11px 15px;font-size:12.5px;color:var(--i2);display:flex;gap:9px;align-items:center;margin-bottom:14px}
+.covnote{font-size:13.5px;color:var(--i2);margin:8px 0 0;max-width:70ch}
+.covgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px 18px;margin-top:16px}
+.covgrid b{display:block;font-size:12.5px;font-weight:600;margin-top:2px;line-height:1.4}
+.tie{font-size:13px;color:var(--i2);margin:0 0 14px;font-style:italic}
+.pairgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;flex-grow:1}
+.pairhalf h3{font-size:14.5px;margin-bottom:8px}
+.chartbox{margin-bottom:9px}
+.meth{margin-top:12px}
+.opp-s{margin-top:9px;color:var(--purple)}
+.snote{border-top:1px solid var(--r2);margin-top:12px;padding-top:8px}
+.snbody{font-size:11.5px;color:var(--i3);line-height:1.55;margin-top:5px;max-width:80ch}
+.mlay{display:block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--i3)}
+.arow{grid-template-columns:270px minmax(0,1fr) auto}
+
+@media(max-width:1100px){
+  .kpis{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .cols2{grid-template-columns:minmax(0,1fr)}
+  .covgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:760px){
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .chooser,.pairgrid{grid-template-columns:minmax(0,1fr)}
+  .dbar{grid-template-columns:100px minmax(0,1fr) 62px 14px;gap:7px}
+  .filters select[multiple]{min-width:140px}
+  .arow{grid-template-columns:minmax(0,1fr)}
+}
+
+/* ---------- rider callouts ---------- */
+.riders{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--r2);border:1px solid var(--r2);margin-top:16px}
+.rider{background:#fff;padding:11px 14px}
+.rv{font-family:'IBM Plex Mono',monospace;font-size:21px;font-weight:500;color:var(--teal);line-height:1.1}
+.rl2{font-family:'IBM Plex Sans Condensed',sans-serif;text-transform:uppercase;letter-spacing:.06em;font-weight:600;font-size:10px;color:var(--i3);margin-top:3px}
+.rs{font-size:11.5px;color:var(--i2);line-height:1.5;margin-top:6px}
+.rs b{color:var(--ink);font-weight:600}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+/* ==================================================================
+   THE STORY ENGINE
+   Five roles. Findings are detected by arithmetic; only the wording
+   is written. No number in this file comes from language generation.
+     SCOUT     finds every candidate worth a look
+     SKEPTIC   tries to kill each one
+     ADVISOR   turns survivors into a recommendation with a number
+     EXPLAINER says it in one sentence
+     EDITOR    picks, de-duplicates, orders, writes the headline
+================================================================== */
+
+/* ---------- formatters ---------- */
+const F = {
+  int: n => n == null ? '—' : Math.round(n).toLocaleString('en-GB'),
+  compact: n => {
+    if (n == null) return '—';
+    if (n >= 1e6) return (n / 1e6).toFixed(n >= 1e7 ? 1 : 2).replace(/\.?0+$/, '') + ' M';
+    if (n >= 1e3) return (n / 1e3).toFixed(n >= 1e5 ? 0 : 1).replace(/\.0$/, '') + ' K';
+    return Math.round(n).toLocaleString('en-GB');
+  },
+  money: n => n == null ? '—' : '€' + Math.round(n).toLocaleString('en-GB'),
+  moneyC: n => {
+    if (n == null) return '—';
+    if (n >= 1e6) return '€' + (n / 1e6).toFixed(2).replace(/\.?0+$/, '') + ' M';
+    if (n >= 1e3) return '€' + Math.round(n / 1e3) + ' k';
+    return '€' + n.toFixed(2);
+  },
+  money2: n => n == null ? '—' : '€' + n.toFixed(2),
+  pct1: n => n == null ? '—' : n.toFixed(1) + '%',
+  pct2: n => n == null ? '—' : n.toFixed(2) + '%',
+  pct3: n => n == null ? '—' : (Math.abs(n) < 1 ? n.toFixed(2) : n.toFixed(1)) + '%',
+  pts: n => n == null ? '—' : (n > 0 ? '+' : '') + (Math.abs(n) < 1 ? n.toFixed(2) : n.toFixed(1)) + ' pts',
+  x: n => n == null ? '—' : n.toFixed(1) + '×',
+  dec: n => n == null ? '—' : n.toFixed(1),
+  hours: n => n == null ? '—' : Math.round(n) + ' h'
+};
+const shortName = s => s.replace(/ buyers$/, '').replace(/ · sponsored$/, '').replace(/^Nordmark /, '').replace(/ Granola.*$/, '');
+
+/* ---------- metric definitions on a breakdown ---------- */
+const METRICS = {
+  convRate:    { label: 'conversion rate',        short: 'Conversion rate',       fmt: F.pct3,   kind: 'rate',  needs: 'shopper', get: (r, T) => r.exposable ? r.buyers / r.exposable * 100 : null, total: T => T.convRate },
+  ctr:         { label: 'click-through rate',     short: 'Click-through rate',    fmt: F.pct2,   kind: 'rate',  needs: 'media',   get: r => r.impressions ? r.clicks / r.impressions * 100 : null,  total: T => T.ctr },
+  buyers:      { label: 'attributed buyers',      short: 'Attributed buyers',     fmt: F.int,    kind: 'count', needs: 'shopper', get: r => r.buyers,  total: T => T.buyers },
+  sales:       { label: 'attributed sales',       short: 'Attributed sales',      fmt: F.moneyC, kind: 'count', needs: 'shopper', get: r => r.sales,   total: T => T.sales },
+  salesPerBuyer:{label: 'sales per buyer',        short: 'Sales per buyer',       fmt: F.money2, kind: 'rate',  needs: 'shopper', get: r => r.salesPerBuyer, total: T => T.salesPerBuyer },
+  avgTxn:      { label: 'average transaction',    short: 'Average transaction',   fmt: F.money2, kind: 'rate',  needs: 'shopper', get: r => r.avgTxn,  total: T => T.avgTxn },
+  salesPerK:   { label: 'sales per 1,000 ads',    short: 'Sales per 1,000 ads',   fmt: F.money2, kind: 'rate',  needs: 'shopper', get: r => r.impressions ? r.sales / r.impressions * 1000 : null, total: T => T.sales / T.impressions * 1000 },
+  cpBuyer:     { label: 'cost per buyer',         short: 'Cost per buyer',        fmt: F.money2, kind: 'rate',  needs: 'shopper', lowerBetter: true,
+                 get: (r, T) => r.buyers ? (r.impressions / T.impressions * T.spend) / r.buyers : null, total: T => T.cpBuyer },
+  impressions: { label: 'impressions',            short: 'Impressions',           fmt: F.compact, kind: 'count', needs: 'media', get: r => r.impressions, total: T => T.impressions }
+};
+const spendOf = (r, T) => r.impressions / T.impressions * T.spend;
+
+/* ---------- chapters ---------- */
+const CHAPTERS = {
+  delivery:   { n: 1, label: 'What we bought' },
+  conversion: { n: 2, label: 'Who bought' },
+  commerce:   { n: 3, label: 'What it sold' },
+  shoppers:   { n: 4, label: 'Who they are' },
+  method:     { n: 5, label: 'How solid it is' }
+};
+
+/* ==================================================================
+   SCOUT — enumerate candidates
+================================================================== */
+function scout(c) {
+  const T = c.T, out = [];
+  let cells = 0;
+  const add = f => { f.id = f.id || (f.type + ':' + (f.cut || '') + ':' + (f.slice || '') + ':' + (f.metric || '')); out.push(f); };
+
+  /* -- plan vs actual -- */
+  if (c.hasPlan && T.estImpressions) {
+    const mult = T.impressions / T.estImpressions;
+    add({ type: 'plan_delivery', chapter: 'delivery', weight: 1.0, direction: mult >= 1 ? 'up' : 'down',
+      effect: Math.abs(mult - 1), base: T.impressions, baseKind: 'impressions',
+      v: { mult, actual: T.impressions, planned: T.estImpressions },
+      chart: { k: 'paired' } });
+  }
+  if (c.hasPlan && T.estCpm) {
+    const eff = T.cpm / T.estCpm;
+    add({ type: 'plan_cpm', chapter: 'delivery', weight: 0.85, direction: eff <= 1 ? 'up' : 'down',
+      effect: Math.abs(1 - eff), base: T.impressions, baseKind: 'impressions',
+      v: { eff, cpm: T.cpm, est: T.estCpm }, chart: { k: 'paired' } });
+  }
+
+  /* -- benchmark on headline rates -- */
+  ['ctr', 'convRate', 'cpBuyer', 'repeatRate'].forEach(k => {
+    const b = benchFor(k, c);
+    const actual = k === 'repeatRate' ? T.repeatRate : (k === 'cpBuyer' ? T.cpBuyer : T[k]);
+    if (b == null || actual == null) return;
+    const lower = k === 'cpBuyer';
+    const better = lower ? actual < b : actual > b;
+    add({ type: 'bench', chapter: k === 'ctr' ? 'delivery' : (k === 'repeatRate' ? 'shoppers' : 'conversion'),
+      metric: k, weight: 0.8, direction: better ? 'up' : 'down',
+      effect: Math.abs(actual - b) / b, base: T.buyers, baseKind: 'buyers',
+      v: { actual, bench: b, better }, chart: { k: k === 'repeatRate' ? 'repeat' : 'bignum' } });
+  });
+
+  /* -- per-cut outliers -- */
+  Object.keys(c.cuts).forEach(cutKey => {
+    const cut = c.cuts[cutKey];
+    cut.metrics.forEach(mk => {
+      const m = METRICS[mk]; if (!m) return;
+      const vals = cut.rows.map(r => ({ r, v: m.get(r, T) })).filter(x => x.v != null);
+      if (vals.length < 2) return;
+      cells += vals.length;
+      const ref = m.total(T);
+      const sorted = vals.slice().sort((a, b) => b.v - a.v);
+      const hi = m.lowerBetter ? sorted[sorted.length - 1] : sorted[0];
+      const lo = m.lowerBetter ? sorted[0] : sorted[sorted.length - 1];
+      // separation: how far clear of the runner-up is the leader? (robust to a noisy mean)
+      const n = sorted.length;
+      const hiNext = m.lowerBetter ? sorted[n - 2] : sorted[1];
+      const loNext = m.lowerBetter ? sorted[1] : sorted[n - 2];
+      const sepHi = hiNext && hiNext.v ? Math.abs(hi.v - hiNext.v) / Math.abs(hiNext.v) : 0;
+      const sepLo = loNext && loNext.v ? Math.abs(loNext.v - lo.v) / Math.abs(loNext.v) : 0;
+      if (m.kind === 'rate' && ref) {
+        add({ type: 'outlier_high', chapter: chapterFor(cutKey, mk), cut: cutKey, slice: hi.r.name, metric: mk,
+          weight: weightFor(cutKey, mk), direction: 'up',
+          effect: Math.abs(hi.v - ref) / ref, separation: sepHi, runnerUp: hiNext && hiNext.r.name, runnerUpV: hiNext && hiNext.v,
+          base: hi.r.buyers, baseKind: 'buyers', imp: hi.r.impressions,
+          v: { value: hi.v, ref, row: hi.r, rows: cut.rows, runnerUp: hiNext && hiNext.r, runnerUpV: hiNext && hiNext.v },
+          chart: { k: 'bars', cut: cutKey, metric: mk } });
+        add({ type: 'outlier_low', chapter: chapterFor(cutKey, mk), cut: cutKey, slice: lo.r.name, metric: mk,
+          weight: weightFor(cutKey, mk) * 0.9, direction: 'down',
+          effect: Math.abs(lo.v - ref) / ref, separation: sepLo, runnerUp: loNext && loNext.r.name, runnerUpV: loNext && loNext.v,
+          base: lo.r.buyers, baseKind: 'buyers', imp: lo.r.impressions,
+          v: { value: lo.v, ref, row: lo.r, rows: cut.rows, runnerUp: loNext && loNext.r, runnerUpV: loNext && loNext.v },
+          chart: { k: 'bars', cut: cutKey, metric: mk } });
+      }
+      if (m.kind === 'count') {
+        const tot = vals.reduce((s, x) => s + x.v, 0);
+        const share = sorted[0].v / tot;
+        if (share >= 0.42) {
+          add({ type: 'concentration', chapter: chapterFor(cutKey, mk), cut: cutKey, slice: sorted[0].r.name, metric: mk,
+            weight: weightFor(cutKey, mk) * 0.95, direction: 'up',
+            effect: share - 1 / vals.length, base: sorted[0].r.buyers, baseKind: 'buyers', imp: sorted[0].r.impressions,
+            v: { share: share * 100, value: sorted[0].v, n: vals.length, rows: cut.rows },
+            chart: { k: 'bars', cut: cutKey, metric: mk } });
+        }
+      }
+    });
+
+    /* -- size / performance mismatch: the reallocation opportunity -- */
+    if (cut.hasOwnAudience) {
+      const m = METRICS.convRate;
+      const rows = cut.rows.filter(r => r.exposable);
+      if (rows.length >= 2) {
+        const withRate = rows.map(r => ({ r, v: m.get(r, T) }));
+        const biggest = withRate.slice().sort((a, b) => b.r.exposable - a.r.exposable)[0];
+        const best = withRate.slice().sort((a, b) => b.v - a.v)[0];
+        if (biggest.r.name !== best.r.name && best.v > biggest.v * 1.5) {
+          add({ type: 'mismatch', chapter: 'conversion', cut: cutKey, slice: biggest.r.name, metric: 'convRate',
+            weight: 1.25, direction: 'opportunity',
+            effect: (best.v - biggest.v) / biggest.v, base: biggest.r.buyers, baseKind: 'buyers', imp: biggest.r.impressions,
+            v: { weak: biggest.r, weakRate: biggest.v, strong: best.r, strongRate: best.v, rows: cut.rows },
+            chart: { k: 'bars', cut: cutKey, metric: 'convRate' } });
+        }
+      }
+    }
+  });
+
+  /* -- funnel drop -- */
+  if (c.funnel && c.funnel.length > 2) {
+    let worst = null;
+    for (let i = 1; i < c.funnel.length - 1; i++) {
+      const drop = 1 - c.funnel[i].value / c.funnel[i - 1].value;
+      if (!worst || drop > worst.drop) worst = { drop, from: c.funnel[i - 1], to: c.funnel[i] };
+    }
+    if (worst && worst.drop > 0.15) {
+      add({ type: 'funnel_drop', chapter: 'delivery', weight: 0.95, direction: 'down',
+        effect: worst.drop, base: worst.to.value, baseKind: 'shoppers',
+        v: worst, chart: { k: 'funnel' } });
+    }
+  }
+
+  /* -- category benchmarks -- */
+  if (c.T.ecomShare != null) {
+    const d = c.T.ecomShare - c.T.catEcomShare;
+    add({ type: 'ecom', chapter: 'shoppers', weight: 0.9, direction: d > 0 ? 'up' : 'down',
+      effect: Math.abs(d) / c.T.catEcomShare, base: c.T.buyers, baseKind: 'buyers',
+      v: { share: c.T.ecomShare, cat: c.T.catEcomShare, d }, chart: { k: 'donut2' } });
+  }
+  if (c.profile) {
+    Object.keys(c.profile).forEach(attr => {
+      const p = c.profile[attr];
+      const items = p.names.map((n, i) => ({ n, share: p.campaign[i], d: p.campaign[i] - p.category[i] }));
+      const up = items.slice().sort((a, b) => b.d - a.d)[0];
+      cells += items.length;
+      add({ type: 'profile', chapter: 'shoppers', cut: attr, slice: up.n, weight: 0.85, direction: 'up',
+        effect: Math.abs(up.d) / Math.max(1, up.share - up.d), base: c.T.buyers, baseKind: 'buyers',
+        v: { up, items, attr, label: p.label }, chart: { k: 'pie2', attribute: attr } });
+    });
+  }
+
+  /* -- timing -- */
+  if (c.ttp && c.T.medTTP != null) {
+    const early = c.ttp.values.slice(0, 3).reduce((s, v) => s + v, 0);
+    add({ type: 'timing', chapter: 'shoppers', weight: 0.75, direction: 'up',
+      effect: early / 100, base: c.T.buyers, baseKind: 'buyers',
+      v: { med: c.T.medTTP, avg: c.T.avgTTP, early, windowDays: c.windowDays }, chart: { k: 'hist' } });
+  }
+
+  /* -- data quality -- */
+  (c.quality || []).forEach(q => {
+    if (q.floor != null && q.value < q.floor) {
+      add({ type: 'quality_low', chapter: 'method', slice: q.name, weight: 1.1, direction: 'down',
+        effect: (q.floor - q.value) / q.floor, base: c.T.buyers, baseKind: 'buyers',
+        v: q, chart: { k: 'quality' } });
+    }
+  });
+
+  /* -- maturity: always raised, never dropped -- */
+  const open = c.daily.sales.length - c.daily.maturedTo;
+  add({ type: 'maturity', chapter: 'method', weight: 1.4, direction: 'caveat', always: true,
+    effect: open / c.daily.sales.length, base: c.T.buyers, baseKind: 'buyers',
+    v: { open, closes: c.windowCloses, windowDays: c.windowDays, maturity: c.maturity },
+    chart: { k: 'daily', series: 'sales' } });
+
+  // one concentration story per breakdown — the strongest one
+  const bestConc = {};
+  out.forEach(f => {
+    if (f.type !== 'concentration') return;
+    const k = f.cut;
+    if (!bestConc[k] || f.v.share > bestConc[k].v.share) bestConc[k] = f;
+  });
+  const trimmed = out.filter(f => f.type !== 'concentration' || bestConc[f.cut] === f);
+  trimmed.forEach(f => { f.cells = cells; });
+  return { findings: trimmed, cells };
+}
+
+function chapterFor(cutKey, mk) {
+  if (mk === 'ctr' || mk === 'impressions') return 'delivery';
+  if (mk === 'convRate') return 'conversion';
+  if (cutKey === 'channel' || cutKey === 'banner') return 'shoppers';
+  return 'commerce';
+}
+function weightFor(cutKey, mk) {
+  const cw = { segment: 1.15, placement: 1.0, creative: 0.95, product: 0.9, banner: 0.8, channel: 0.85 }[cutKey] || 0.8;
+  const mw = { convRate: 1.2, sales: 1.1, cpBuyer: 1.05, salesPerK: 1.0, buyers: 1.0, ctr: 0.9, salesPerBuyer: 0.8, avgTxn: 0.7, impressions: 0.6 }[mk] || 0.8;
+  return cw * mw;
+}
+
+/* ==================================================================
+   SKEPTIC — try to kill each finding
+================================================================== */
+const MIN_BUYERS = 400;
+const MIN_IMPRESSIONS = 250000;
+
+function skeptic(findings, c) {
+  const T = c.T;
+  // threshold grows with how many cells we looked at: more looks, bigger gap required
+  const cells = findings.length ? findings[0].cells : 1;
+  // the more slices we look at, the further clear of the pack a leader must be
+  const mcThreshold = 0.10 + 0.02 * Math.log2(Math.max(2, cells));
+
+  findings.forEach(f => {
+    f.rejections = []; f.caveats = [];
+
+    if (f.always) { f.kept = true; return; }
+
+    // 1. base size
+    if (['outlier_high', 'outlier_low', 'concentration', 'mismatch'].includes(f.type)) {
+      if (f.baseKind === 'buyers' && f.base != null && f.base < MIN_BUYERS) {
+        f.rejections.push({ rule: 'Base too small', why: `Only ${F.int(f.base)} attributed buyers behind this slice — under the ${F.int(MIN_BUYERS)} we need before calling a difference real.` });
+      }
+      if (f.imp != null && f.imp < MIN_IMPRESSIONS) {
+        f.rejections.push({ rule: 'Base too small', why: `Only ${F.compact(f.imp)} impressions on this slice — under the ${F.compact(MIN_IMPRESSIONS)} minimum.` });
+      }
+    }
+
+    // 2. is it actually clear of the pack? (and we looked at a lot of slices)
+    if (['outlier_high', 'outlier_low'].includes(f.type)) {
+      if (f.separation == null || f.separation < mcThreshold) {
+        f.rejections.push({
+          rule: 'Too close to call',
+          why: `${shortName(f.slice)} sits only ${((f.separation || 0) * 100).toFixed(0)}% clear of the next ${(c.cuts[f.cut] || {}).noun || 'slice'} (${shortName(f.runnerUp || '')}). Across ${cells} slices examined, a leader needs to be ${(mcThreshold * 100).toFixed(0)}% clear before we call it a difference.`
+        });
+      }
+    }
+
+    // 3. provenance
+    if (c.provenance === 'partner') {
+      const m = f.metric && METRICS[f.metric];
+      if ((m && m.needs === 'shopper') || ['mismatch', 'profile', 'ecom', 'timing', 'bench'].includes(f.type)) {
+        if (!(f.type === 'bench' && f.metric === 'ctr')) {
+          f.rejections.push({ rule: 'Partner-reported', why: 'This needs shopper-level detail. The partner returns totals only, so the number cannot be stood behind.' });
+        }
+      }
+    }
+
+    // 4. missing plan inputs
+    if (['plan_delivery', 'plan_cpm'].includes(f.type) && !c.hasPlan) {
+      f.rejections.push({ rule: 'Input missing', why: 'No planned spend or impressions were supplied for this campaign.' });
+    }
+
+    // 5. maturity — a caveat, never a kill
+    if (['outlier_high', 'outlier_low', 'concentration', 'mismatch', 'bench'].includes(f.type) && c.daily.maturedTo < c.daily.sales.length) {
+      const open = c.daily.sales.length - c.daily.maturedTo;
+      f.caveats.push(`The ${c.windowDays}-day window is still open on the last ${open} days, so this figure can still rise.`);
+    }
+    if (f.type === 'profile' || f.type === 'ecom') {
+      f.caveats.push('Compared with category buyers over the same period, on the same definition.');
+    }
+    if (f.type === 'mismatch') {
+      f.caveats.push('The reallocation figure assumes the stronger audience holds its rate on extra budget. It is smaller than this audience\'s current reach, so that is reasonable — but it is an estimate, not a promise.');
+    }
+
+    f.kept = f.rejections.length === 0;
+  });
+
+  findings.forEach(f => {
+    const reliability = f.baseKind === 'buyers' && f.base
+      ? Math.min(1, Math.log10(Math.max(10, f.base)) / Math.log10(5000))
+      : 0.9;
+    f.reliability = reliability;
+    f.score = f.effect * reliability * f.weight;
+  });
+
+  return { mcThreshold, cells };
+}
+
+/* ==================================================================
+   EXPLAINER + ADVISOR — wording and the recommendation
+================================================================== */
+function describe(f, c, goal) {
+  const T = c.T;
+  const m = f.metric && METRICS[f.metric];
+  f.measureLabel = m ? m.short : null;
+  const cut = f.cut && c.cuts[f.cut];
+  const noun = cut ? cut.noun : 'line';
+  const firm = goal === 'renewal' ? 'We recommend' : goal === 'budget' ? 'We would push for' : 'Worth considering';
+
+  switch (f.type) {
+    case 'plan_delivery': {
+      const up = f.v.mult >= 1;
+      f.title = up ? 'We delivered more than we sold' : 'Delivery came in under plan';
+      f.sentence = `The campaign delivered <b>${F.compact(f.v.actual)}</b> impressions against a planned <b>${F.compact(f.v.planned)}</b> — <b>${F.x(f.v.mult)}</b> the booked volume at no extra cost.`;
+      f.reco = up
+        ? `${firm} holding the same budget next flight: the over-delivery is free reach we can show on the plan.`
+        : `${firm} checking inventory availability before committing the same volume again.`;
+      f.stat = { v: F.x(f.v.mult), l: 'impressions against plan' };
+      return f;
+    }
+    case 'plan_cpm': {
+      const cheaper = f.v.eff <= 1;
+      f.title = cheaper ? 'Cheaper per thousand than planned' : 'More expensive per thousand than planned';
+      f.sentence = `The effective CPM was <b>${F.money2(f.v.cpm)}</b> against <b>${F.money2(f.v.est)}</b> planned — <b>${Math.round(Math.abs(1 - f.v.eff) * 100)}%</b> ${cheaper ? 'cheaper' : 'dearer'} per thousand ads.`;
+      f.reco = cheaper
+        ? `${firm} reinvesting the saving rather than cutting the budget — the same money buys more reach than the plan assumed.`
+        : `${firm} revisiting the floor price on this inventory before the next flight.`;
+      f.stat = { v: F.money2(f.v.cpm), l: `CPM · ${F.money2(f.v.est)} planned` };
+      return f;
+    }
+    case 'bench': {
+      const k = f.metric, b = f.v;
+      const name = { ctr: 'Click-through rate', convRate: 'Conversion rate', cpBuyer: 'Cost per buyer', repeatRate: 'Repeat purchase' }[k];
+      const fmt = k === 'cpBuyer' ? F.money2 : (k === 'ctr' ? F.pct2 : F.pct3);
+      f.title = `${name} ${b.better ? 'ahead of' : 'behind'} comparable campaigns`;
+      f.sentence = `${name} came in at <b>${fmt(b.actual)}</b> against <b>${fmt(b.bench)}</b> across comparable campaigns — <b>${Math.round(Math.abs(b.actual - b.bench) / b.bench * 100)}%</b> ${b.better ? 'better' : 'worse'}.`;
+      f.reco = b.better
+        ? `${firm} using this as the benchmark in the next brief rather than the category norm.`
+        : `${firm} looking at targeting and creative together before repeating this set-up.`;
+      f.stat = { v: fmt(b.actual), l: `${name.toLowerCase()} · ${fmt(b.bench)} benchmark` };
+      return f;
+    }
+    case 'outlier_high': {
+      f.title = `${shortName(f.slice)} is the strongest ${noun}`;
+      f.sentence = `The <b>${shortName(f.slice).toLowerCase()}</b> ${noun} reached <b>${m.fmt(f.v.value)}</b> on ${m.label} against a campaign average of <b>${m.fmt(f.v.ref)}</b> — <b>${F.x(f.v.value / f.v.ref)}</b> the average.`;
+      f.reco = `${firm} weighting the next flight towards ${shortName(f.slice).toLowerCase()} and briefing more inventory against it.`;
+      f.stat = { v: m.fmt(f.v.value), l: `${shortName(f.slice).toLowerCase()} · ${m.label}` };
+      return f;
+    }
+    case 'outlier_low': {
+      f.title = `${shortName(f.slice)} is the weakest ${noun}`;
+      f.sentence = `The <b>${shortName(f.slice).toLowerCase()}</b> ${noun} came in at <b>${m.fmt(f.v.value)}</b> on ${m.label} against a campaign average of <b>${m.fmt(f.v.ref)}</b>.`;
+      f.reco = `${firm} either reworking this ${noun} or moving its share of the budget to the ${noun}s that are carrying the campaign.`;
+      f.stat = { v: m.fmt(f.v.value), l: `${shortName(f.slice).toLowerCase()} · ${m.label}` };
+      return f;
+    }
+    case 'concentration': {
+      f.title = `${shortName(f.slice)} carries the campaign`;
+      f.sentence = `<b>${shortName(f.slice)}</b> accounts for <b>${F.pct1(f.v.share)}</b> of ${m.label} on its own, out of ${f.v.n} ${noun}s.`;
+      f.reco = `${firm} treating this as a dependency as much as a strength — one ${noun} carrying ${F.pct1(f.v.share)} is a risk if it saturates.`;
+      f.stat = { v: F.pct1(f.v.share), l: `${shortName(f.slice).toLowerCase()} share of ${m.label}` };
+      return f;
+    }
+    case 'mismatch': {
+      const weakSpend = spendOf(f.v.weak, T), strongSpend = spendOf(f.v.strong, T);
+      const weakEff = f.v.weak.buyers / weakSpend;     // buyers per €
+      const strongEff = f.v.strong.buyers / strongSpend;
+      const moveShare = 0.3;
+      const moved = weakSpend * moveShare;
+      const gained = Math.round(moved * (strongEff - weakEff));
+      const gainedSales = Math.round(gained * f.v.strong.salesPerBuyer);
+      f.opportunity = { moved, gained, gainedSales, weakSpend, strongSpend, moveShare };
+      f.title = 'The biggest audience is the weakest one';
+      f.sentence = `<b>${shortName(f.v.weak.name)}</b> was the largest audience at <b>${F.compact(f.v.weak.exposable)}</b> shoppers but converted at <b>${F.pct3(f.v.weakRate)}</b>, while <b>${shortName(f.v.strong.name).toLowerCase()}</b> converted at <b>${F.pct3(f.v.strongRate)}</b> from <b>${F.compact(f.v.strong.exposable)}</b>.`;
+      f.reco = `${firm} moving <b>${Math.round(moveShare * 100)}%</b> of the ${shortName(f.v.weak.name).toLowerCase()} budget — about <b>${F.money(moved)}</b> — into ${shortName(f.v.strong.name).toLowerCase()}. At the rates both audiences actually achieved, that is roughly <b>${F.int(gained)} more buyers</b> and <b>${F.moneyC(gainedSales)}</b> of attributed sales for the same total spend.`;
+      f.stat = { v: '+' + F.int(gained), l: 'buyers if the budget moved' };
+      return f;
+    }
+    case 'funnel_drop': {
+      f.title = `The audience thins between ${f.v.from.name.replace(' Shoppers', '').toLowerCase()} and ${f.v.to.name.replace(' Shoppers', '').toLowerCase()}`;
+      f.sentence = `<b>${F.pct1(f.v.drop * 100)}</b> of the audience is lost between <b>${f.v.from.name}</b> (${F.compact(f.v.from.value)}) and <b>${f.v.to.name}</b> (${F.compact(f.v.to.value)}) — the largest drop in the funnel.`;
+      f.reco = `${firm} looking at this step first: recovering even a tenth of it is cheaper than buying the equivalent reach.`;
+      f.stat = { v: '−' + F.pct1(f.v.drop * 100), l: `lost before ${f.v.to.name.replace(' Shoppers', '').toLowerCase()}` };
+      return f;
+    }
+    case 'ecom': {
+      const up = f.v.d > 0;
+      f.title = up ? 'A visible lift in online share' : 'Online share below the category';
+      f.sentence = `E-commerce took <b>${F.pct1(f.v.share)}</b> of attributed sales against <b>${F.pct1(f.v.cat)}</b> for the category over the same period — <b>${F.pts(f.v.d)}</b>.`;
+      f.reco = up
+        ? `${firm} pairing the next flight with the online slot, since that is where the campaign moved share.`
+        : `${firm} testing an online-weighted flight, since the campaign did not shift the channel mix.`;
+      f.stat = { v: F.pts(f.v.d), l: 'e-commerce share vs category' };
+      return f;
+    }
+    case 'profile': {
+      f.title = `Buyers skew ${f.v.up.n.toLowerCase()}`;
+      f.sentence = `<b>${f.v.up.n}</b> make up <b>${f.v.up.share}%</b> of campaign buyers against <b>${f.v.up.share - f.v.up.d}%</b> of category buyers — <b>${F.pts(f.v.up.d)}</b> on ${f.v.label.toLowerCase()}.`;
+      f.reco = `${firm} building the next audience around ${f.v.up.n.toLowerCase()} rather than the whole category.`;
+      f.stat = { v: F.pts(f.v.up.d), l: `${f.v.up.n.toLowerCase()} against the category` };
+      return f;
+    }
+    case 'timing': {
+      f.title = 'Most buying happens in the first three days';
+      f.sentence = `Half of attributed purchases land within <b>${F.hours(f.v.med)}</b> of exposure and <b>${f.v.early}%</b> within three days, against a <b>${f.v.windowDays}-day</b> window.`;
+      f.reco = `${firm} concentrating weight in the first days of a flight, where the response actually is.`;
+      f.stat = { v: F.hours(f.v.med), l: 'median time to purchase' };
+      return f;
+    }
+    case 'quality_low': {
+      f.title = `${f.v.name} is below our floor`;
+      f.sentence = `${f.v.name} came in at <b>${f.v.value}${f.v.unit}</b> against a floor of <b>${f.v.floor}${f.v.unit}</b>.`;
+      f.reco = `Flag this before the result is presented — it affects how much of the campaign we can stand behind.`;
+      f.stat = { v: f.v.value + f.v.unit, l: f.v.name.toLowerCase() };
+      return f;
+    }
+    case 'maturity': {
+      f.title = 'This read is not finished yet';
+      f.sentence = `The ${f.v.windowDays}-day window is still open on the last <b>${f.v.open} days</b> and closes on <b>${f.v.closes}</b>. Every figure here is a floor, not a verdict.`;
+      f.reco = `Present these numbers as ${f.v.maturity.toLowerCase()}, and agree now to re-issue the report once the window closes.`;
+      f.stat = { v: f.v.open + ' wks', l: 'still inside the window' };
+      return f;
+    }
+  }
+  f.title = 'Finding'; f.sentence = ''; f.reco = '';
+  return f;
+}
+
+/* ==================================================================
+   EDITOR — select, de-duplicate, order, headline
+================================================================== */
+const GOALS = {
+  renewal: {
+    label: 'Renewal pitch',
+    hint: 'Lead with what worked. One clear opportunity. Close on the ask.',
+    boost: f => (f.direction === 'up' ? 1.45 : f.direction === 'opportunity' ? 1.25 : f.type === 'quality_low' ? 0.5 : 0.6),
+    minDown: 0, wantOpportunity: true,
+    lead: picked => picked.find(f => f.direction === 'up' && f.chapter !== 'method')
+  },
+  honest: {
+    label: 'Honest review',
+    hint: 'Balanced. What did not work is in, at full weight, including data quality.',
+    boost: f => (f.type === 'quality_low' ? 1.5 : 1),
+    minDown: 2, wantOpportunity: true,
+    lead: picked => picked.find(f => f.direction === 'opportunity') || picked.find(f => f.direction === 'down')
+  },
+  budget: {
+    label: 'Ask for more budget',
+    hint: 'Lead with headroom and the money left on the table.',
+    boost: f => (f.direction === 'opportunity' ? 1.9 : f.type === 'funnel_drop' ? 1.55 : f.direction === 'down' ? 1.15 : 0.9),
+    minDown: 1, wantOpportunity: true,
+    lead: picked => picked.find(f => f.direction === 'opportunity') || picked.find(f => f.type === 'funnel_drop')
+  }
+};
+
+function editor(findings, c, goal, maxSlides) {
+  const g = GOALS[goal];
+  const kept = findings.filter(f => f.kept);
+  kept.forEach(f => { f.goalScore = f.score * g.boost(f); });
+
+  const order = ['delivery', 'conversion', 'commerce', 'shoppers', 'method'];
+  const picked = [];
+  const usedSlices = new Set();
+  const usedTypes = {};
+
+  // maturity always travels with the deck
+  const maturity = kept.find(f => f.type === 'maturity');
+
+  const pool = kept.filter(f => f.type !== 'maturity').sort((a, b) => b.goalScore - a.goalScore);
+
+  for (const f of pool) {
+    if (picked.length >= maxSlides - 1) break;
+    const sliceKey = (f.cut || '') + '|' + (f.slice || '');
+    if (f.slice && usedSlices.has(sliceKey)) { f.dropped = 'Already covered by another finding about the same slice.'; continue; }
+    const tcount = usedTypes[f.type] || 0;
+    if (tcount >= (f.type === 'outlier_high' || f.type === 'outlier_low' ? 2 : 1)) { f.dropped = 'The story already makes this point.'; continue; }
+    const chCount = picked.filter(p => p.chapter === f.chapter).length;
+    if (chCount >= 3) { f.dropped = 'Enough already said in this chapter.'; continue; }
+    picked.push(f); usedSlices.add(sliceKey); usedTypes[f.type] = tcount + 1;
+  }
+
+  // the opportunity always travels — it is the recommendation the deck exists for
+  if (g.wantOpportunity && !picked.some(p => p.direction === 'opportunity')) {
+    const opp = pool.find(f => f.direction === 'opportunity' && !picked.includes(f));
+    if (opp) { opp.forced = 'Kept because every story needs one thing to do next.'; opp.dropped = null; picked.push(opp); }
+  }
+  // the honest minimum of genuinely negative findings
+  const downs = picked.filter(p => p.direction === 'down');
+  if (downs.length < g.minDown) {
+    const extra = pool.filter(f => !picked.includes(f) && f.direction === 'down')
+      .sort((a, b) => b.score - a.score).slice(0, g.minDown - downs.length);
+    extra.forEach(f => { f.forced = 'Kept so the report is not only good news.'; f.dropped = null; picked.push(f); });
+  }
+
+  if (maturity) picked.push(maturity);
+  picked.sort((a, b) => order.indexOf(a.chapter) - order.indexOf(b.chapter) || b.goalScore - a.goalScore);
+
+  // the goal decides what the reader meets first
+  const lead = g.lead(picked);
+  if (lead) {
+    const i = picked.indexOf(lead);
+    if (i > 0) { picked.splice(i, 1); picked.unshift(lead); lead.isLead = true; }
+    else if (i === 0) lead.isLead = true;
+  }
+  picked.forEach((f, i) => { f.slideNo = i + 1; f.selected = true; });
+
+  // headline
+  const T = c.T;
+  const opp = picked.find(f => f.direction === 'opportunity');
+  let headline;
+  if (goal === 'budget' && opp && opp.opportunity) {
+    headline = `The same budget, spent where it worked, was worth about ${F.int(opp.opportunity.gained)} more buyers`;
+  } else if (goal === 'honest') {
+    headline = `${F.moneyC(T.sales)} of attributed sales on ${F.money(T.spend)} of media — concentrated in two of ${c.cuts.segment ? c.cuts.segment.rows.length : 4} audiences`;
+  } else {
+    headline = `Every €1 of media is linked to ${F.money2(T.roas)} of Aurelia sales at Nordmark`;
+  }
+  return { picked, headline, goal: g };
+}
+
+/* ==================================================================
+   RUN — the whole pipeline
+================================================================== */
+function runEngine(c, goal, maxSlides) {
+  const t0 = performance.now ? performance.now() : 0;
+  const { findings, cells } = scout(c);
+  const sk = skeptic(findings, c);
+  findings.forEach(f => describe(f, c, goal));
+  const ed = editor(findings, c, goal, maxSlides || 9);
+  const t1 = performance.now ? performance.now() : 0;
+  return {
+    all: findings,
+    kept: findings.filter(f => f.kept),
+    rejected: findings.filter(f => !f.kept),
+    dropped: findings.filter(f => f.kept && !f.selected),
+    story: ed.picked,
+    headline: ed.headline,
+    goal: ed.goal,
+    stats: { cells, scanned: findings.length, kept: findings.filter(f => f.kept).length, used: ed.picked.length, threshold: sk.mcThreshold, ms: Math.max(1, Math.round(t1 - t0)) }
+  };
+}
+
+/* ==================================================================
+   THE DATA MODEL
+   One fact table at the finest grain. Every number on every screen is
+   aggregated from it, so filters and drill-downs are real.
+   Fictional data, deterministic (seeded), internally consistent.
+================================================================== */
+
+function mulberry32(a) {
+  return function () {
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    let t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+const rnd = mulberry32(20261001);
+const jitter = (v, pct) => v * (1 + (rnd() - 0.5) * 2 * pct);
+
+/* ---------- dimensions ---------- */
+const PROGRAM = { id: 'autumn26', name: 'Aurelia Foods · Autumn 2026', advertiser: 'Aurelia Foods', retailer: 'Nordmark', budget: 240000 };
+
+const WEEKS = [];
+(function () {
+  const start = new Date(Date.UTC(2026, 7, 17));           // Mon 17 Aug 2026
+  for (let i = 0; i < 13; i++) {
+    const d = new Date(start.getTime() + i * 7 * 864e5);
+    WEEKS.push({ id: 'w' + (33 + i), idx: i, start: d, label: d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) });
+  }
+})();
+const weekById = id => WEEKS.find(w => w.id === id);
+
+const PRODUCTS = [
+  { id: 'u1', name: 'Oat & Honey Granola 500g', brand: 'Aurelia', cat: 'Breakfast cereals', upc: '5012345 100018', price: 4.20 },
+  { id: 'u2', name: 'Nut Crunch Granola 500g', brand: 'Aurelia', cat: 'Breakfast cereals', upc: '5012345 100025', price: 4.60 },
+  { id: 'u3', name: 'Berry Granola 400g', brand: 'Aurelia', cat: 'Breakfast cereals', upc: '5012345 100032', price: 3.95 },
+  { id: 'u4', name: 'Protein Granola 400g', brand: 'Aurelia', cat: 'Breakfast cereals', upc: '5012345 100049', price: 5.10 },
+  { id: 'u5', name: 'Muesli Classic 750g', brand: 'Aurelia', cat: 'Breakfast cereals', upc: '5012345 100056', price: 3.60 },
+  { id: 'u6', name: 'Granola Bar Multipack', brand: 'Aurelia', cat: 'Snacking', upc: '5012345 100063', price: 2.80 },
+  { id: 'u7', name: 'Porridge Oats 1kg', brand: 'Aurelia', cat: 'Hot cereals', upc: '5012345 100070', price: 2.40 }
+];
+
+const SEGMENTS = [
+  { id: 's1', name: 'Breakfast cereal buyers', size: 3300000, lift: 0.55 },
+  { id: 's2', name: 'Health-snack buyers', size: 537000, lift: 3.10 },
+  { id: 's3', name: 'Premium breakfast buyers', size: 477000, lift: 1.85 },
+  { id: 's4', name: 'Porridge / yoghurt buyers', size: 505000, lift: 0.75 }
+];
+const BANNERS = [
+  { id: 'b1', name: 'Nordmark Hyper', w: 0.47, lift: 1.00 },
+  { id: 'b2', name: 'Nordmark City', w: 0.35, lift: 0.97 },
+  { id: 'b3', name: 'Nordmark Online', w: 0.18, lift: 1.06 }
+];
+const CHANNELS = [
+  { id: 'c1', name: 'Hypermarket', w: 0.59 },
+  { id: 'c2', name: 'Supermarket', w: 0.34 },
+  { id: 'c3', name: 'E-commerce', w: 0.07 }
+];
+
+/* ---------- campaign → ad group → ad ---------- */
+const CAMPAIGN_DEFS = [
+  {
+    id: 'cm1', name: 'Granola launch — Onsite', kind: 'Onsite sponsored products', provenance: 'measured',
+    from: 'w37', to: 'w41', windowDays: 14, spend: 33600, plannedSpend: 33540, plannedImpressions: 7800000,
+    state: 'live', products: ['u1', 'u2', 'u3', 'u4'], convBase: 0.00160, note: 'Launch of the new granola range across all banners.',
+    adgroups: [
+      { id: 'g1', name: 'Cereal buyers — search', segment: 's1', placement: 'Search · sponsored', ctrLift: 1.55, share: 0.38,
+        ads: [{ id: 'a1', name: 'Pack shot + price', creative: 'Pack shot + price', w: 0.58 }, { id: 'a2', name: 'Lifestyle breakfast', creative: 'Lifestyle breakfast', w: 0.42 }] },
+      { id: 'g2', name: 'Health-snack — search', segment: 's2', placement: 'Search · sponsored', ctrLift: 1.60, share: 0.22,
+        ads: [{ id: 'a3', name: 'Ingredient close-up', creative: 'Ingredient close-up', w: 0.62 }, { id: 'a4', name: 'Recipe video', creative: 'Recipe video', w: 0.38 }] },
+      { id: 'g3', name: 'Premium — category banner', segment: 's3', placement: 'Category banner', ctrLift: 0.92, share: 0.22,
+        ads: [{ id: 'a5', name: 'Pack shot + price', creative: 'Pack shot + price', w: 0.55 }, { id: 'a6', name: 'Lifestyle breakfast', creative: 'Lifestyle breakfast', w: 0.45 }] },
+      { id: 'g4', name: 'Porridge — home carousel', segment: 's4', placement: 'Home carousel', ctrLift: 1.05, share: 0.18,
+        ads: [{ id: 'a7', name: 'Lifestyle breakfast', creative: 'Lifestyle breakfast', w: 0.6 }, { id: 'a8', name: 'Ingredient close-up', creative: 'Ingredient close-up', w: 0.4 }] }
+    ]
+  },
+  {
+    id: 'cm2', name: 'Granola launch — Meta', kind: 'Walled garden · Meta', provenance: 'partner',
+    from: 'w37', to: 'w41', windowDays: 14, spend: 35000, plannedSpend: 35000, plannedImpressions: 6000000,
+    state: 'live', products: ['u1', 'u2', 'u3', 'u4'], convBase: 0.00190, note: 'Offsite reach campaign. The partner returns totals only.',
+    adgroups: [
+      { id: 'g5', name: 'Feed — broad', segment: 's1', placement: 'Feed', ctrLift: 2.2, share: 0.55,
+        ads: [{ id: 'a9', name: 'Pack shot + price', creative: 'Pack shot + price', w: 0.6 }, { id: 'a10', name: 'Lifestyle breakfast', creative: 'Lifestyle breakfast', w: 0.4 }] },
+      { id: 'g6', name: 'Reels — younger', segment: 's2', placement: 'Reels', ctrLift: 2.4, share: 0.30,
+        ads: [{ id: 'a11', name: 'Recipe video', creative: 'Recipe video', w: 1 }] },
+      { id: 'g7', name: 'Stories', segment: 's3', placement: 'Stories', ctrLift: 2.1, share: 0.15,
+        ads: [{ id: 'a12', name: 'Lifestyle breakfast', creative: 'Lifestyle breakfast', w: 1 }] }
+    ]
+  },
+  {
+    id: 'cm3', name: 'Back-to-school snacks — Email', kind: 'Email · shopper-level', provenance: 'measured',
+    from: 'w36', to: 'w37', windowDays: 14, spend: 12500, plannedSpend: 12500, plannedImpressions: 420000,
+    state: 'final', products: ['u6', 'u1'], convBase: 0.02100, note: 'Two-week email push on snacking before term start.',
+    adgroups: [
+      { id: 'g8', name: 'Families — newsletter', segment: 's1', placement: 'Email · newsletter', ctrLift: 1.45, share: 0.62,
+        ads: [{ id: 'a13', name: 'Lunchbox hero', creative: 'Lunchbox hero', w: 1 }] },
+      { id: 'g9', name: 'Health-snack — triggered', segment: 's2', placement: 'Email · triggered', ctrLift: 1.85, share: 0.38,
+        ads: [{ id: 'a14', name: 'Ingredient close-up', creative: 'Ingredient close-up', w: 1 }] }
+    ]
+  },
+  {
+    id: 'cm4', name: 'Breakfast range — Onsite display', kind: 'Onsite display', provenance: 'measured',
+    from: 'w34', to: 'w36', windowDays: 14, spend: 18400, plannedSpend: 20000, plannedImpressions: 5200000,
+    state: 'final', products: ['u1', 'u2', 'u5'], convBase: 0.00190, note: 'Always-on range support before the launch.',
+    adgroups: [
+      { id: 'g10', name: 'Cereal buyers — banner', segment: 's1', placement: 'Category banner', ctrLift: 0.85, share: 0.6,
+        ads: [{ id: 'a15', name: 'Pack shot + price', creative: 'Pack shot + price', w: 1 }] },
+      { id: 'g11', name: 'Premium — home', segment: 's3', placement: 'Home carousel', ctrLift: 1.0, share: 0.4,
+        ads: [{ id: 'a16', name: 'Lifestyle breakfast', creative: 'Lifestyle breakfast', w: 1 }] }
+    ]
+  },
+  {
+    id: 'cm5', name: 'Porridge winter — Onsite', kind: 'Onsite sponsored products', provenance: 'measured',
+    from: 'w39', to: 'w42', windowDays: 14, spend: 21000, plannedSpend: 22000, plannedImpressions: 4600000,
+    state: 'live', products: ['u7', 'u5'], convBase: 0.00300, note: 'Seasonal switch into hot cereals.',
+    adgroups: [
+      { id: 'g12', name: 'Porridge buyers — search', segment: 's4', placement: 'Search · sponsored', ctrLift: 1.4, share: 0.58,
+        ads: [{ id: 'a17', name: 'Pack shot + price', creative: 'Pack shot + price', w: 1 }] },
+      { id: 'g13', name: 'Cereal switchers — banner', segment: 's1', placement: 'Category banner', ctrLift: 0.9, share: 0.42,
+        ads: [{ id: 'a18', name: 'Ingredient close-up', creative: 'Ingredient close-up', w: 1 }] }
+    ]
+  },
+  {
+    id: 'cm6', name: 'Christmas baking — Onsite', kind: 'Onsite sponsored products', provenance: 'measured',
+    from: 'w45', to: 'w48', windowDays: 14, spend: 0, plannedSpend: 55000, plannedImpressions: 11000000,
+    state: 'planned', products: ['u1', 'u2', 'u5'], note: 'Measurement rules fixed. No data until it launches.',
+    adgroups: []
+  }
+];
+
+/* ---------- generate the fact table ---------- */
+const FACTS = [];
+(function build() {
+  CAMPAIGN_DEFS.forEach(cm => {
+    if (cm.state === 'planned') return;
+    const wFrom = weekById(cm.from).idx, wTo = weekById(cm.to).idx;
+    const nWeeks = wTo - wFrom + 1;
+    const totalImp = cm.plannedImpressions * (cm.id === 'cm1' ? 1.79 : cm.id === 'cm4' ? 0.92 : cm.id === 'cm2' ? 1.03 : 1.05);
+    cm.adgroups.forEach(g => {
+      const seg = SEGMENTS.find(s => s.id === g.segment);
+      g.ads.forEach(ad => {
+        for (let wi = wFrom; wi <= wTo; wi++) {
+          // weekly delivery curve: ramp up, peak, taper
+          const t = (wi - wFrom) / Math.max(1, nWeeks - 1);
+          const curve = 0.6 + 0.8 * Math.sin(Math.PI * Math.min(1, t * 1.15));
+          BANNERS.forEach(b => {
+            cm.products.forEach(pid => {
+              const prod = PRODUCTS.find(p => p.id === pid);
+              const prodW = 1 / cm.products.length * (pid === cm.products[0] ? 1.7 : pid === cm.products[1] ? 1.1 : 0.7);
+              const imp = Math.round(jitter(totalImp * g.share * ad.w * b.w * prodW * curve / nWeeks, 0.12));
+              if (imp < 200) return;
+              const ctrBase = cm.provenance === 'partner' ? 0.0063 : (cm.id === 'cm3' ? 0.055 : 0.0028);
+              const creativeLift = ad.creative === 'Recipe video' ? 1.55 : ad.creative === 'Lifestyle breakfast' ? 1.08 : ad.creative === 'Ingredient close-up' ? 1.02 : 0.93;
+              const clicks = Math.round(imp * jitter(ctrBase * g.ctrLift / 1.5 * creativeLift, 0.1));
+              const spend = cm.spend * (imp / totalImp);
+              // conversion: segment quality drives it, with a small creative effect
+              const convBase = cm.convBase;
+              const buyers = Math.max(0, Math.round(imp * jitter(convBase * seg.lift * b.lift * (ad.creative === 'Recipe video' ? 0.55 : 1), 0.15)));
+              if (buyers === 0) return;
+              const txns = Math.round(buyers * jitter(1.11, 0.03));
+              const units = Math.round(txns * jitter(1.10, 0.04));
+              const sales = +(units * prod.price * jitter(1, 0.05)).toFixed(2);
+              const raw = CHANNELS.map(ch => ch.id === 'c3' ? (b.id === 'b3' ? 0.46 : 0.02) : ch.w);
+              const rawSum = raw.reduce((a, x) => a + x, 0);
+              CHANNELS.forEach((ch, ci) => {
+                const chW = raw[ci] / rawSum;
+                const cb = Math.round(buyers * chW);
+                if (cb < 1) return;
+                FACTS.push({
+                  program: PROGRAM.id, campaign: cm.id, adgroup: g.id, ad: ad.id,
+                  placement: g.placement, banner: b.name, channel: ch.name,
+                  segment: seg.name, creative: ad.creative, product: prod.name, upc: prod.upc,
+                  category: prod.cat, week: WEEKS[wi].id,
+                  impressions: Math.round(imp * chW), clicks: Math.round(clicks * chW),
+                  spend: +(spend * chW).toFixed(2), buyers: cb,
+                  txns: Math.round(txns * chW), units: Math.round(units * chW),
+                  sales: +(sales * chW).toFixed(2)
+                });
+              });
+            });
+          });
+        }
+      });
+    });
+  });
+})();
+
+/* spend is booked at campaign level: scale the generated rows so each campaign sums to its real spend */
+(function normaliseSpend() {
+  CAMPAIGN_DEFS.forEach(cm => {
+    const rows = FACTS.filter(r => r.campaign === cm.id);
+    const got = rows.reduce((s, r) => s + r.spend, 0);
+    if (!got) return;
+    const k = cm.spend / got;
+    rows.forEach(r => { r.spend = +(r.spend * k).toFixed(4); });
+  });
+})();
+
+/* ---------- lookups ---------- */
+const CAMPAIGN_BY_ID = {}; CAMPAIGN_DEFS.forEach(c => CAMPAIGN_BY_ID[c.id] = c);
+const ADGROUPS = []; const ADS = [];
+CAMPAIGN_DEFS.forEach(c => c.adgroups.forEach(g => {
+  ADGROUPS.push(Object.assign({ campaign: c.id }, g));
+  g.ads.forEach(a => ADS.push(Object.assign({ campaign: c.id, adgroup: g.id }, a)));
+}));
+const nameOf = {
+  campaign: id => (CAMPAIGN_BY_ID[id] || {}).name || id,
+  adgroup: id => (ADGROUPS.find(g => g.id === id) || {}).name || id,
+  ad: id => (ADS.find(a => a.id === id) || {}).name || id
+};
+
+/* ---------- aggregation ---------- */
+const MEASURE_DEFS = {
+  impressions: { label: 'Impressions', fmt: v => F.compact(v), sum: true },
+  clicks:      { label: 'Clicks', fmt: v => F.compact(v), sum: true },
+  spend:       { label: 'Media spend', fmt: v => F.money(v), sum: true },
+  buyers:      { label: 'Attributed buyers', fmt: v => F.int(v), sum: true },
+  sales:       { label: 'Attributed sales', fmt: v => F.moneyC(v), sum: true },
+  txns:        { label: 'Attributed transactions', fmt: v => F.int(v), sum: true },
+  units:       { label: 'Attributed units', fmt: v => F.int(v), sum: true },
+  ctr:         { label: 'Click-through rate', fmt: v => F.pct2(v), derive: r => r.impressions ? r.clicks / r.impressions * 100 : null },
+  cpm:         { label: 'CPM', fmt: v => F.money2(v), derive: r => r.impressions ? r.spend / r.impressions * 1000 : null },
+  roas:        { label: 'Attributed ROAS', fmt: v => F.x(v), derive: r => r.spend ? r.sales / r.spend : null },
+  cpBuyer:     { label: 'Cost per buyer', fmt: v => F.money2(v), derive: r => r.buyers ? r.spend / r.buyers : null },
+  salesPerBuyer:{ label: 'Sales per buyer', fmt: v => F.money2(v), derive: r => r.buyers ? r.sales / r.buyers : null },
+  avgTxn:      { label: 'Average transaction', fmt: v => F.money2(v), derive: r => r.txns ? r.sales / r.txns : null },
+  unitsPerTxn: { label: 'Units per transaction', fmt: v => F.dec(v), derive: r => r.txns ? r.units / r.txns : null },
+  pricePerUnit:{ label: 'Price per unit', fmt: v => F.money2(v), derive: r => r.units ? r.sales / r.units : null }
+};
+const SUM_KEYS = ['impressions', 'clicks', 'spend', 'buyers', 'sales', 'txns', 'units'];
+
+function emptyAgg() { const o = {}; SUM_KEYS.forEach(k => o[k] = 0); return o; }
+function addInto(o, r) { SUM_KEYS.forEach(k => o[k] += r[k] || 0); return o; }
+function withDerived(o) {
+  Object.keys(MEASURE_DEFS).forEach(k => { const d = MEASURE_DEFS[k].derive; if (d) o[k] = d(o); });
+  return o;
+}
+
+function filterFacts(f) {
+  return FACTS.filter(r => {
+    if (f.campaigns && f.campaigns.length && !f.campaigns.includes(r.campaign)) return false;
+    if (f.adgroups && f.adgroups.length && !f.adgroups.includes(r.adgroup)) return false;
+    if (f.ads && f.ads.length && !f.ads.includes(r.ad)) return false;
+    if (f.weekFrom && weekById(r.week).idx < weekById(f.weekFrom).idx) return false;
+    if (f.weekTo && weekById(r.week).idx > weekById(f.weekTo).idx) return false;
+    if (f.dims) for (const k in f.dims) { const v = f.dims[k]; if (v && v.length && !v.includes(r[k])) return false; }
+    return true;
+  });
+}
+function total(rows) { return withDerived(rows.reduce((o, r) => addInto(o, r), emptyAgg())); }
+function groupBy(rows, key) {
+  const m = new Map();
+  rows.forEach(r => { const k = r[key]; if (!m.has(k)) m.set(k, emptyAgg()); addInto(m.get(k), r); });
+  return [...m.entries()].map(([k, v]) => Object.assign({ key: k, name: nameOf[key] ? nameOf[key](k) : k }, withDerived(v)));
+}
+function groupBy2(rows, keys) {
+  const m = new Map();
+  rows.forEach(r => {
+    const k = keys.map(x => r[x]).join('␟');
+    if (!m.has(k)) m.set(k, { _k: keys.map(x => r[x]), agg: emptyAgg() });
+    addInto(m.get(k).agg, r);
+  });
+  return [...m.values()].map(v => {
+    const o = withDerived(v.agg);
+    keys.forEach((x, i) => o[x] = nameOf[x] ? nameOf[x](v._k[i]) : v._k[i]);
+    o._raw = v._k;
+    return o;
+  });
+}
+
+const DIM_DEFS = [
+  { key: 'campaign', label: 'Campaign' }, { key: 'adgroup', label: 'Ad group' }, { key: 'ad', label: 'Ad' },
+  { key: 'segment', label: 'Audience segment' }, { key: 'placement', label: 'Placement' },
+  { key: 'banner', label: 'Retail banner' }, { key: 'channel', label: 'Purchase channel' },
+  { key: 'creative', label: 'Creative' }, { key: 'category', label: 'Product category' },
+  { key: 'product', label: 'Product' }, { key: 'upc', label: 'UPC' }, { key: 'week', label: 'Week' }
+];
+const HIERARCHY = ['campaign', 'adgroup', 'ad'];
+
+/* ==================================================================
+   DERIVE — build the shape the story engine expects, from the facts.
+   Nothing here invents a measure: everything is aggregated or declared.
+================================================================== */
+
+const BENCH = {
+  ctr:        { measured: 0.22, partner: 0.58, label: 'comparable campaigns' },
+  convRate:   { measured: 0.19, partner: 0.09, label: 'comparable campaigns' },
+  cpBuyer:    { measured: 3.40, partner: 7.80, label: 'comparable campaigns' },
+  repeatRate: { measured: 7.40, partner: null, label: 'comparable campaigns' }
+};
+
+/* a deterministic little helper for the things that live outside the fact table */
+function hashSeed(s) { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return (h >>> 0) / 4294967296; }
+
+function deriveCampaign(cmId, extraFilter) {
+  const def = CAMPAIGN_BY_ID[cmId];
+  const rows = filterFacts(Object.assign({ campaigns: [cmId] }, extraFilter || {}));
+  const T0 = total(rows);
+  const wFrom = weekById(def.from), wTo = weekById(def.to);
+  const today = weekById('w40');                       // "now" = week 40
+  const liveWeeks = WEEKS.filter(w => w.idx >= wFrom.idx && w.idx <= Math.min(wTo.idx, today.idx));
+  const seed = hashSeed(cmId);
+
+  /* ---- totals ---- */
+  const exposable = [...new Set(def.adgroups.map(g => g.segment))].reduce((s, id) => s + SEGMENTS.find(x => x.id === id).size, 0);
+  const reached = Math.round(T0.impressions / (def.provenance === 'partner' ? 2.1 : 9.3));
+  const T = Object.assign({}, T0, {
+    estImpressions: def.plannedImpressions,
+    estCpm: def.plannedSpend / def.plannedImpressions * 1000,
+    estSpend: def.plannedSpend,
+    exposable: Math.round(exposable),
+    exported: Math.round(exposable * 1.08),
+    targeted: Math.round(exposable),
+    exposed: def.provenance === 'partner' ? null : Math.round(reached * 1.08),
+    reached: reached,
+    frequency: T0.impressions / reached,
+    transactions: T0.txns,
+    convRate: T0.buyers / exposable * 100,
+    margin: def.provenance === 'partner' ? null : T0.sales * 0.295,
+    repeatBuyers: def.provenance === 'partner' ? null : Math.round(T0.buyers * (0.082 + seed * 0.03)),
+    repeatRate: def.provenance === 'partner' ? null : (0.082 + seed * 0.03) * 100,
+    ecomShare: def.provenance === 'partner' ? null : (() => {
+      const ec = rows.filter(r => r.channel === 'E-commerce').reduce((s, r) => s + r.sales, 0);
+      return T0.sales ? ec / T0.sales * 100 : null;
+    })(),
+    catEcomShare: 3.0,
+    avgTTP: def.provenance === 'partner' ? null : 96 + seed * 40,
+    medTTP: def.provenance === 'partner' ? null : 54 + seed * 30
+  });
+
+  /* ---- cuts ---- */
+  const segShare = {};
+  [...new Set(def.adgroups.map(g => g.segment))].forEach(id => {
+    const s = SEGMENTS.find(x => x.id === id);
+    segShare[s.name] = s.size;
+  });
+  const mkCut = (key, label, noun, metrics, hasOwnAudience, exposableFor) => {
+    const g = groupBy(rows, key).filter(r => r.buyers > 0);
+    if (g.length < 2) return null;
+    return {
+      label, noun, metrics, hasOwnAudience,
+      rows: g.map(r => ({
+        name: r.name, buyers: r.buyers, sales: r.sales, txns: r.txns,
+        impressions: r.impressions, clicks: r.clicks, spend: r.spend,
+        salesPerBuyer: r.salesPerBuyer, avgTxn: r.avgTxn,
+        exposable: exposableFor ? exposableFor(r) : null
+      })).sort((a, b) => b.sales - a.sales)
+    };
+  };
+  const cuts = {};
+  const add = (k, c) => { if (c) cuts[k] = c; };
+  add('segment', mkCut('segment', 'Audience segment', 'audience', ['convRate', 'buyers', 'sales', 'salesPerBuyer', 'ctr', 'cpBuyer'], true, r => Math.round(segShare[r.name] || 0) || null));
+  add('adgroup', mkCut('adgroup', 'Ad group', 'ad group', ['ctr', 'salesPerK', 'sales', 'buyers', 'cpBuyer'], false));
+  add('ad', mkCut('ad', 'Ad', 'ad', ['ctr', 'salesPerK', 'buyers', 'sales'], false));
+  add('placement', mkCut('placement', 'Placement', 'placement', ['ctr', 'salesPerK', 'sales', 'buyers', 'cpBuyer'], false));
+  add('banner', mkCut('banner', 'Retail banner', 'banner', ['sales', 'buyers', 'ctr'], false));
+  add('channel', mkCut('channel', 'Purchase channel', 'channel', ['sales', 'buyers', 'avgTxn'], false));
+  add('product', mkCut('product', 'Product', 'product', ['sales', 'buyers', 'avgTxn'], false));
+  add('creative', mkCut('creative', 'Creative', 'creative', ['ctr', 'salesPerK', 'buyers', 'sales'], false));
+
+  /* ---- funnel ---- */
+  const funnel = def.provenance === 'partner'
+    ? [{ name: 'Exported Shoppers', value: T.exported }, { name: 'Targeted Shoppers', value: T.targeted },
+       { name: 'Reached Shoppers', value: T.reached }, { name: 'Attributed Buyers', value: T.buyers }]
+    : [{ name: 'Exported Shoppers', value: T.exported }, { name: 'Targeted Shoppers', value: T.targeted },
+       { name: 'Exposed Shoppers', value: T.exposed }, { name: 'Reached Shoppers', value: T.reached },
+       { name: 'Attributed Buyers', value: T.buyers }];
+
+  /* ---- by week ---- */
+  const byWeek = groupBy(rows, 'week');
+  const wk = liveWeeks.map(w => byWeek.find(b => b.key === w.id) || { impressions: 0, clicks: 0, sales: 0 });
+  const isLive = def.state === 'live';
+  const daily = {
+    labels: liveWeeks.map(w => w.label),
+    impressions: wk.map(x => Math.round(x.impressions / 1000)),
+    clicks: wk.map(x => +(x.clicks / 1000).toFixed(1)),
+    sales: wk.map(x => Math.round(x.sales / 1000)),
+    maturedTo: isLive ? Math.max(1, liveWeeks.length - 2) : liveWeeks.length
+  };
+
+  /* ---- profile, timing, quality: declared tables, not in the fact grain ---- */
+  const p1 = Math.round(38 + seed * 14);
+  const profile = def.provenance === 'partner' ? null : {
+    lifestage: { label: 'Lifestage', names: ['Families', 'Young adults 18–39', 'Older couples 40–64', '65 and over'],
+      campaign: [p1, Math.round(23 - seed * 3), Math.round(22 - seed * 2), 100 - p1 - Math.round(23 - seed * 3) - Math.round(22 - seed * 2)],
+      category: [38, 24, 22, 16] },
+    consostyle: { label: 'Consostyle', names: ['Gourmet', 'Nutrition', 'Convenience', 'Budget', 'Deal seekers'],
+      campaign: [Math.round(24 + seed * 10), 24, 19, 15, 100 - Math.round(24 + seed * 10) - 24 - 19 - 15],
+      category: [21, 22, 24, 18, 15] }
+  };
+  const ttp = def.provenance === 'partner' ? null :
+    { buckets: ['<24h', '1–2d', '2–3d', '3–5d', '5–7d', '7–9d', '9–11d', '11–13d', '13–14d'], values: [34, 22, 14, 9, 7, 5, 4, 3, 2] };
+  const quality = def.provenance === 'partner'
+    ? [{ name: 'Campaign ID recognition rate', value: 100, floor: 98, unit: '%' },
+       { name: 'Partner file freshness', value: 4, floor: null, unit: ' days' }]
+    : [{ name: 'Shopper identity match rate', value: +(94.4 + seed * 3).toFixed(1), floor: 95, unit: '%' },
+       { name: 'Campaign ID recognition rate', value: 99.8, floor: 98, unit: '%' },
+       { name: 'Product mapping rate', value: +(96.2 + seed * 2).toFixed(1), floor: 95, unit: '%' },
+       { name: 'Attribution eligibility rate', value: +(86.5 + seed * 4).toFixed(1), floor: 85, unit: '%' },
+       { name: 'Attribution link creation rate', value: +(93.1 + seed * 3).toFixed(1), floor: 90, unit: '%' },
+       { name: 'Late-arriving data rate', value: +(1.2 + seed).toFixed(1), floor: null, unit: '%' }];
+
+  const windowCloses = new Date(wTo.start.getTime() + (6 + def.windowDays) * 864e5);
+  return {
+    id: cmId, name: def.name, advertiser: PROGRAM.advertiser, kind: def.kind,
+    provenance: def.provenance, state: def.state, note: def.note,
+    flight: `${wFrom.label} – ${new Date(wTo.start.getTime() + 6 * 864e5).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}`,
+    windowDays: def.windowDays,
+    windowCloses: windowCloses.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
+    day: Math.min((today.idx - wFrom.idx + 1) * 7, (wTo.idx - wFrom.idx + 1) * 7),
+    ofDays: (wTo.idx - wFrom.idx + 1) * 7,
+    maturity: def.state === 'live' ? 'Maturing' : 'Final',
+    products: def.products.map(p => PRODUCTS.find(x => x.id === p).name).join(', '),
+    productCount: def.products.length,
+    hasPlan: true, budget: def.plannedSpend,
+    adgroupCount: def.adgroups.length,
+    adCount: def.adgroups.reduce((s, g) => s + g.ads.length, 0),
+    segments: [...new Set(def.adgroups.map(g => SEGMENTS.find(s => s.id === g.segment).name))],
+    T, cuts, funnel, daily, profile, ttp, quality
+  };
+}
+
+/* benchmark lookup keyed by provenance rather than campaign id */
+function benchFor(k, c) { const b = BENCH[k]; return b ? b[c.provenance] : null; }
+
+/* ==================================================================
+   Charts — drawn from the same numbers the engine reasons about
+================================================================== */
+const C = { teal: '#0F6E5C', purple: '#463BA0', amber: '#A8741A', grey: '#B9BFC4', ink: '#111820', mid: '#78899A', faint: '#E5E9E7', red: '#A33A2A' };
+const PIE = ['#0F6E5C', '#463BA0', '#A8741A', '#7FB5A9', '#9A93C9'];
+const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+function sv(w, h, inner, label) {
+  return `<svg viewBox="0 0 ${w} ${h}" width="100%" height="${h}" role="img" aria-label="${esc(label || 'chart')}" preserveAspectRatio="xMidYMid meet">${inner}</svg>`;
+}
+function tx(x, y, s, o = {}) {
+  const fam = o.cond ? "'IBM Plex Sans Condensed'" : "'IBM Plex Mono'";
+  return `<text x="${x}" y="${y}" font-family="${fam}" font-size="${o.size || 10}" fill="${o.fill || C.mid}" text-anchor="${o.anchor || 'start'}" font-weight="${o.weight || 400}">${esc(s)}</text>`;
+}
+
+/* actual vs planned */
+function cPaired(c, f, w, h) {
+  const T = c.T, big = h > 170;
+  const pairs = f.type === 'plan_cpm'
+    ? [{ lab: 'CPM', a: T.cpm, e: T.estCpm, fa: F.money2(T.cpm), fe: F.money2(T.estCpm) }]
+    : [{ lab: 'Impressions', a: T.impressions, e: T.estImpressions, fa: F.compact(T.impressions), fe: F.compact(T.estImpressions) },
+       { lab: 'CPM', a: T.cpm, e: T.estCpm, fa: F.money2(T.cpm), fe: F.money2(T.estCpm) }];
+  const base = h - (big ? 34 : 26), gw = w / pairs.length, bw = Math.min(big ? 56 : 34, gw / 3.4);
+  let o = `<line x1="0" y1="${base}" x2="${w}" y2="${base}" stroke="#D3D8D6"/>`;
+  pairs.forEach((p, i) => {
+    const mx = Math.max(p.a, p.e), cx = i * gw + gw / 2;
+    const ha = p.a / mx * (base - 24), he = p.e / mx * (base - 24);
+    o += `<rect x="${cx - bw - 3}" y="${base - ha}" width="${bw}" height="${ha}" fill="${C.purple}"/>`
+      + `<rect x="${cx + 3}" y="${base - he}" width="${bw}" height="${he}" fill="${C.grey}"/>`
+      + tx(cx - bw / 2 - 3, base - ha - 7, p.fa, { size: big ? 14 : 11, fill: C.ink, anchor: 'middle', weight: 500 })
+      + tx(cx + bw / 2 + 3, base - he - 7, p.fe, { size: big ? 11 : 9, anchor: 'middle' })
+      + tx(cx, base + 15, p.lab, { size: big ? 11.5 : 10, fill: '#41505F', anchor: 'middle', cond: 1, weight: 600 })
+      + (big ? tx(cx, base + 29, 'actual · planned', { size: 9.5, anchor: 'middle' }) : '');
+  });
+  return sv(w, h, o, 'Actual against planned');
+}
+
+/* breakdown bars, with the leader marked */
+function cBars(c, f, w, h) {
+  const cut = c.cuts[f.chart.cut], m = METRICS[f.chart.metric], T = c.T;
+  const media = ['impressions', 'clicks', 'ctr'].includes(f.chart.metric);
+  const big = h > 170, L = big ? 180 : 130, RP = big ? 84 : 60;
+  const pad = 18;
+  let data = cut.rows.map(r => ({ name: r.name, v: m.get(r, T) })).filter(d => d.v != null)
+    .sort((a, b) => m.lowerBetter ? a.v - b.v : b.v - a.v);
+  const rh = (h - pad - 6) / data.length - (big ? 9 : 6), mx = Math.max(...data.map(d => d.v)) || 1;
+  const ref = m.total(T);
+  let o = '';
+  data.forEach((d, i) => {
+    const y = pad + i * (rh + (big ? 9 : 6)), bw = Math.max(1, d.v / mx * (w - L - RP));
+    const isHit = d.name === f.slice || (f.v && f.v.weak && d.name === f.v.weak.name) || (f.v && f.v.strong && d.name === f.v.strong.name);
+    const col = f.type === 'mismatch'
+      ? (f.v.strong.name === d.name ? C.teal : (f.v.weak.name === d.name ? C.amber : C.grey))
+      : (isHit ? (media ? C.purple : C.teal) : '#C7D2CE');
+    o += `<rect x="${L}" y="${y}" width="${bw}" height="${rh}" fill="${col}"/>`
+      + tx(L - 8, y + rh / 2 + 4, shortName(d.name), { size: big ? 11.5 : 9.5, fill: isHit ? C.ink : '#5B6775', anchor: 'end', cond: 1, weight: isHit ? 700 : 600 })
+      + tx(L + bw + 7, y + rh / 2 + 4, m.fmt(d.v), { size: big ? 12.5 : 10.5, fill: isHit ? C.ink : '#5B6775', weight: isHit ? 600 : 400 });
+  });
+  if (ref) {
+    const bx = L + ref / mx * (w - L - RP);
+    o += `<line x1="${bx}" y1="${pad - 6}" x2="${bx}" y2="${h - 4}" stroke="${C.ink}" stroke-width="1.2" stroke-dasharray="4 3" opacity=".55"/>`
+      + tx(Math.min(bx + 5, w - 140), pad - 10, 'campaign average ' + m.fmt(ref), { size: big ? 10 : 8.5, fill: '#41505F', cond: 1, weight: 600 });
+  }
+  return sv(w, h, o, 'Breakdown');
+}
+
+/* funnel */
+function cFunnel(c, f, w, h) {
+  const steps = c.funnel, big = h > 170;
+  const L = big ? 150 : 110, rh = (h - 4) / steps.length - (big ? 9 : 6), mx = steps[0].value;
+  let o = '';
+  steps.forEach((s, i) => {
+    const y = i * (rh + (big ? 9 : 6));
+    const bw = Math.max(26, Math.sqrt(s.value / mx) * (w - L - (big ? 104 : 74)));
+    const last = i === steps.length - 1;
+    const isDrop = f.type === 'funnel_drop' && (s.name === f.v.to.name);
+    o += `<rect x="${L}" y="${y}" width="${bw}" height="${rh}" fill="${last ? C.teal : (isDrop ? C.amber : C.purple)}" opacity="${last || isDrop ? 1 : 1 - .1 * i}"/>`
+      + tx(L - 8, y + rh / 2 + 4, big ? s.name : s.name.replace(' Shoppers', ''), { size: big ? 11.5 : 9.5, fill: '#41505F', anchor: 'end', cond: 1, weight: 600 })
+      + tx(L + bw + 8, y + rh / 2 + 4, F.compact(s.value), { size: big ? 12.5 : 10.5, fill: C.ink, weight: 500 });
+    if (i > 0 && f.type === 'funnel_drop' && s.name === f.v.to.name) {
+      o += tx(L + bw + 8, y + rh / 2 + (big ? 17 : 14), '−' + F.pct1(f.v.drop * 100), { size: big ? 10.5 : 9, fill: C.amber, weight: 600 });
+    }
+  });
+  return sv(w, h, o, 'Audience funnel');
+}
+
+/* headline number + comparison */
+function cBigNum(c, f, w, h) {
+  const big = h > 170;
+  const b = f.v, k = f.metric;
+  const fmt = k === 'cpBuyer' ? F.money2 : (k === 'ctr' ? F.pct2 : F.pct3);
+  const name = { ctr: 'Click-through rate', convRate: 'Conversion rate', cpBuyer: 'Cost per buyer' }[k] || 'This campaign';
+  const col = b.better ? C.teal : C.amber;
+  let o = tx(0, big ? 44 : 32, fmt(b.actual), { size: big ? 48 : 32, fill: col, weight: 500 })
+    + tx(0, big ? 66 : 50, name + ' · this campaign', { size: big ? 12 : 10.5, fill: '#41505F', cond: 1, weight: 600 });
+  const barY = big ? 90 : 66, bh = big ? 22 : 15, L = 0, W = w - (big ? 90 : 70);
+  const mx = Math.max(b.actual, b.bench);
+  [[b.actual, col, 'This campaign'], [b.bench, C.grey, 'Comparable campaigns']].forEach((p, i) => {
+    const y = barY + i * (bh + (big ? 26 : 19));
+    o += `<rect x="${L}" y="${y}" width="${Math.max(4, p[0] / mx * W)}" height="${bh}" fill="${p[1]}"/>`
+      + tx(L, y - 5, p[2], { size: big ? 10.5 : 9, fill: '#41505F', cond: 1, weight: 600 })
+      + tx(L + Math.max(4, p[0] / mx * W) + 8, y + bh / 2 + 4, fmt(p[0]), { size: big ? 12 : 10, fill: C.ink, weight: 500 });
+  });
+  return sv(w, h, o, 'Against comparable campaigns');
+}
+
+/* repeat buyers */
+function cRepeat(c, f, w, h) {
+  const T = c.T, big = h > 170;
+  let o = tx(0, big ? 44 : 32, F.pct1(T.repeatRate), { size: big ? 48 : 32, fill: C.amber, weight: 500 })
+    + tx(0, big ? 66 : 50, 'bought at least twice in the window', { size: big ? 12 : 10.5, fill: '#41505F', cond: 1, weight: 600 });
+  const L = 0, W = w - (big ? 96 : 72), barY = big ? 92 : 68, bh = big ? 24 : 16;
+  [['Attributed buyers', T.buyers, C.teal], ['Repeat buyers', T.repeatBuyers, C.amber]].forEach((p, i) => {
+    const y = barY + i * (bh + (big ? 28 : 20));
+    const bw = Math.max(4, p[1] / T.buyers * W);
+    o += `<rect x="${L}" y="${y}" width="${bw}" height="${bh}" fill="${p[2]}"/>`
+      + tx(L, y - 5, p[0], { size: big ? 10.5 : 9, fill: '#41505F', cond: 1, weight: 600 })
+      + tx(L + bw + 8, y + bh / 2 + 4, F.int(p[1]), { size: big ? 12 : 10, fill: C.ink, weight: 500 });
+  });
+  return sv(w, h, o, 'Repeat purchase');
+}
+
+/* two donuts — campaign vs category */
+function cDonut2(c, f, w, h) {
+  const big = h > 170, r = Math.min(big ? 58 : 38, (h - 46) / 2), sw = big ? 15 : 10;
+  const mk = (cx, pct, col, lab) => {
+    const circ = 2 * Math.PI * r, cy = r + 10;
+    return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${C.faint}" stroke-width="${sw}"/>`
+      + `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${col}" stroke-width="${sw}" stroke-dasharray="${circ * pct / 100} ${circ}" transform="rotate(-90 ${cx} ${cy})"/>`
+      + tx(cx, cy + (big ? 8 : 6), F.pct1(pct), { size: big ? 20 : 14, fill: C.ink, anchor: 'middle', weight: 500 })
+      + tx(cx, cy + r + 20, lab, { size: big ? 11 : 9, fill: '#41505F', anchor: 'middle', cond: 1, weight: 600 });
+  };
+  let o = mk(r + 8, f.v.share, C.teal, 'Campaign') + mk(r * 3 + 34, f.v.cat, C.grey, 'Category');
+  const dx = r * 4 + 62;
+  o += tx(dx, r - 2, F.pts(f.v.d), { size: big ? 28 : 19, fill: C.amber, weight: 500 })
+    + tx(dx, r + (big ? 18 : 14), 'e-commerce share of', { size: big ? 11 : 9.5, fill: '#41505F', cond: 1, weight: 600 })
+    + tx(dx, r + (big ? 31 : 25), 'attributed sales vs category', { size: big ? 11 : 9.5, fill: '#41505F', cond: 1, weight: 600 });
+  return sv(w, h, o, 'E-commerce share against the category');
+}
+
+/* profile pies */
+function arcPath(cx, cy, r, a0, a1) {
+  const p = a => [cx + r * Math.sin(a), cy - r * Math.cos(a)];
+  const [x0, y0] = p(a0), [x1, y1] = p(a1);
+  return `M ${cx} ${cy} L ${x0.toFixed(2)} ${y0.toFixed(2)} A ${r} ${r} 0 ${a1 - a0 > Math.PI ? 1 : 0} 1 ${x1.toFixed(2)} ${y1.toFixed(2)} Z`;
+}
+function onePie(cx, cy, r, vals, hi) {
+  let a = 0, o = '';
+  const tot = vals.reduce((s, v) => s + v, 0) || 1;
+  vals.forEach((v, i) => {
+    const a1 = a + 2 * Math.PI * v / tot;
+    o += `<path d="${arcPath(cx, cy, r, a, a1)}" fill="${PIE[i % PIE.length]}" stroke="#fff" stroke-width="1" opacity="${hi == null || hi === i ? 1 : .42}"/>`;
+    a = a1;
+  });
+  return o;
+}
+function cPie2(c, f, w, h) {
+  const p = c.profile[f.chart.attribute], big = h > 170;
+  const hi = p.names.indexOf(f.v.up.n);
+  const r = Math.min(big ? 72 : 46, (h - (big ? 44 : 30)) / 2), cy = r + 6;
+  let o = onePie(r + 4, cy, r, p.campaign, hi) + onePie(r * 3 + 26, cy, r, p.category, hi)
+    + tx(r + 4, cy + r + 18, 'Campaign buyers', { size: big ? 11 : 9, fill: '#41505F', anchor: 'middle', cond: 1, weight: 600 })
+    + tx(r * 3 + 26, cy + r + 18, 'Category buyers', { size: big ? 11 : 9, fill: '#41505F', anchor: 'middle', cond: 1, weight: 600 });
+  const lx = r * 4 + 48;
+  p.names.forEach((n, i) => {
+    const y = 14 + i * (big ? 24 : 17), d = p.campaign[i] - p.category[i];
+    o += `<rect x="${lx}" y="${y - 8}" width="9" height="9" fill="${PIE[i % PIE.length]}" opacity="${hi === i ? 1 : .45}"/>`
+      + tx(lx + 15, y, n, { size: big ? 11 : 9.5, fill: hi === i ? C.ink : '#5B6775', cond: 1, weight: hi === i ? 700 : 600 })
+      + tx(lx + 15, y + (big ? 12 : 8.5), `${p.campaign[i]}% · ${F.pts(d)}`, { size: big ? 10 : 8.5, fill: d > 0 ? C.teal : C.mid });
+  });
+  return sv(w, h, o, 'Buyer profile against the category');
+}
+
+/* time to purchase */
+function cHist(c, f, w, h) {
+  const d = c.ttp, big = h > 170, base = h - (big ? 26 : 18);
+  const n = d.values.length, bw = w / n, mx = Math.max(...d.values);
+  let o = `<line x1="0" y1="${base}" x2="${w}" y2="${base}" stroke="#D3D8D6"/>`;
+  d.values.forEach((v, i) => {
+    const bh = v / mx * (base - 16);
+    o += `<rect x="${i * bw + 2}" y="${base - bh}" width="${bw - 4}" height="${bh}" fill="${i < 3 ? C.teal : '#C7D2CE'}"/>`
+      + tx(i * bw + bw / 2, base - bh - 5, v + '%', { size: big ? 10.5 : 8, fill: C.ink, anchor: 'middle', weight: 500 })
+      + tx(i * bw + bw / 2, base + (big ? 15 : 12), d.buckets[i], { size: big ? 9.5 : 8, anchor: 'middle' });
+  });
+  return sv(w, h, o, 'Time from exposure to purchase');
+}
+
+/* daily, with the open window shaded */
+function cDaily(c, f, w, h) {
+  const d = c.daily, big = h > 170, base = h - (big ? 26 : 18);
+  const vals = d.sales, n = vals.length, bw = w / n, mx = Math.max(...vals) || 1;
+  let o = `<rect x="${d.maturedTo * bw}" y="0" width="${(n - d.maturedTo) * bw}" height="${base}" fill="${C.amber}" opacity=".1"/>`;
+  vals.forEach((v, i) => {
+    const bh = v / mx * (base - 8), open = i >= d.maturedTo;
+    o += `<rect x="${i * bw + 1.5}" y="${base - bh}" width="${Math.max(2, bw - 3)}" height="${bh}" fill="${C.teal}" opacity="${open ? .42 : 1}"/>`;
+  });
+  o += `<line x1="0" y1="${base}" x2="${w}" y2="${base}" stroke="#D3D8D6"/>`
+    + tx(d.maturedTo * bw + 5, 12, 'still filling in', { size: big ? 10.5 : 9, fill: C.amber, cond: 1, weight: 600 });
+  if (big) {
+    o += tx(0, h - 7, d.labels[0], { size: 10 }) + tx(w, h - 7, 'yesterday', { size: 10, anchor: 'end' });
+  }
+  return sv(w, h, o, 'Attributed sales by day');
+}
+
+/* data quality rows */
+function cQuality(c, f, w, h) {
+  const items = c.quality, big = h > 170, rh = h / items.length;
+  let o = '';
+  items.forEach((q, i) => {
+    const y = i * rh, bad = q.floor != null && q.value < q.floor;
+    if (i) o += `<line x1="0" y1="${y}" x2="${w}" y2="${y}" stroke="${C.faint}"/>`;
+    o += tx(0, y + rh / 2 + 4, q.name, { size: big ? 11.5 : 10, fill: '#41505F', cond: 1, weight: 600 })
+      + tx(w, y + rh / 2 + 4, q.value + q.unit, { size: big ? 13 : 11, fill: bad ? C.red : C.ink, anchor: 'end', weight: 500 })
+      + (q.floor != null ? tx(w - (big ? 64 : 52), y + rh / 2 + 4, 'floor ' + q.floor + q.unit, { size: big ? 9.5 : 8.5, anchor: 'end' }) : '');
+  });
+  return sv(w, h, o, 'Data quality');
+}
+
+const CHART = { paired: cPaired, bars: cBars, funnel: cFunnel, bignum: cBigNum, repeat: cRepeat, donut2: cDonut2, pie2: cPie2, hist: cHist, daily: cDaily, quality: cQuality };
+function drawChart(c, f, w, h) {
+  const fn = CHART[f.chart && f.chart.k];
+  if (!fn) return '';
+  try { return fn(c, f, w, h); } catch (e) { return ''; }
+}
+
+/* ==================================================================
+   THE COMPOSER — the sixth role.
+   Decides which findings share a page, which layout fits, what the
+   page is called, and why they belong together. It places; it never
+   computes. Every number on a slide came from the engine.
+
+   The rule it works to: a slide has room for one chart and up to two
+   supporting numbers. Leaving that space empty wastes a page, so a
+   finding that can be said in one number rides along as a callout
+   instead of taking a page of its own.
+================================================================== */
+
+const SMALL_CHARTS = ['paired', 'bignum', 'repeat', 'donut2', 'quality', 'daily'];
+const chartSize = f => (f.chart && SMALL_CHARTS.includes(f.chart.k)) ? 'small' : 'large';
+
+const CHAPTER_TITLES = {
+  delivery: 'What we bought',
+  conversion: 'Who bought',
+  commerce: 'What it sold',
+  shoppers: 'Who they are',
+  method: 'How solid this is'
+};
+
+function compose(findings, c, goal) {
+  const slides = [];
+  const placed = new Set();
+  const pool = findings.filter(f => f.chapter !== 'method');
+  const methodFindings = findings.filter(f => f.chapter === 'method');
+
+  /* ---- 1. cover ---- */
+  slides.push({ layout: 'cover', findings: [], title: c.name, no: 1,
+    reason: 'Every deck opens with what the campaign actually was, so nobody has to ask in the meeting.' });
+
+  /* a finding can ride along as a callout if it can be said in one number */
+  const canRide = f => !!f.stat && !f.opportunity && f.direction !== 'opportunity' && !f.isLead;
+
+  /* take up to n callouts, preferring the same chapter, then anything left */
+  function takeRiders(hostChapter, n) {
+    const same = pool.filter(f => !placed.has(f.id) && f.chapter === hostChapter && canRide(f));
+    const other = pool.filter(f => !placed.has(f.id) && f.chapter !== hostChapter && canRide(f));
+    const picked = [...same, ...other].slice(0, n);
+    picked.forEach(f => placed.add(f.id));
+    return picked;
+  }
+
+  /* ---- 2. the lead takes the second page, with at most one rider ---- */
+  const lead = findings.find(f => f.isLead && f.chapter !== 'method') || pool[0];
+  if (lead) {
+    placed.add(lead.id);
+    const riders = takeRiders(lead.chapter, goal === 'budget' && lead.direction === 'opportunity' ? 0 : 1);
+    slides.push({
+      layout: 'hero', findings: [lead], riders, title: lead.title,
+      reason: riders.length
+        ? `The strongest finding opens the deck. ${riders.length === 1 ? 'One further number' : 'Two further numbers'} from the same part of the story sits underneath it rather than taking a page.`
+        : (goal === 'budget' && lead.direction === 'opportunity'
+          ? 'This is the ask, so nothing shares the page with it.'
+          : 'The strongest finding opens the deck on its own.')
+    });
+  }
+
+  /* ---- 3. the rest: one chart per page, riders fill the space below ---- */
+  const order = ['delivery', 'conversion', 'commerce', 'shoppers'];
+  let guard = 0;
+  while (pool.some(f => !placed.has(f.id)) && guard++ < 40) {
+    // the next unplaced finding whose chart deserves the page, in chapter order
+    const remaining = pool.filter(f => !placed.has(f.id));
+    const host = order.map(ch => remaining.find(f => f.chapter === ch && chartSize(f) === 'large'))
+      .find(Boolean) || remaining[0];
+    if (!host) break;
+    placed.add(host.id);
+
+    // a small-chart partner shares the page as a second chart; otherwise take number riders
+    const partner = pool.find(f => !placed.has(f.id) && f.chapter === host.chapter && chartSize(f) === 'small');
+    if (partner && chartSize(host) === 'small') {
+      placed.add(partner.id);
+      slides.push({
+        layout: 'pair', findings: [host, partner], riders: takeRiders(host.chapter, 1),
+        title: CHAPTER_TITLES[host.chapter],
+        reason: `Both are ${CHAPTER_TITLES[host.chapter].toLowerCase()} findings with compact charts, so they share a page instead of leaving half of two pages empty.`
+      });
+    } else {
+      const riders = takeRiders(host.chapter, 2);
+      slides.push({
+        layout: 'chartstats', findings: [host], riders, title: host.title,
+        reason: riders.length
+          ? `This chart needs the full width, so the ${riders.length === 1 ? 'next finding rides' : 'next two findings ride'} along the bottom as ${riders.length === 1 ? 'a number' : 'numbers'} instead of taking ${riders.length === 1 ? 'a page' : 'two pages'}.`
+          : 'This chart needs the full width and nothing left fits beside it.'
+      });
+    }
+  }
+
+  /* ---- 4. method ---- */
+  if (methodFindings.length) {
+    slides.push({ layout: 'method', findings: methodFindings, riders: [], title: CHAPTER_TITLES.method,
+      reason: 'The rules and the maturity belong together, in words rather than charts, and they travel with every deck.' });
+  }
+
+  /* ---- 5. the actions page ---- */
+  const withReco = findings.filter(f => f.reco && f.chapter !== 'method');
+  if (withReco.length) {
+    slides.push({ layout: 'actions', findings: withReco.slice(0, 5), riders: [], title: 'What we would do next',
+      reason: 'Every recommendation collected in one place, so the meeting ends with a list rather than a feeling.' });
+  }
+
+  slides.forEach((s, i) => { s.no = i + 1; });
+  const riderCount = slides.reduce((n, s) => n + (s.riders ? s.riders.length : 0), 0);
+  return {
+    slides,
+    stats: {
+      findings: findings.length,
+      slides: slides.length,
+      riders: riderCount,
+      shared: slides.filter(s => (s.riders && s.riders.length) || s.layout === 'pair').length,
+      wouldHaveBeen: findings.length + 3
+    }
+  };
+}
+
+/* ==================================================================
+   UI
+================================================================== */
+const S = {
+  view: 'program',
+  filters: { weekFrom: 'w34', weekTo: 'w42', campaigns: [], adgroups: [], ads: [] },
+  drill: [],
+  drillMeasure: 'sales',
+  campaignId: null,
+  goal: 'renewal',
+  run: null, comp: null, c: null,
+  removed: {}, archive: [], edits: {},
+  deep: { dims: ['campaign', 'product'], measures: ['impressions', 'clicks', 'buyers', 'sales', 'roas'], sortKey: 'sales', sortDir: -1, limit: 40 },
+  evidenceFilter: 'rejected',
+  openFinding: null,
+  openSlide: null,
+  modal: null
+};
+
+const ICO = {
+  plus: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+  x: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>',
+  check: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>',
+  chev: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>',
+  up: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>',
+  down: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>',
+  dl: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>',
+  wand: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4V2M8 9h2M20 9h2M17.8 11.8L19 13M17.8 6.2L19 5M3 21l9-9M12.2 6.2L11 5"/></svg>',
+  eye: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',
+  lock: '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>',
+  bolt: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M13 2L3 14h8l-1 8 10-12h-8z"/></svg>',
+  box: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8v13H3V8M1 3h22v5H1zM10 12h4"/></svg>'
+};
+const AGENTS = [
+  { id: 'scout', name: 'Scout', job: 'Looks at every slice of every breakdown and lists anything worth a second look.' },
+  { id: 'skeptic', name: 'Skeptic', job: 'Tries to kill each finding: too few buyers, too close to call, not our data, window still open.' },
+  { id: 'advisor', name: 'Advisor', job: 'Turns a surviving finding into something to do next, with the money attached.' },
+  { id: 'explainer', name: 'Explainer', job: 'Says it in one sentence, with the numbers in it.' },
+  { id: 'editor', name: 'Editor', job: 'Picks the handful that make a story, drops repeats, decides the order and the headline.' },
+  { id: 'composer', name: 'Composer', job: 'Decides which findings share a slide, which layout fits, and what the page is called.' }
+];
+
+/* ---------- helpers ---------- */
+const badge = c => c.provenance === 'measured'
+  ? `<span class="p meas">${ICO.check} Measured by Activate</span>`
+  : `<span class="p part">Partner-reported</span>`;
+const stateChip = st => st === 'live' ? `<span class="p live">Live</span>`
+  : st === 'final' ? `<span class="p fin">Final</span>` : `<span class="p plan">Planned</span>`;
+const srcLine = (c, n, total) =>
+  `${PROGRAM.retailer} loyalty card holders · ${c.name} · flight ${c.flight} · ${c.windowDays}-day post-view / post-click window, last touch · ${c.provenance === 'measured' ? 'measured by Activate' : 'partner-reported totals'} · ${c.maturity.toLowerCase()}, window closes ${c.windowCloses} · attributed, not incremental · internal & confidential${n ? ` · slide ${n} of ${total}` : ''}`;
+const storyFindings = () => S.run ? S.run.story.filter(f => !S.removed[f.id]) : [];
+
+function loadCampaign(id) {
+  S.campaignId = id;
+  S.c = deriveCampaign(id);
+  S.removed = {}; S.edits = {};
+  S.run = runEngine(S.c, S.goal, 9);
+  S.comp = compose(storyFindings(), S.c, S.goal);
+}
+function recompose() {
+  if (!S.c) return;
+  S.run = runEngine(S.c, S.goal, 9);
+  S.comp = compose(storyFindings(), S.c, S.goal);
+}
+
+/* ---------- header ---------- */
+function vHeader() {
+  const views = [['program', 'Program'], ['deep', 'Deep dive'], ['story', 'Story'], ['evidence', 'Evidence'], ['deck', 'Deck'], ['archive', 'Archive']];
+  return `<header class="top">
+    <div class="topin">
+      <div class="mk">Retail Media <span>/ Measurement</span></div>
+      <div class="pk"><span class="lbl">Retailer</span><b>${PROGRAM.retailer}</b></div>
+      <div class="pk"><span class="lbl">Program</span><b>${PROGRAM.name}</b></div>
+      ${S.c ? `<div class="pk"><span class="lbl">Campaign</span><b>${S.c.name}</b></div>` : ''}
+      <div class="grow"></div>
+      <div class="sy"><span class="dot"></span>${FACTS.length.toLocaleString('en-GB')} fact rows · week 40</div>
+    </div>
+    <nav class="tabs">
+      ${views.map(([k, l]) => {
+        const need = ['story', 'evidence', 'deck'].includes(k) && !S.c;
+        const cnt = k === 'evidence' && S.run ? S.run.rejected.length : k === 'deck' && S.comp ? S.comp.slides.length : k === 'archive' ? S.archive.length : null;
+        return `<button data-act="view" data-view="${k}" class="${S.view === k ? 'on' : ''} ${need ? 'dim' : ''}">${l}${cnt != null ? `<span class="cnt">${cnt}</span>` : ''}</button>`;
+      }).join('')}
+      <div class="grow"></div>
+      <div class="hint">${S.c ? '' : 'Pick a campaign on the program page to build its story.'}</div>
+    </nav></header>`;
+}
+
+/* ---------- filter bar ---------- */
+function vFilters() {
+  const f = S.filters;
+  const cams = CAMPAIGN_DEFS.filter(c => c.state !== 'planned');
+  const groups = ADGROUPS.filter(g => !f.campaigns.length || f.campaigns.includes(g.campaign));
+  const ads = ADS.filter(a => (!f.campaigns.length || f.campaigns.includes(a.campaign)) && (!f.adgroups.length || f.adgroups.includes(a.adgroup)));
+  const opt = (arr, sel, labelFn) => arr.map(x => `<option value="${x.id}" ${sel.includes(x.id) ? 'selected' : ''}>${labelFn(x)}</option>`).join('');
+  return `<div class="filters">
+    <div class="fgroup"><span class="lbl">Conversion weeks</span>
+      <div class="frow">
+        <select data-act="filter" data-k="weekFrom">${WEEKS.map(w => `<option value="${w.id}" ${f.weekFrom === w.id ? 'selected' : ''}>${w.label}</option>`).join('')}</select>
+        <span class="to">to</span>
+        <select data-act="filter" data-k="weekTo">${WEEKS.map(w => `<option value="${w.id}" ${f.weekTo === w.id ? 'selected' : ''}>${w.label}</option>`).join('')}</select>
+      </div></div>
+    <div class="fgroup"><span class="lbl">Campaign</span>
+      <select multiple size="3" data-act="mfilter" data-k="campaigns">${opt(cams, f.campaigns, x => x.name)}</select></div>
+    <div class="fgroup"><span class="lbl">Ad group</span>
+      <select multiple size="3" data-act="mfilter" data-k="adgroups">${opt(groups, f.adgroups, x => x.name)}</select></div>
+    <div class="fgroup"><span class="lbl">Ad</span>
+      <select multiple size="3" data-act="mfilter" data-k="ads">${opt(ads, f.ads, x => x.name)}</select></div>
+    <div class="fgroup end">
+      <button class="btn sm" data-act="clearfilters">Clear</button>
+      <div class="fcount">${filterFacts(S.filters).length.toLocaleString('en-GB')} rows</div>
+    </div>
+  </div>`;
+}
+
+/* ---------- program landing ---------- */
+function vProgram() {
+  const rows = filterFacts(S.filters);
+  const T = total(rows);
+  const budget = CAMPAIGN_DEFS.reduce((s, c) => s + c.plannedSpend, 0);
+
+  const level = HIERARCHY[S.drill.length] || 'ad';
+  const scoped = Object.assign({}, S.filters);
+  if (S.drill[0]) scoped.campaigns = [S.drill[0]];
+  if (S.drill[1]) scoped.adgroups = [S.drill[1]];
+  const drillRows = groupBy(filterFacts(scoped), level).sort((a, b) => (b[S.drillMeasure] || 0) - (a[S.drillMeasure] || 0));
+  const md = MEASURE_DEFS[S.drillMeasure];
+  const mx = Math.max(...drillRows.map(r => r[S.drillMeasure] || 0)) || 1;
+  const canDrill = S.drill.length < HIERARCHY.length - 1;
+
+  const crumbs = ['Program', ...S.drill.map((id, i) => nameOf[HIERARCHY[i]](id))];
+  const bars = drillRows.map(r => `
+    <button class="dbar ${canDrill ? 'can' : ''}" ${canDrill ? `data-act="drill" data-id="${r.key}"` : 'disabled'}>
+      <span class="dname">${r.name}</span>
+      <span class="dtrack"><span class="dfill" style="width:${Math.max(1, (r[S.drillMeasure] || 0) / mx * 100)}%"></span></span>
+      <span class="dval">${md.fmt(r[S.drillMeasure])}</span>
+      ${canDrill ? `<span class="dgo">${ICO.chev}</span>` : ''}
+    </button>`).join('');
+
+  const weekRows = groupBy(rows, 'week').sort((a, b) => weekById(a.key).idx - weekById(b.key).idx);
+  const camRows = groupBy(rows, 'campaign').sort((a, b) => b.sales - a.sales);
+  const plannedOnly = CAMPAIGN_DEFS.filter(c => c.state === 'planned');
+
+  return `<div class="wrap">
+    ${vFilters()}
+    <section class="kpis">
+      ${[['Media spend', F.money(T.spend), `of ${F.money(budget)} booked`],
+         ['Impressions', F.compact(T.impressions), `${F.compact(T.clicks)} clicks · CTR ${F.pct2(T.ctr)}`],
+         ['Attributed buyers', F.int(T.buyers), `${F.int(T.txns)} transactions`],
+         ['Attributed sales', F.moneyC(T.sales), `${F.money2(T.salesPerBuyer)} per buyer`],
+         ['Attributed ROAS', F.x(T.roas), 'sales ÷ spend · not lift'],
+         ['Cost per buyer', F.money2(T.cpBuyer), `CPM ${F.money2(T.cpm)}`]].map(k =>
+        `<div class="kpi"><div class="lbl">${k[0]}</div><div class="kv">${k[1]}</div><div class="ks">${k[2]}</div></div>`).join('')}
+    </section>
+
+    <div class="cols2">
+      <section class="panel">
+        <div class="phead">
+          <div><h2>Where it came from</h2>
+            <div class="crumbs">${crumbs.map((c, i) => `<button class="crumb ${i === crumbs.length - 1 ? 'on' : ''}" data-act="undrill" data-i="${i}">${c}</button>${i < crumbs.length - 1 ? `<span class="csep">${ICO.chev}</span>` : ''}`).join('')}</div>
+          </div>
+          <select data-act="drillmeasure">${['sales', 'buyers', 'impressions', 'clicks', 'spend', 'roas', 'ctr', 'cpBuyer'].map(k => `<option value="${k}" ${S.drillMeasure === k ? 'selected' : ''}>${MEASURE_DEFS[k].label}</option>`).join('')}</select>
+        </div>
+        <div class="dbars">${bars || '<div class="empty">Nothing matches these filters.</div>'}</div>
+        <p class="note">${canDrill ? `Click a bar to open the next level — ${HIERARCHY[S.drill.length + 1]}.` : 'This is the deepest level of the campaign hierarchy. Use the deep dive for product and UPC.'}</p>
+      </section>
+
+      <section class="panel">
+        <div class="phead"><h2>Week by week</h2><span class="lbl">${MEASURE_DEFS[S.drillMeasure].label}</span></div>
+        ${trendChart(weekRows, S.drillMeasure, 420, 170)}
+        <p class="note">Weeks are the conversion weeks in the filter above, not the flight weeks. A campaign shows up here whenever its attributed purchases landed.</p>
+      </section>
+    </div>
+
+    <section class="panel">
+      <div class="phead"><h2>Campaigns in range</h2><span class="lbl">${camRows.length} with data${plannedOnly.length ? ` · ${plannedOnly.length} planned` : ''}</span></div>
+      <div class="tw"><table class="dt">
+        <thead><tr><th>Campaign</th><th>State</th><th>Numbers from</th><th class="n">Spend</th><th class="n">Impressions</th><th class="n">CTR</th><th class="n">Buyers</th><th class="n">Sales</th><th class="n">ROAS</th><th></th></tr></thead>
+        <tbody>
+          ${camRows.map(r => {
+            const def = CAMPAIGN_BY_ID[r.key];
+            return `<tr class="${S.campaignId === r.key ? 'sel' : ''}">
+              <td><b>${r.name}</b><div class="sub">${def.kind}</div></td>
+              <td>${stateChip(def.state)}</td>
+              <td>${def.provenance === 'measured' ? `<span class="p meas">${ICO.check} Measured</span>` : `<span class="p part">Partner</span>`}</td>
+              <td class="n">${F.money(r.spend)}</td><td class="n">${F.compact(r.impressions)}</td><td class="n">${F.pct2(r.ctr)}</td>
+              <td class="n">${F.int(r.buyers)}</td><td class="n"><b>${F.moneyC(r.sales)}</b></td><td class="n"><b>${F.x(r.roas)}</b></td>
+              <td class="n"><button class="btn sm ${S.campaignId === r.key ? 'in' : 'add'}" data-act="build" data-id="${r.key}">${S.campaignId === r.key ? ICO.check + ' Built' : ICO.wand + ' Build the deck'}</button></td>
+            </tr>`;
+          }).join('')}
+          ${plannedOnly.map(def => `<tr class="muted">
+            <td><b>${def.name}</b><div class="sub">${def.kind}</div></td>
+            <td>${stateChip(def.state)}</td><td><span class="p plan">No data yet</span></td>
+            <td class="n">${F.money(def.plannedSpend)} planned</td><td class="n">${F.compact(def.plannedImpressions)} planned</td>
+            <td class="n">—</td><td class="n">—</td><td class="n">—</td><td class="n">—</td>
+            <td class="n"><span class="note">starts ${weekById(def.from).label}</span></td></tr>`).join('')}
+        </tbody></table></div>
+      <p class="note">Attributed buyers are de-duplicated inside each campaign. They are shown added up across campaigns here, which slightly over-counts anyone who appeared in two.</p>
+    </section>
+  </div>`;
+}
+
+function trendChart(rows, key, w, h) {
+  if (!rows.length) return '<div class="empty">No weeks in range.</div>';
+  const vals = rows.map(r => r[key] || 0), mx = Math.max(...vals) || 1;
+  const base = h - 26, bw = w / rows.length;
+  let o = '';
+  rows.forEach((r, i) => {
+    const bh = (r[key] || 0) / mx * (base - 10);
+    o += `<rect x="${i * bw + 3}" y="${base - bh}" width="${bw - 6}" height="${bh}" fill="#0F6E5C" opacity="${.5 + .5 * (r[key] || 0) / mx}"/>`;
+    if (i % 2 === 0) o += `<text x="${i * bw + bw / 2}" y="${h - 8}" font-family="'IBM Plex Mono'" font-size="9" fill="#78899A" text-anchor="middle">${weekById(r.key).label}</text>`;
+  });
+  o += `<line x1="0" y1="${base}" x2="${w}" y2="${base}" stroke="#D3D8D6"/>`;
+  return `<svg viewBox="0 0 ${w} ${h}" width="100%" height="${h}" role="img" aria-label="Week by week">${o}</svg>`;
+}
+
+/* ---------- deep dive ---------- */
+function vDeep() {
+  const rows = filterFacts(S.filters);
+  const d = S.deep;
+  const g = groupBy2(rows, d.dims);
+  g.sort((a, b) => ((b[d.sortKey] || 0) - (a[d.sortKey] || 0)) * (d.sortDir < 0 ? 1 : -1));
+  const shown = g.slice(0, d.limit);
+  const T = total(rows);
+  return `<div class="wrap">
+    ${vFilters()}
+    <section class="panel">
+      <div class="phead"><h2>Deep dive</h2><span class="lbl">${g.length.toLocaleString('en-GB')} rows at this grain · showing ${shown.length}</span></div>
+      <div class="chooser">
+        <div><span class="lbl">Rows — pick your dimensions</span>
+          <div class="chips">${DIM_DEFS.map(x => `<button class="chip ${d.dims.includes(x.key) ? 'on' : ''}" data-act="dim" data-k="${x.key}">${x.label}${d.dims.includes(x.key) ? `<span class="ord">${d.dims.indexOf(x.key) + 1}</span>` : ''}</button>`).join('')}</div></div>
+        <div><span class="lbl">Columns — pick your fields</span>
+          <div class="chips">${Object.keys(MEASURE_DEFS).map(k => `<button class="chip ${d.measures.includes(k) ? 'on' : ''}" data-act="meas" data-k="${k}">${MEASURE_DEFS[k].label}</button>`).join('')}</div></div>
+      </div>
+      <div class="tw"><table class="dt sticky">
+        <thead><tr>
+          ${d.dims.map(k => `<th>${DIM_DEFS.find(x => x.key === k).label}</th>`).join('')}
+          ${d.measures.map(k => `<th class="n sortable ${d.sortKey === k ? 'sorted' : ''}" data-act="sort" data-k="${k}">${MEASURE_DEFS[k].label}${d.sortKey === k ? (d.sortDir < 0 ? ' ▾' : ' ▴') : ''}</th>`).join('')}
+        </tr></thead>
+        <tbody>
+          <tr class="tot">${d.dims.map((k, i) => `<td>${i === 0 ? '<b>Total</b>' : ''}</td>`).join('')}${d.measures.map(k => `<td class="n"><b>${MEASURE_DEFS[k].fmt(T[k])}</b></td>`).join('')}</tr>
+          ${shown.map(r => `<tr>${d.dims.map(k => `<td>${r[k]}</td>`).join('')}${d.measures.map(k => `<td class="n">${MEASURE_DEFS[k].fmt(r[k])}</td>`).join('')}</tr>`).join('')}
+        </tbody></table></div>
+      <div class="deepfoot">
+        ${g.length > d.limit ? `<button class="btn sm" data-act="more">Show 40 more</button>` : '<span class="note">All rows shown.</span>'}
+        <button class="btn sm" data-act="csv">${ICO.dl} Download CSV</button>
+        <span class="note">Rates and ratios are recalculated at each row's own grain, never averaged. Buyers do not add up across rows — a shopper reached by two ads is one buyer in each.</span>
+      </div>
+    </section>
+  </div>`;
+}
+
+/* ---------- story ---------- */
+function vAgentBar() {
+  const st = S.run.stats;
+  return `<div class="agentbar">
+    <div class="abl">${ICO.bolt}<span>Story engine</span></div>
+    <div class="astep"><span class="an">Scout</span><span class="av">${st.scanned}</span><span class="al">raised</span></div>
+    <span class="arrow">${ICO.chev}</span>
+    <div class="astep"><span class="an">Skeptic</span><span class="av">${st.kept}</span><span class="al">survived · <em>${S.run.rejected.length} killed</em></span></div>
+    <span class="arrow">${ICO.chev}</span>
+    <div class="astep"><span class="an">Editor</span><span class="av">${storyFindings().length}</span><span class="al">told</span></div>
+    <span class="arrow">${ICO.chev}</span>
+    <div class="astep"><span class="an">Composer</span><span class="av">${S.comp ? S.comp.slides.length : 0}</span><span class="al">slides</span></div>
+    <div class="grow"></div>
+    <span class="scanned">${st.cells} slices · ${st.ms} ms</span>
+    <button class="btn sm" data-act="rerun">${ICO.wand} Rebuild</button>
+  </div>`;
+}
+function vStory() {
+  if (!S.c) return `<div class="wrap"><div class="empty">Pick a campaign on the <button class="linkb" data-act="view" data-view="program">program page</button> first.</div></div>`;
+  const c = S.c, slides = storyFindings();
+  return `<div class="wrap">
+    ${vAgentBar()}
+    <div class="goals">
+      <span class="lbl">What is this report for?</span>
+      <div class="gbtns">${Object.keys(GOALS).map(k => `<button data-act="goal" data-goal="${k}" class="${S.goal === k ? 'on' : ''}"><b>${GOALS[k].label}</b><span>${GOALS[k].hint}</span></button>`).join('')}</div>
+      <p class="note">This changes which findings are chosen, their order and how firmly the recommendation is put. <b>It never changes a number and never hides a finding the Skeptic let through.</b></p>
+    </div>
+    <section class="headline">
+      <div class="lbl">The story for ${c.name}</div>
+      <h1>${S.run.headline}</h1>
+      <p class="sub">${slides.length} findings from ${S.run.stats.scanned} raised. Every sentence is editable; no number is.</p>
+    </section>
+    <div class="fcards">${slides.map((f, i) => vFinding(f, i)).join('')}</div>
+    ${S.archive.length ? `<div class="removedbar">${S.archive.length} finding${S.archive.length > 1 ? 's' : ''} in the archive · <button class="linkb" data-act="view" data-view="archive">open the archive</button></div>` : ''}
+    <div class="endbar">
+      <button class="btn" data-act="view" data-view="evidence">${ICO.eye} What was rejected</button>
+      <button class="btn pri" data-act="view" data-view="deck">See the composed deck ${ICO.chev}</button>
+    </div>
+  </div>`;
+}
+function vFinding(f, i) {
+  const c = S.c;
+  return `<article class="fcard ${f.direction}">
+    <div class="fnum">${i + 1}</div>
+    <div class="fmain">
+      <div class="fhead">
+        <div><div class="lbl">${CHAPTERS[f.chapter].n} · ${CHAPTERS[f.chapter].label}${f.isLead ? ' · opens the deck' : ''}</div><h3>${f.title}</h3></div>
+        <div class="facts">
+          <button class="ico" data-act="moveup" data-id="${f.id}" aria-label="Move up">${ICO.up}</button>
+          <button class="ico" data-act="movedown" data-id="${f.id}" aria-label="Move down">${ICO.down}</button>
+          <button class="ico del" data-act="remove" data-id="${f.id}" aria-label="Move to archive">${ICO.x}</button>
+        </div>
+      </div>
+      <div class="fbody">
+        <div class="fwords">
+          <div class="said" contenteditable="true" data-act="edit" data-id="${f.id}">${S.edits[f.id] != null ? S.edits[f.id] : f.sentence}</div>
+          ${f.reco ? `<div class="reco"><span class="rl">So what we would do</span>${f.reco}</div>` : ''}
+          ${f.opportunity ? `<div class="opp"><div class="opl">The money on the table</div>
+            <div class="oprow"><span>Move</span><b>${F.money(f.opportunity.moved)}</b><span>of the weaker audience's share</span></div>
+            <div class="oprow"><span>At the rates both actually achieved</span><b>+${F.int(f.opportunity.gained)} buyers</b><span>and ${F.moneyC(f.opportunity.gainedSales)} of sales</span></div>
+            <div class="oprow"><span>Extra budget needed</span><b>none</b><span>same total spend</span></div></div>` : ''}
+          ${f.caveats.length ? `<div class="caveats">${f.caveats.map(x => `<div>${ICO.lock} ${x}</div>`).join('')}</div>` : ''}
+        </div>
+        <div class="fchart">${drawChart(c, f, 420, 170)}</div>
+      </div>
+      <div class="ffoot"><span>${badge(c)}</span>
+        <span class="why" data-act="why" data-id="${f.id}">Why this one? ${ICO.chev}</span></div>
+      ${S.openFinding === f.id ? vWhy(f) : ''}
+    </div></article>`;
+}
+function vWhy(f) {
+  const rows = [
+    ['How big is the gap', (f.effect * 100).toFixed(0) + '% from the campaign average'],
+    f.separation != null ? ['How clear of the next one', (f.separation * 100).toFixed(0) + '% clear of ' + shortName(f.runnerUp || '—')] : null,
+    ['How much is behind it', f.baseKind === 'buyers' ? F.int(f.base) + ' attributed buyers' : F.compact(f.base) + ' ' + f.baseKind],
+    ['Trust in the base', (f.reliability * 100).toFixed(0) + '%'],
+    ['Weight of this kind of finding', f.weight.toFixed(2) + '×'],
+    ['Score', f.score.toFixed(3) + (f.goalScore !== f.score ? ` → ${f.goalScore.toFixed(3)} for a ${GOALS[S.goal].label.toLowerCase()}` : '')]
+  ].filter(Boolean);
+  return `<div class="why-panel"><div class="lbl">Why the Editor kept this one</div>
+    <table class="kv">${rows.map(r => `<tr><td>${r[0]}</td><td class="n">${r[1]}</td></tr>`).join('')}</table></div>`;
+}
+
+/* ---------- evidence ---------- */
+function vEvidence() {
+  if (!S.c) return `<div class="wrap"><div class="empty">Pick a campaign first.</div></div>`;
+  const r = S.run, groups = {};
+  r.rejected.forEach(f => f.rejections.forEach(x => { (groups[x.rule] = groups[x.rule] || []).push({ f, why: x.why }); }));
+  const tabs = [['rejected', 'Killed by the Skeptic', r.rejected.length], ['dropped', 'Survived, not used', r.dropped.length],
+                ['used', 'In the story', storyFindings().length], ['agents', 'The six roles', 6]];
+  let body = '';
+  if (S.evidenceFilter === 'rejected') {
+    body = Object.keys(groups).map(rule => `<div class="egroup"><h3>${rule}<span class="egn">${groups[rule].length}</span></h3>
+      ${groups[rule].map(({ f, why }) => `<div class="erow"><div class="et">${f.title || f.type}${f.measureLabel ? `<span class="em">on ${f.measureLabel.toLowerCase()}</span>` : ''}</div><div class="ew">${why}</div></div>`).join('')}</div>`).join('')
+      || '<div class="empty">Nothing was rejected.</div>';
+  } else if (S.evidenceFilter === 'dropped') {
+    body = `<div class="egroup"><h3>Survived the Skeptic, did not make the cut<span class="egn">${r.dropped.length}</span></h3>
+      ${r.dropped.map(f => `<div class="erow"><div class="et">${f.title || f.type}${f.measureLabel ? `<span class="em">on ${f.measureLabel.toLowerCase()}</span>` : ''}</div><div class="ew">${f.dropped || 'Scored below the findings that were chosen.'} <span class="sc">score ${f.score.toFixed(3)}</span></div></div>`).join('')}</div>`;
+  } else if (S.evidenceFilter === 'used') {
+    body = `<div class="egroup"><h3>Chosen for the story<span class="egn">${storyFindings().length}</span></h3>
+      ${storyFindings().map((f, i) => `<div class="erow"><div class="et">${i + 1}. ${f.title}</div><div class="ew">${f.sentence.replace(/<[^>]+>/g, '')} <span class="sc">score ${f.score.toFixed(3)}</span></div></div>`).join('')}</div>`;
+  } else {
+    body = `<div class="agents">${AGENTS.map((a, i) => `<div class="acard"><div class="anum">${i + 1}</div>
+      <div><h3>${a.name}</h3><p>${a.job}</p><div class="astat">${agentStat(a.id)}</div></div></div>`).join('')}</div>
+      <div class="rulebox"><h3>The rule that keeps this honest</h3>
+      <p>Every number was worked out in code, from the measurement run. The only thing written by language is the wording. If the engine cannot compute a number, nothing is allowed to say one.</p></div>`;
+  }
+  return `<div class="wrap">${vAgentBar()}
+    <section class="headline"><div class="lbl">The working</div>
+      <h1>${r.stats.scanned} raised · ${r.rejected.length} killed · ${storyFindings().length} told</h1>
+      <p class="sub">A leader must be <b>${(r.stats.threshold * 100).toFixed(0)}%</b> clear of the next slice before the engine calls it a difference. The more slices examined, the further clear it has to be.</p></section>
+    <div class="etabs">${tabs.map(([k, l, n]) => `<button data-act="efilter" data-f="${k}" class="${S.evidenceFilter === k ? 'on' : ''}">${l}<span class="cnt">${n}</span></button>`).join('')}</div>
+    ${body}</div>`;
+}
+function agentStat(id) {
+  const r = S.run;
+  if (id === 'scout') return `raised <b>${r.stats.scanned}</b> from <b>${r.stats.cells}</b> slices`;
+  if (id === 'skeptic') return `killed <b>${r.rejected.length}</b>, caveated <b>${r.kept.filter(f => f.caveats.length).length}</b>`;
+  if (id === 'advisor') return `recommendation on all <b>${r.kept.length}</b> survivors`;
+  if (id === 'explainer') return `wrote <b>${r.kept.length}</b> sentences`;
+  if (id === 'editor') return `chose <b>${storyFindings().length}</b>, dropped <b>${r.dropped.length}</b>`;
+  return `packed into <b>${S.comp ? S.comp.slides.length : 0}</b> slides, <b>${S.comp ? S.comp.stats.shared : 0}</b> pages shared`;
+}
+
+/* ---------- deck ---------- */
+function vDeck() {
+  if (!S.c || !S.comp) return `<div class="wrap"><div class="empty">Pick a campaign first.</div></div>`;
+  const c = S.c, comp = S.comp;
+  return `<div class="wrap">
+    <div class="deckbar">
+      <div><h1 class="h2">${c.advertiser} · ${c.name}</h1>
+        <p class="note">${comp.slides.length} slides from ${comp.stats.findings} findings · ${comp.stats.shared} pages carry more than one · built for a ${GOALS[S.goal].label.toLowerCase()}</p></div>
+      <div class="btnrow">
+        <button class="btn" data-act="view" data-view="story">Back to the story</button>
+        <button class="btn" data-act="pdf">${ICO.dl} PDF</button>
+        <button class="btn pri" data-act="pptx">${ICO.dl} PowerPoint</button>
+      </div>
+    </div>
+    <div class="composernote">${ICO.wand} <b>${comp.stats.findings} findings packed into ${comp.slides.length} slides${comp.stats.riders ? `, with ${comp.stats.riders} riding along the bottom of a page instead of taking one` : ''}.</b> One slide each would have been ${comp.stats.wouldHaveBeen}. Open any slide's note to see why.</div>
+    <div class="deck">${comp.slides.map(s => vSlide(s, comp.slides.length)).join('')}</div>
+  </div>`;
+}
+function riderStrip(s) {
+  if (!s.riders || !s.riders.length) return '';
+  return `<div class="riders">${s.riders.map(f => `<div class="rider">
+    <div class="rv">${f.stat.v}</div>
+    <div class="rl2">${f.stat.l}</div>
+    <div class="rs">${(S.edits[f.id] != null ? S.edits[f.id] : f.sentence).replace(/<[^>]+>/g, m => m)}</div>
+  </div>`).join('')}</div>`;
+}
+function vSlide(s, total) {
+  const c = S.c;
+  const note = `<div class="snote ${S.openSlide === s.no ? 'open' : ''}">
+    <button class="why" data-act="slidewhy" data-no="${s.no}">Why this layout? ${ICO.chev}</button>
+    ${S.openSlide === s.no ? `<div class="snbody">${s.reason}</div>` : ''}</div>`;
+
+  if (s.layout === 'cover') {
+    const T = c.T;
+    return `<div class="slide cover">
+      <div><div class="lbl">${PROGRAM.retailer} Retail Media · campaign measurement report</div>
+        <h2 class="big">${c.name}</h2>
+        <p class="covnote">${c.note}</p>
+        <div class="covgrid">
+          ${[['Advertiser', c.advertiser], ['Channel', c.kind], ['Flight', c.flight],
+             ['Attribution window', c.windowDays + ' days, post-view and post-click'],
+             ['Products in scope', c.productCount + ' promoted items'],
+             ['Audiences', c.segments.join(', ')],
+             ['Ad groups · ads', c.adgroupCount + ' · ' + c.adCount],
+             ['Budget', F.money(c.budget) + ' booked, ' + F.money(T.spend) + ' spent']].map(k =>
+            `<div><span class="lbl">${k[0]}</span><b>${k[1]}</b></div>`).join('')}
+        </div></div>
+      <div class="covfoot">${badge(c)}<span class="note">Attributed results · not incremental · ${c.maturity.toLowerCase()}, window closes ${c.windowCloses}</span></div>
+      ${note}</div>`;
+  }
+  if (s.layout === 'method') {
+    return `<div class="slide">
+      <div class="sh"><h2>${s.title}</h2><span class="p lock">${ICO.lock} Travels with every deck</span></div>
+      <table class="dt"><tbody>
+        ${[['Window', `${c.windowDays} days after a qualifying view or click. The IAB default is 30 days; ${PROGRAM.retailer} discloses ${c.windowDays}.`],
+           ['Credit', 'Last touch — the last qualifying event before the purchase takes the sale.'],
+           ['Buyers', c.provenance === 'measured' ? 'Loyalty shoppers, resolved through the identity map.' : 'Not available — the partner returns totals, not identities.'],
+           ['Products', c.products],
+           ['Numbers from', c.provenance === 'measured' ? 'Activate matched each exposure to a till or web receipt.' : 'Partner-reported totals, shown as received and never blended.'],
+           ['Maturity', `${c.maturity} — the window closes ${c.windowCloses}, so figures can still rise.`],
+           ['Not claimed', 'No lift, no incrementality, no halo. Those need a hold-out group and come later.']].map(r =>
+          `<tr><td style="width:22%"><b>${r[0]}</b></td><td>${r[1]}</td></tr>`).join('')}
+      </tbody></table>
+      ${s.findings.map(f => `<p class="ins meth">${S.edits[f.id] != null ? S.edits[f.id] : f.sentence}</p>`).join('')}
+      <div class="src">${srcLine(c, s.no, total)}</div>${note}</div>`;
+  }
+  if (s.layout === 'actions') {
+    return `<div class="slide">
+      <div class="sh"><h2>${s.title}</h2><span class="p lock">${ICO.lock} Your words</span></div>
+      <ol class="recos">${s.findings.map(f => `<li><b>${f.title}.</b> ${f.reco}</li>`).join('')}</ol>
+      <div class="src">${srcLine(c, s.no, total)}</div>${note}</div>`;
+  }
+  if (s.layout === 'pair') {
+    return `<div class="slide">
+      <div class="sh"><h2>${s.title}</h2>${badge(c)}</div>
+      ${s.tie ? `<p class="tie">${s.tie}</p>` : ''}
+      <div class="pairgrid">${s.findings.map(f => `<div class="pairhalf">
+        <h3>${f.title}</h3>
+        <div class="chartbox">${drawChart(c, f, 330, 150)}</div>
+        <p class="ins">${S.edits[f.id] != null ? S.edits[f.id] : f.sentence}</p>
+      </div>`).join('')}</div>
+      ${riderStrip(s)}
+      <div class="src">${srcLine(c, s.no, total)}</div>${note}</div>`;
+  }
+  // hero / single
+  const f = s.findings[0];
+  return `<div class="slide">
+    <div class="sh"><h2>${s.title}</h2>${badge(c)}</div>
+    <div class="scols">
+      <div><p class="ins">${S.edits[f.id] != null ? S.edits[f.id] : f.sentence}</p>
+        ${f.reco ? `<p class="ins reco-s"><b>Recommendation.</b> ${f.reco}</p>` : ''}
+        ${f.opportunity ? `<p class="ins opp-s"><b>${F.money(f.opportunity.moved)}</b> moved → <b>+${F.int(f.opportunity.gained)}</b> buyers, <b>${F.moneyC(f.opportunity.gainedSales)}</b> of sales, no extra budget.</p>` : ''}</div>
+      <div>${drawChart(c, f, 440, s.layout === 'hero' ? 215 : 190)}</div>
+    </div>
+    ${riderStrip(s)}
+    <div class="src">${srcLine(c, s.no, total)}</div>${note}</div>`;
+}
+
+/* ---------- archive ---------- */
+function vArchive() {
+  return `<div class="wrap">
+    <section class="headline"><div class="lbl">${ICO.box} Archive</div>
+      <h1>Nothing you remove is thrown away</h1>
+      <p class="sub">Findings you take out of a story stay here with the reason and the time, and go back in exactly where they were.</p></section>
+    ${S.archive.length ? `<div class="egroup"><h3>Removed from this story<span class="egn">${S.archive.length}</span></h3>
+      ${S.archive.map((a, i) => `<div class="erow arow">
+        <div class="et">${a.f.title}<span class="em">${CHAPTERS[a.f.chapter].label} · removed ${a.at}</span></div>
+        <div class="ew">${a.f.sentence.replace(/<[^>]+>/g, '')}</div>
+        <button class="btn sm" data-act="restore" data-id="${a.f.id}">${ICO.plus} Put it back</button>
+      </div>`).join('')}</div>` : '<div class="empty">The archive is empty. Remove a finding from the story and it will appear here.</div>'}
+    ${S.run ? `<div class="egroup"><h3>Never shown: killed by the Skeptic<span class="egn">${S.run.rejected.length}</span></h3>
+      <div class="erow"><div class="et">Kept for the record</div><div class="ew">These were raised and rejected. They are listed in full under <button class="linkb" data-act="view" data-view="evidence">Evidence</button>, with the reason each one was killed. They are never silently deleted.</div></div></div>` : ''}
+  </div>`;
+}
+
+/* ---------- modal ---------- */
+function vModal() {
+  if (!S.modal || !S.comp) return '';
+  const c = S.c;
+  return `<div class="scrim" data-act="closemodal"><div class="sheet" role="dialog" aria-label="Export">
+    <h3>${c.name.replace(/[^A-Za-z0-9]+/g, '_')}.pptx</h3>
+    <p class="note">In the shipped product this writes a native PowerPoint — real text boxes, real tables, vector charts, the retailer's master. Here it is the manifest the Composer produced.</p>
+    <ol class="manifest">${S.comp.slides.map(s => `<li><b>${s.title}</b><span class="mlay">${s.layout}${s.findings.length > 1 ? ` · ${s.findings.length} findings` : ''}</span></li>`).join('')}</ol>
+    <div class="mfoot"><div class="note">${S.comp.stats.findings} findings → ${S.comp.slides.length} slides · ${S.comp.stats.merged} shared pages</div>
+      <button class="btn pri" data-act="closemodal">Close</button></div></div></div>`;
+}
+
+/* ---------- render ---------- */
+function render() {
+  const v = S.view === 'program' ? vProgram() : S.view === 'deep' ? vDeep() : S.view === 'story' ? vStory()
+    : S.view === 'evidence' ? vEvidence() : S.view === 'deck' ? vDeck() : vArchive();
+  document.getElementById('app').innerHTML = vHeader() + v + vModal();
+}
+
+/* ---------- events ---------- */
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-act]');
+  if (!el) return;
+  const a = el.dataset.act;
+  if (a === 'view') { S.view = el.dataset.view; render(); window.scrollTo(0, 0); }
+  else if (a === 'drill') { S.drill.push(el.dataset.id); render(); }
+  else if (a === 'undrill') { S.drill = S.drill.slice(0, +el.dataset.i); render(); }
+  else if (a === 'clearfilters') { S.filters = { weekFrom: 'w34', weekTo: 'w42', campaigns: [], adgroups: [], ads: [] }; S.drill = []; render(); }
+  else if (a === 'build') { loadCampaign(el.dataset.id); S.view = 'story'; render(); window.scrollTo(0, 0); }
+  else if (a === 'goal') { S.goal = el.dataset.goal; S.removed = {}; S.edits = {}; S.archive = []; recompose(); render(); }
+  else if (a === 'rerun') { S.removed = {}; S.edits = {}; S.archive = []; recompose(); render(); }
+  else if (a === 'remove') {
+    const f = S.run.story.find(x => x.id === el.dataset.id);
+    S.removed[f.id] = true;
+    S.archive.unshift({ f, at: new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) });
+    S.comp = compose(storyFindings(), S.c, S.goal); render();
+  }
+  else if (a === 'restore') {
+    delete S.removed[el.dataset.id];
+    S.archive = S.archive.filter(x => x.f.id !== el.dataset.id);
+    S.comp = compose(storyFindings(), S.c, S.goal); render();
+  }
+  else if (a === 'why') { S.openFinding = S.openFinding === el.dataset.id ? null : el.dataset.id; render(); }
+  else if (a === 'slidewhy') { S.openSlide = S.openSlide === +el.dataset.no ? null : +el.dataset.no; render(); }
+  else if (a === 'efilter') { S.evidenceFilter = el.dataset.f; render(); }
+  else if (a === 'moveup' || a === 'movedown') {
+    const arr = S.run.story, i = arr.findIndex(f => f.id === el.dataset.id), j = a === 'moveup' ? i - 1 : i + 1;
+    if (j >= 0 && j < arr.length) { const t = arr[i]; arr[i] = arr[j]; arr[j] = t; }
+    S.comp = compose(storyFindings(), S.c, S.goal); render();
+  }
+  else if (a === 'dim') {
+    const k = el.dataset.k, d = S.deep;
+    if (d.dims.includes(k)) { if (d.dims.length > 1) d.dims = d.dims.filter(x => x !== k); }
+    else if (d.dims.length < 4) d.dims.push(k);
+    render();
+  }
+  else if (a === 'meas') {
+    const k = el.dataset.k, d = S.deep;
+    if (d.measures.includes(k)) { if (d.measures.length > 1) d.measures = d.measures.filter(x => x !== k); }
+    else d.measures.push(k);
+    render();
+  }
+  else if (a === 'sort') {
+    if (S.deep.sortKey === el.dataset.k) S.deep.sortDir *= -1; else { S.deep.sortKey = el.dataset.k; S.deep.sortDir = -1; }
+    render();
+  }
+  else if (a === 'more') { S.deep.limit += 40; render(); }
+  else if (a === 'csv') downloadCsv();
+  else if (a === 'pptx') { S.modal = 1; render(); }
+  else if (a === 'closemodal') { S.modal = null; render(); }
+  else if (a === 'pdf') { S.view = 'deck'; render(); setTimeout(() => window.print(), 80); }
+});
+
+document.addEventListener('change', e => {
+  const el = e.target.closest('[data-act]');
+  if (!el) return;
+  if (el.dataset.act === 'filter') { S.filters[el.dataset.k] = el.value; S.drill = []; render(); }
+  else if (el.dataset.act === 'mfilter') {
+    S.filters[el.dataset.k] = [...el.selectedOptions].map(o => o.value);
+    if (el.dataset.k === 'campaigns') { S.filters.adgroups = []; S.filters.ads = []; }
+    if (el.dataset.k === 'adgroups') S.filters.ads = [];
+    S.drill = []; render();
+  }
+  else if (el.dataset.act === 'drillmeasure') { S.drillMeasure = el.value; render(); }
+});
+
+document.addEventListener('blur', e => {
+  const el = e.target.closest ? e.target.closest('[data-act="edit"]') : null;
+  if (el) S.edits[el.dataset.id] = el.innerHTML;
+}, true);
+
+async function downloadCsv() {
+  const rows = filterFacts(S.filters), d = S.deep;
+  const g = groupBy2(rows, d.dims);
+  const head = [...d.dims.map(k => DIM_DEFS.find(x => x.key === k).label), ...d.measures.map(k => MEASURE_DEFS[k].label)];
+  const body = g.map(r => [...d.dims.map(k => `"${String(r[k]).replace(/"/g, '""')}"`), ...d.measures.map(k => r[k] == null ? '' : (Math.round(r[k] * 1000) / 1000))].join(','));
+  const csv = head.join(',') + '\n' + body.join('\n');
+  try {
+    const downloads = window.claude && claude.use ? await claude.use('downloads') : null;
+    if (downloads) { await downloads.save({ filename: 'retail_media_deep_dive.csv', data: csv }); return; }
+  } catch (e) { /* viewer declined or unavailable — fall through */ }
+  const a2 = document.createElement('a');
+  a2.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+  a2.download = 'retail_media_deep_dive.csv'; a2.click();
+  setTimeout(() => URL.revokeObjectURL(a2.href), 2000);
+}
+
+render();
+</script>
+</body>
+</html>
+
+</body></html>
