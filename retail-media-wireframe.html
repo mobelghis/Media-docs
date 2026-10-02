@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Retail Media — low-fidelity wireframe (scoping only)</title>
+<style>
+/* ============================================================================
+   Deliberately unstyled. Greyscale, system font, no brand assets.
+
+   The fidelity is the message. This shows STRUCTURE, STATES and COMPONENT
+   COUNT so the work can be sized. It is not a design, and it must not be
+   read as one — user research comes before any visual decisions.
+
+   What IS meant to be accurate: the section sequence, the states, and the
+   mapping of each block to an existing Activate / Athena component. Switch on
+   "component mapping" to see it.
+   ========================================================================== */
+* { box-sizing: border-box; }
+h1,h2,h3,h4,p,dl,dd,dt,ul,ol,figure { margin: 0; padding: 0; }
+body { margin: 0; background: #e8e8ea; color: #3f3f46;
+  font: 14px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+.mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+/* --- Warnbanner: muss unübersehbar sein --------------------------------- */
+.warn { background: #3f3f46; color: #fafafa; padding: 14px 20px; text-align: center; }
+.warn b { display: block; font-size: 15px; letter-spacing: .04em; text-transform: uppercase; }
+.warn span { display: block; max-width: 940px; margin: 6px auto 0; font-size: 13px;
+  color: #d4d4d8; }
+
+/* --- Laborleiste: Umschalter, kein Produktteil -------------------------- */
+.bar { position: sticky; top: 0; z-index: 50; background: #27272a; color: #e4e4e7;
+  padding: 10px 16px; display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
+.bar strong { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #a1a1aa; }
+.bar__grp { display: flex; gap: 4px; align-items: center; }
+.bar__grp > span { font-size: 12px; color: #a1a1aa; margin-right: 4px; }
+.bar button { font: inherit; font-size: 13px; padding: 5px 10px; border-radius: 3px;
+  border: 1px solid #52525b; background: transparent; color: #d4d4d8; cursor: pointer; }
+.bar button:hover { background: #3f3f46; }
+.bar button[aria-pressed="true"] { background: #e4e4e7; color: #18181b; border-color: #e4e4e7; }
+
+/* --- Rahmen ------------------------------------------------------------- */
+.frame { width: 1180px; margin: 18px auto 0; background: #f4f4f5; border: 1px solid #c4c4c8; }
+.chrome { background: #dcdcdf; border-bottom: 1px solid #c4c4c8; padding: 8px 14px;
+  display: flex; align-items: center; gap: 10px; font-size: 12px; color: #52525b; }
+.chrome__box { width: 92px; height: 14px; background: #c4c4c8; }
+.chrome__nav { width: 44px; background: #dcdcdf; border-right: 1px solid #c4c4c8; }
+.chrome__nav span { display: block; width: 20px; height: 20px; margin: 10px auto;
+  background: #c4c4c8; border-radius: 2px; }
+.cols { display: flex; align-items: stretch; }
+.page { flex: 1; min-width: 0; }
+
+.phead { background: #fff; border-bottom: 1px solid #d4d4d8; padding: 16px 20px; }
+.crumbs { font-size: 12px; color: #71717a; margin-bottom: 6px; }
+.crumbs button { font: inherit; background: none; border: 0; padding: 0; cursor: pointer;
+  color: #3f3f46; text-decoration: underline; }
+.phead h1 { font-size: 21px; line-height: 1.3; }
+.phead__sub { font-size: 13px; color: #71717a; margin-top: 3px; }
+.phead__row { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
+.phead__tools { display: flex; gap: 6px; flex: none; }
+.btn { font: inherit; font-size: 13px; padding: 6px 12px; border: 1px solid #a1a1aa;
+  background: #fff; color: #3f3f46; cursor: pointer; border-radius: 3px; }
+.btn--fill { background: #52525b; color: #fff; border-color: #52525b; }
+.btn:hover { background: #e4e4e7; } .btn--fill:hover { background: #3f3f46; }
+
+.content { padding: 18px 20px 40px; display: flex; flex-direction: column; gap: 14px; }
+
+/* --- Vision-Schicht V1–V3 ----------------------------------------------- */
+.verdict { background: #fff; border: 1px solid #d4d4d8; padding: 18px 20px;
+  display: flex; flex-direction: column; gap: 14px; }
+.vlabel { font-size: 13px; font-weight: 600; color: #71717a; }
+.vval { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-top: 3px; }
+.vval b { font: 700 32px/40px inherit; }
+.vval span { font-size: 14px; color: #71717a; }
+.vhead { font-size: 16px; max-width: 780px; }
+.stand { display: flex; flex-direction: column; border: 1px solid #e4e4e7; margin-top: 6px; }
+.stand__r { display: grid; grid-template-columns: 104px 1fr; gap: 12px; padding: 9px 14px;
+  align-items: baseline; }
+.stand__r + .stand__r { border-top: 1px solid #e4e4e7; }
+.stand__k { display: flex; align-items: baseline; gap: 7px; font-size: 13px; font-weight: 600;
+  color: #71717a; }
+.stand__k::before { content: ''; width: 8px; height: 8px; border-radius: 50%; flex: none;
+  transform: translateY(-2px); background: #a1a1aa; }
+.stand__r[data-t="good"]  .stand__k::before { background: #3f3f46; }
+.stand__r[data-t="watch"] .stand__k::before { background: #71717a; border-radius: 1px; }
+
+.ladder { display: flex; border: 1px solid #d4d4d8; margin-top: 6px; }
+.ladder__s { flex: 1; padding: 9px 14px; }
+.ladder__s + .ladder__s { border-left: 1px solid #d4d4d8; }
+.ladder__s b { display: block; font-size: 13px; }
+.ladder__s small { color: #71717a; font-size: 12px; }
+.ladder__s[data-s="current"] { box-shadow: inset 0 -3px 0 #3f3f46; }
+.ladder__s[data-s="blocked"] { background: #f4f4f5; color: #a1a1aa; }
+.ladder__s[data-s="blocked"] b, .ladder__s[data-s="blocked"] small { color: #a1a1aa; }
+.alias { font-weight: 400; font-size: 11px; color: #71717a; }
+
+/* --- Inhaltsverzeichnis + Dokument -------------------------------------- */
+.story { display: grid; grid-template-columns: 290px minmax(0,1fr); gap: 14px; align-items: start; }
+.nav { background: #fff; border: 1px solid #d4d4d8; position: sticky; top: 56px; }
+.nav__g { padding: 9px 12px 4px; font-size: 13px; font-weight: 600; color: #71717a;
+  background: #f4f4f5; border-top: 1px solid #e4e4e7; }
+.nav__g:first-of-type { border-top: 0; }
+.nav__i { display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px 12px;
+  border: 0; background: none; text-align: left; cursor: pointer; font: inherit; font-size: 13px; }
+.nav__i:hover { background: #f4f4f5; }
+.nav__n { width: 20px; flex: none; color: #a1a1aa; font-size: 11px;
+  font-variant-numeric: tabular-nums; }
+.nav__dot { width: 8px; height: 8px; border-radius: 50%; flex: none; background: #dcdcdf; }
+.nav__i[data-k="issue"]        .nav__dot { background: #3f3f46; }
+.nav__i[data-k="insufficient"] .nav__dot { background: #71717a; }
+.nav__i[data-k="unsupported"]  .nav__dot { background: #c4c4c8; }
+.nav__i[data-k="processing"]   .nav__dot { background: #a1a1aa; }
+.nav__t { flex: 1; min-width: 0; }
+.nav__note { font-size: 11px; color: #71717a; white-space: nowrap; }
+
+.doc { background: #fff; border: 1px solid #d4d4d8; }
+.sec { padding: 18px 22px; border-bottom: 1px solid #e4e4e7; }
+.sec:last-child { border-bottom: 0; }
+.sec--blocked { background: #f4f4f5; padding: 12px 22px; }
+.sec__t { font-size: 15px; font-weight: 600; display: flex; align-items: baseline; gap: 9px; }
+.sec__n { font-size: 11px; color: #a1a1aa; font-weight: 400;
+  font-variant-numeric: tabular-nums; }
+.sec__flag { font-size: 13px; font-weight: 400; color: #71717a; }
+.sec__bd { display: flex; flex-direction: column; gap: 14px; margin-top: 12px; }
+.src { font-size: 11px; color: #a1a1aa; margin-top: 12px; }
+
+/* --- V4 gerechnete Deutung ---------------------------------------------- */
+.read { display: flex; flex-direction: column; gap: 5px; }
+.read__r { display: flex; align-items: baseline; gap: 9px; font-size: 14px; }
+.read__d { width: 8px; height: 8px; border-radius: 50%; flex: none; background: #dcdcdf;
+  transform: translateY(-1px); }
+.read__r[data-t="good"]  .read__d { background: #3f3f46; }
+.read__r[data-t="watch"] .read__d { background: #71717a; border-radius: 1px; }
+
+/* --- T1 Faktenblock ----------------------------------------------------- */
+.kv { display: grid; grid-template-columns: 215px 1fr; gap: 7px 18px; font-size: 14px; }
+.kv dt { color: #71717a; }
+.seglist { display: flex; flex-direction: column; }
+.seglist li { list-style: none; display: grid; grid-template-columns: 24px 1fr; gap: 10px;
+  padding: 9px 0; border-top: 1px solid #e4e4e7; }
+.seglist li:first-child { border-top: 0; padding-top: 0; }
+.seglist b { font-weight: 600; } .seglist small { display: block; color: #71717a; font-size: 12px; }
+.steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+.step { border: 1px dashed #c4c4c8; padding: 12px; }
+.step i { display: inline-block; width: 20px; height: 20px; background: #e4e4e7;
+  text-align: center; font: 12px/20px inherit; font-style: normal; margin-bottom: 6px; }
+.step b { display: block; font-size: 13px; } .step small { color: #71717a; font-size: 12px; }
+
+/* --- T2 KPI-Reihe ------------------------------------------------------- */
+.kpis { display: flex; gap: 10px; flex-wrap: wrap; }
+.kpi { flex: 1 1 170px; border: 1px solid #e4e4e7; background: #fafafa; padding: 12px; }
+.kpi__l { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: #71717a; }
+.kpi__v { font-size: 25px; font-weight: 600; line-height: 1.2; margin-top: 2px; }
+.kpi__r { font-size: 12px; color: #71717a; margin-top: 2px; }
+.kpi--none .kpi__r { color: #c4c4c8; }
+
+/* --- T3 Segmenttabelle -------------------------------------------------- */
+.tw { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th, td { padding: 8px 10px; border-bottom: 1px solid #e4e4e7; text-align: right;
+  white-space: nowrap; font-variant-numeric: tabular-nums; }
+th:first-child, td:first-child { text-align: left; }
+thead th { font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: #71717a;
+  font-weight: 600; border-bottom: 1px solid #a1a1aa; }
+thead th[title] { cursor: help; text-decoration: underline dotted #c4c4c8; }
+tr.total td { font-weight: 600; background: #f4f4f5; }
+td.sup { color: #a1a1aa; cursor: help; }
+tbody tr:hover td { background: #fafafa; }
+
+/* --- T4 Anteilspaar ----------------------------------------------------- */
+.prop { display: grid; grid-template-columns: auto 18px auto; gap: 16px; align-items: center;
+  border: 1px solid #e4e4e7; background: #fafafa; padding: 14px 16px; }
+.prop__l { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: #71717a; }
+.prop__f { font-size: 25px; font-weight: 600; }
+.prop__a { color: #a1a1aa; text-align: center; }
+.prop__w { grid-column: 1/-1; }
+.prop__bar { height: 22px; background: #e4e4e7; position: relative; overflow: hidden; }
+.prop__bar i { position: absolute; inset: 0 auto 0 0; background: #71717a; min-width: 3px; }
+.prop__s { font-size: 14px; font-weight: 600; margin-top: 7px; }
+.prop__d { font-size: 12px; color: #71717a; margin-top: 3px; }
+
+/* --- T5 gepaarte 100-%-Säulen ------------------------------------------- */
+.stack { display: flex; gap: 28px; align-items: flex-end; }
+.stack__c { width: 110px; flex: none; }
+.stack__b { height: 230px; display: flex; flex-direction: column; border: 1px solid #d4d4d8; }
+.stack__s { display: flex; align-items: center; justify-content: center; font-size: 12px;
+  color: #fff; overflow: hidden; }
+.stack__cap { text-align: center; font-size: 12px; font-weight: 600; margin-top: 7px; }
+.stack__lg { display: flex; flex-direction: column; gap: 6px; font-size: 12px; }
+.stack__lg span { display: flex; align-items: center; gap: 7px; }
+.stack__lg i { width: 12px; height: 12px; flex: none; }
+.ph { font-size: 11px; color: #71717a; border: 1px dashed #c4c4c8; padding: 5px 8px;
+  display: inline-block; }
+
+/* --- T6 Deutung, Langform ---------------------------------------------- */
+.concl { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.concl h4 { font-size: 13px; font-weight: 600; margin-bottom: 7px; }
+.concl li { margin: 0 0 7px 16px; font-size: 14px; }
+.limits { border: 1px solid #d4d4d8; background: #fafafa; padding: 12px 14px; }
+.limits h4 { font-size: 13px; margin-bottom: 6px; }
+.limits li { margin: 0 0 5px 16px; font-size: 13px; }
+
+/* --- Zustände ----------------------------------------------------------- */
+.state { border: 1px solid #d4d4d8; background: #fff; padding: 12px 14px; margin-top: 9px; }
+.state p { font-size: 13px; color: #52525b; }
+.state dl { display: grid; grid-template-columns: 130px 1fr; gap: 4px 14px; font-size: 12px;
+  margin-top: 9px; }
+.state dt { color: #71717a; }
+.skel { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+.skel i { height: 13px; background: #e4e4e7; display: block; }
+.skel i:nth-child(1){width:45%} .skel i:nth-child(2){width:80%} .skel i:nth-child(3){width:62%}
+
+.hint { font-size: 12px; color: #71717a; }
+.foot { width: 1180px; margin: 0 auto 50px; padding: 16px 20px; background: #dcdcdf;
+  border: 1px solid #c4c4c8; border-top: 0; font-size: 12px; color: #52525b; }
+[hidden] { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="warn">
+  <b>Low-fidelity wireframe — for scoping and estimation only</b>
+  <span>This is not a design. Visual design, interaction detail and final copy are not
+    decided. The team is stepping back to run user research before any high-fidelity work,
+    and Figma will follow. Example content is real so the structure is tested against
+    something, not so the numbers are reviewed. What is meant to be roughly accurate
+    is the section sequence and the data states. Everything else — layout, visual design,
+    copy and interaction detail — is undecided and will change.</span>
+</div>
+
+<div class="bar">
+  <strong>Wireframe</strong>
+  <div class="bar__grp"><span>Screen</span>
+    <button data-screen="list">Campaign list</button>
+    <button data-screen="report" aria-pressed="true">Campaign report</button>
+    <button data-screen="compare">Compare campaigns</button>
+  </div>
+</div>
+
+<div class="frame">
+  <div class="chrome"><span class="chrome__box"></span>Activate</div>
+  <div class="cols">
+    <nav class="chrome__nav"><span></span><span></span><span></span><span></span><span></span></nav>
+    <div class="page">
+      <div class="phead" id="head"></div>
+      <div class="content" id="view"></div>
+    </div>
+  </div>
+</div>
+<div class="foot">
+  <b>Reminder.</b> Scoping artefact, for estimation only. Greyscale and system type are
+  deliberate so this is not mistaken for finished design. Example content comes from the
+  measurement report we deliver today, so the structure is tested against something real —
+  the numbers themselves are not up for review. Two benchmark series are marked as
+  placeholders where the source figures were not readable. Section order, labels and counts
+  will change once the user problems are defined.
+</div>
+
+<script>
+/* ===========================================================================
+   Content is the measurement report we deliver today (five-week social
+   campaign, liqueur, Apr–Jun 2026), so the structure is tested against real
+   content rather than lorem ipsum.
+   Sections 1–11 and 14 exist today. Sections 12 and 13 do not — they are what
+   later releases add, and they are shown from the start saying so.
+   ========================================================================= */
+
+const C = {
+  advertiser: 'Saint Germain', name: 'Social Retail — Spring Launch',
+  retailer: 'Carrefour', channel: 'Social — Meta',
+  period: '29/04/2026 – 31/05/2026', window: '01/06/2026 – 30/06/2026',
+  measured: '28/04/2026 – 30/06/2026', id: 'RM-SG-0426',
+};
+const SRC = `Source: ${C.retailer} loyalty card holders database · confidential · ${C.measured}`;
+const SRC_M = 'Source: media partner · internal and confidential data';
+
+const Q = ['What was this campaign?', 'Did it deliver as planned?',
+           'What did the selected shoppers buy?', 'What is the approved conclusion?'];
+
+/* --- V4: gerechnete Deutung. Jede Zahl hat einen Bezug. ----------------- */
+const READ = {
+  delivery: [['good', 'Impressions', '14 M', '6.2 M above the partner estimate of 7.8 M'],
+             ['good', 'CPM', '€2.4', '€1.9 below the partner estimate of €4.3']],
+  conversion: [['good', 'The conversion rate', '0.25 %', '0.07pp above the 0.18 % category norm']],
+  bysegment: [['good', 'Conversion among summer liquor buyers', '0.81 %',
+                '3.2× the campaign average of 0.25 %'],
+              ['flat', 'Concentration', '74 %',
+                'of all purchasing shoppers come from the top two segments']],
+  equation: [['good', 'Revenue per client', '€27.5', '€2.5 above the €25.0 norm'],
+             ['flat', 'The average basket', '€24.8', 'in line with the €23.5 norm'],
+             ['good', 'Revenue against the agreed target', '111 %', '11.3pp above target']],
+  loyalty: [['good', 'Repeat share', '9 %', '2.0pp above the 7 % norm']],
+  channel: [['good', 'E-commerce share of revenue', '7 %', '4.0pp above the category at 3 %']],
+};
+
+/* --- Die vierzehn Abschnitte -------------------------------------------- */
+const SECTIONS = [
+ { n:1, id:'context', q:0, t:'Campaign overview', type:'T1', story:'FE-3', src:SRC, body:()=>kv([
+     ['Report type','Alternative conversion — descriptive'],
+     ['Campaign type', C.channel],
+     ['Objective','Recruit category shoppers for a new listing'],
+     ['Campaign period', C.period],
+     ['Attribution window', C.window],
+     ['Measurement period', C.measured + ' — campaign plus a 30-day window'],
+     ['Redirection','Link to the retailer site'],
+     ['Targeting basis','Retailer loyalty data, frozen 27/04/2026'],
+     ['Campaign ID', C.id]]) },
+
+ { n:2, id:'audiences', q:0, t:'Audience definitions', type:'T1', story:'FE-3', src:SRC, body:()=>`
+   <ol class="seglist">${[
+     ['Summer liquor buyers',''],
+     ['Winter liquor buyers','excluding summer liquor'],
+     ['Prosecco / white wine buyers','excluding summer and winter liquor'],
+     ['Vermouth / Martini buyers','excluding summer, winter and prosecco']]
+     .map(([a,b],i)=>`<li><span class="mono">${i+1}</span><span><b>${a}</b>
+       ${b?`<small>${b}</small>`:''}</span></li>`).join('')}</ol>
+   <p class="hint">Segments are mutually exclusive: each excludes the ones above it, so a
+     shopper is counted once. Every audience counts as recruitment here, because the product
+     had no prior buyers.</p>` },
+
+ { n:3, id:'delivery', q:1, t:'Campaign delivery', type:'T2', story:'FE-5',
+   src:SRC_M, body:()=>`
+   <div class="kpis">${kpi('Impressions','14 M','estimated: 7.8 M')}
+     ${kpi('CPM','€2.4','estimated: €4.3','lower is better')}
+     ${kpi('Reach','1.5 M',null)}${kpi('Clicks','38,700',null)}</div>
+   <p class="hint">Supplied by the media partner. Not calculated or validated by us.</p>` },
+
+ { n:4, id:'method', q:2, t:'How this was measured', type:'T1', story:'FE-3', body:()=>`
+   <div class="steps">${[
+     ['Audience building','Segments are created from buying habits in the retailer’s loyalty data.'],
+     ['Exposable group','Audiences are activated with the media partner. The exposable group is everyone who could have seen the campaign.'],
+     ['Sales measure','Sales KPIs are measured per activated audience over the measurement period.']]
+     .map(([t,d],i)=>`<div class="step"><i>${i+1}</i><b>${t}</b><small>${d}</small></div>`).join('')}</div>
+   <p class="hint">A descriptive method. It shows what the selected shoppers bought; it does
+     not isolate the effect of the advertising. Stating the method in the report is the point
+     — advertisers tell us the biggest frustration today is methodology they cannot see.</p>` },
+
+ { n:5, id:'conversion', q:2, t:'Conversion overview', type:'T3 + T4', story:'FE-6, FE-7', src:SRC, body:()=>
+   table(['Segment','Exposable group','Shoppers','Conversion rate'],[],
+     ['Total','4.8 M','12.2 K','0.25 %'])
+   + prop('Exposable group','4.8 M','Purchasing shoppers','12.2 K',0.25,
+     '0.25 % of the exposable group bought',
+     'A small share, which is normal for this measure. The bar has a minimum width so it stays visible — the number carries the meaning.') },
+
+ { n:6, id:'bysegment', q:2, t:'Conversion by segment', type:'T3', story:'FE-6', src:SRC, body:()=>
+   table(['Segment','Exposable group','Shoppers','Conversion rate'],[
+     ['Prosecco / white wine buyers','3.3 M','4.6 K','0.14 %'],
+     ['Summer liquor buyers','537 K','4.3 K','0.81 %'],
+     ['Winter liquor buyers','477 K','2.3 K','0.47 %'],
+     ['Vermouth / Martini buyers','505 K','1.0 K','0.19 %']],
+     ['Total','4.8 M','12.2 K','0.25 %']) },
+
+ { n:7, id:'equation', q:2, t:'Business equation by audience', type:'T3', story:'FE-6', src:SRC, body:()=>
+   table(['Segment','Shoppers','Revenue','Transactions','Revenue / client','Frequency',
+          'Avg. basket','Items / basket','Price / product'],[
+     ['Prosecco / white wine buyers','4,613','€124 K','5,012','€26.8','1.1','€24.7','1.1','€22.6'],
+     ['Summer liquor buyers','4,333','€121 K','4,861','€27.9','1.1','€24.9','1.1','€22.6'],
+     ['Winter liquor buyers','2,252','€64 K','2,567','€28.3','1.1','€24.9','1.1','€22.6'],
+     ['Vermouth / Martini buyers','954','€26 K','1,047','€26.8','1.1','€24.4','1.1','€22.6']],
+     ['Total','12,152','€334 K','13,487','€27.5','1.1','€24.8','1.1','€22.6']) },
+
+ { n:8, id:'loyalty', q:2, t:'Repeat purchase', type:'T4', story:'FE-7', src:SRC, body:()=>
+   prop('Purchasing shoppers','12.2 K','Repeat shoppers','1.1 K',9,
+     '9 % bought at least twice',
+     'A repeat shopper bought the product on at least two separate occasions during the campaign. The definition is part of the result.') },
+
+ { n:9, id:'channel', q:2, t:'Performance by retailer channel', type:'T2 + T3',
+   story:'FE-5, FE-6', src:SRC, body:()=>`
+   <div class="kpis">${kpi('E-commerce share of revenue','7 %','category: 3 %','+4 pts')}</div>
+   ${table(['Channel','Revenue / client','Avg. basket','Price / product','Items / basket'],[
+     ['E-commerce','€27.2','€25.3','€22.7','1.1'],
+     ['Hypermarket','€27.4','€24.9','€22.5','1.1'],
+     ['Supermarket','€26.5','€24.2','€22.7','1.1']],
+     ['Total','€27.3','€24.8','€22.6','1.1'])}
+   <p class="hint">Retailer channel, not media channel. Covering stores as well as
+     e-commerce is one of the capabilities advertisers score networks on.</p>` },
+
+ { n:10, id:'lifestage', q:2, t:'Shopper profile — lifestage', type:'T5', story:'FE-8',
+   src:SRC, body:()=>stack(['Families','40–64 years','25–39 years','65 and over','18–24 years'],
+     [47,29,13,10,1],[44,28,14,10,4], C.advertiser,'Category',
+     'Buyers are mainly parents. The structure matches the category, but the youngest segment is almost absent for the brand.') },
+
+ { n:11, id:'consostyle', q:2, t:'Shopper profile — consumption style', type:'T5', story:'FE-8', src:SRC,
+   body:()=>stack(['Gourmet','Nutrition','Convenience','Budget','Deal seekers'],
+     [32,27,18,13,10],[22,15,22,21,20], C.advertiser,'Category',
+     'Gourmet and nutrition lead, which says buyers are drawn by quality rather than price.') },
+
+ { n:12, id:'attributed', q:3, t:'Attributed result', type:'T2', story:'FE-5', src:SRC, body:()=>`
+   <div class="kpis">${kpi('Attributed revenue','€197 K','59 % of selected-shopper revenue')}
+     ${kpi('Attributed shoppers','7.5 K',null)}
+     ${kpi('Attribution rule','14-day post-click','approved v3')}</div>
+   <p class="hint">Links a purchase to an exposure using an agreed rule. It does not show the
+     campaign caused the purchase.</p>
+   <p class="ph">Illustrative — derived from the descriptive result. This result does not
+     exist for this campaign yet; the section shows the structure.</p>` },
+
+ { n:13, id:'increment', q:3, t:'Incremental impact', type:'T2', story:'FE-5', src:SRC, body:()=>`
+   <div class="kpis">${kpi('Incremental revenue','€60 K','range €46 K – €74 K')}
+     ${kpi('Method','Matched control','approved v2')}
+     ${kpi('Uncertainty','±23 %','around the central estimate')}</div>
+   <p class="hint">The range is part of the result and is never dropped to show a single
+     number.</p>
+   <p class="ph">Illustrative — derived from the descriptive result. This result does not
+     exist for this campaign yet; the section shows the structure.</p>` },
+
+ { n:14, id:'conclusion', q:3, t:'Conclusion', type:'T6', story:'FE-4', src:SRC, body:()=>`
+   ${kv([['Result type','Alternative conversion — descriptive'],
+         ['Data used','Frozen campaign audience + retailer transaction data'],
+         ['Data period', C.measured],['Result version','v1.0']])}
+   <div class="concl">
+     <div><h4>Learnings</h4><ul>
+       <li><b>A visible impact on e-commerce.</b> The +4 pts gap against the category shows a
+         real campaign effect on that channel.</li>
+       <li><b>A distinct clientele.</b> Buyers are drawn by quality, and are slightly older
+         than the category.</li>
+       <li><b>A clear targeting path.</b> Revenue and shopper counts point to two audiences
+         worth repeating.</li></ul></div>
+     <div><h4>Recommendations</h4><ul>
+       <li>Concentrate on the two best-performing segments: summer and winter liquor buyers.</li>
+       <li>Split prosecco / white wine in two, to see which drove the result.</li>
+       <li>Test a social retail format for the brand bundled with a second product.</li>
+     </ul></div></div>
+   <p class="hint">Written by a person on top of the calculated readings in the sections
+     above. The readings themselves are not hand-written — that is the difference from the
+     deck we produce today, where all nine commentary sentences are typed by an analyst.</p>
+   <div class="limits"><h4>Limitations</h4><ul>
+     <li>Does not prove the ads caused the purchase.</li>
+     <li>Not incremental — must not be presented as sales lift or ROAS.</li>
+     <li>Valid only for the measurement period stated above.</li></ul></div>` },
+];
+
+/* --- Datenszenarien ----------------------------------------------------- */
+const BLOCK = {
+  attributed: ['unsupported','Not supported in release 1',
+    'An attributed result needs shopper exposure data and an approved attribution rule.',
+    'The attribution rule is not yet agreed.',
+    'Data Science defines the rule, governance approves it.','A later release.'],
+  increment: ['unsupported','Not available in release 1',
+    'Incremental measurement needs an approved control or causal method and sign-off.',
+    'Until the method is approved this stays closed, rather than showing a weaker number in its place.',
+    'Data Science, with the retailer and partner supplying control data.','A later release.'],
+};
+const SCENARIOS = {
+  complete: {},
+  phase1: { attributed: BLOCK.attributed, increment: BLOCK.increment,
+    consostyle: ['insufficient','Not supplied',
+      'Consumption-style profiling is not part of the agreed data set for this retailer.',
+      'No named data source exists for it yet.',
+      'Data operations, with the retailer.','Not scheduled.'] },
+  partner: { delivery: ['issue','Data issue',
+      'The media partner has not delivered the exposure file for this campaign.',
+      'Exposure data is required to identify the group that could see the ads.',
+      'Media partner, chased by Data operations.',
+      'When the file arrives. No replacement result is created.'],
+    attributed: BLOCK.attributed, increment: BLOCK.increment },
+  running: { conversion:['processing','Outcome period still open',
+      'The attribution window closes on 30/06/2026. Conversion is calculated after that.',
+      'The window has to close before the result exists.','Automatic.','After 30/06/2026.'],
+    bysegment:['processing','Outcome period still open','Follows the conversion overview.',
+      'Same window.','Automatic.','After 30/06/2026.'],
+    equation:['processing','Outcome period still open',
+      'Revenue and transaction KPIs need the complete outcome period.','Same window.',
+      'Automatic.','After 30/06/2026.'],
+    loyalty:['processing','Outcome period still open',
+      'Repeat purchase can only be counted once the window closes.','Same window.',
+      'Automatic.','After 30/06/2026.'],
+    conclusion:['processing','Written after the result is final',
+      'Learnings are added once the numbers are published.',
+      'The conclusion follows the result, not the other way round.',
+      'Retail Media Manager.','After 30/06/2026.'],
+    attributed: BLOCK.attributed, increment: BLOCK.increment },
+};
+
+/* --- Bausteine ---------------------------------------------------------- */
+const kv = r => `<dl class="kv">${r.map(([k,v])=>`<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl>`;
+const kpi = (l,v,ref,x) => `<div class="kpi ${ref?'':'kpi--none'}"><span class="kpi__l">${l}</span>
+  <div class="kpi__v">${v}</div><div class="kpi__r">${ref??'no reference value supplied'}
+  ${x?' · '+x:''}</div></div>`;
+const table = (cols,rows,total) => `<div class="tw"><table><thead><tr>${cols.map((c,i)=>
+  `<th${i?` title="One agreed business definition per KPI"`:''}>${c}</th>`).join('')}</tr></thead>
+  <tbody>${total?`<tr class="total">${total.map(c=>`<td>${c}</td>`).join('')}</tr>`:''}
+  ${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+const prop = (wl,wv,pl,pv,pct,s,d) => `<div class="prop">
+  <div><span class="prop__l">${wl}</span><div class="prop__f">${wv}</div></div>
+  <div class="prop__a">&rsaquo;</div>
+  <div><span class="prop__l">${pl}</span><div class="prop__f">${pv}</div></div>
+  <div class="prop__w"><div class="prop__bar"><i style="width:${Math.max(pct,0.6)}%"></i></div>
+    <div class="prop__s">${s}</div><div class="prop__d">${d}</div></div></div>`;
+const SH = ['#3f3f46','#71717a','#a1a1aa','#c4c4c8','#dcdcdf'];
+const stack = (cats,a,b,ca,cb,note) => {
+  const col = (v,cap)=>`<div class="stack__c"><div class="stack__b">${v.map((x,i)=>
+    `<div class="stack__s" style="height:${x}%;background:${SH[i]};color:${i>2?'#3f3f46':'#fff'}">
+      ${x>=8?x+' %':''}</div>`).join('')}</div><div class="stack__cap">${cap}</div></div>`;
+  return `<div class="stack">${col(a,ca)}${col(b,cb)}<div class="stack__lg">${cats.map((c,i)=>
+    `<span><i style="background:${SH[i]}"></i>${c}</span>`).join('')}</div></div>
+    <p class="hint">${note}</p>
+    <p class="ph">Benchmark column uses placeholder values — the exact category figures were
+      not readable in the source report</p>`;
+};
+const stateBlock = ([,title,text,why,who,when]) => `<div class="state">
+  <p><b>${text}</b></p><dl><dt>Why</dt><dd>${why}</dd>
+  <dt>Who unblocks it</dt><dd>${who}</dd><dt>When</dt><dd>${when}</dd></dl>
+  <div class="skel"><i></i><i></i><i></i></div></div>`;
+const readBlock = id => (READ[id]||[]).length ? `<div class="read">${READ[id].map(([t,l,v,p])=>
+  `<div class="read__r" data-t="${t}"><span class="read__d"></span>
+   <span>${l} <b>${v}</b> — ${p}</span></div>`).join('')}</div>` : '';
+
+/* --- Bildschirme -------------------------------------------------------- */
+/* Ein fest eingestellter, repraesentativer Datenzustand. Kein Umschalter:
+   heute soll nur zwischen den Screens navigiert werden. */
+let screen = 'report';
+const scenario = 'phase1';
+
+function renderReport() {
+  const sc = SCENARIOS[scenario];
+  document.getElementById('head').innerHTML = `
+    <div class="crumbs"><button data-go="list">Retail Media</button> › ${C.advertiser}</div>
+    <div class="phead__row">
+      <div><h1>${C.advertiser} — ${C.name}</h1>
+        <p class="phead__sub">${C.channel} · campaign ${C.period} · attribution window
+          ${C.window} · result v1.0</p></div>
+      <div class="phead__tools"><button class="btn">Export</button>
+        <button class="btn btn--fill" id="share">Share approved result</button></div>
+    </div>`;
+
+  let lastQ = -1;
+  const nav = SECTIONS.map(s => {
+    const st = sc[s.id], k = st ? st[0] : 'ready';
+    const g = s.q !== lastQ ? `<div class="nav__g">${Q[s.q]}</div>` : '';
+    lastQ = s.q;
+    return g + `<button class="nav__i" data-k="${k}" data-goto="${s.id}">
+      <span class="nav__n">${s.n}</span><span class="nav__dot"></span>
+      <span class="nav__t">${s.t}</span>
+      ${k === 'ready' ? '' : `<span class="nav__note">${st[1]}</span>`}</button>`;
+  }).join('');
+
+  document.getElementById('view').innerHTML = `
+    
+
+    <section class="verdict">
+      
+      <div><span class="vlabel">Approved conclusion</span>
+        <div class="vval"><b>€334 K</b>
+          <span>revenue from 12.2 K purchasing shoppers · Descriptive</span></div></div>
+
+      <p class="vhead">Conversion among summer liquor buyers is the strongest signal at
+        0.81 %, 3.2× the campaign average of 0.25 %. Nothing in the measured set falls below
+        its reference. Does not prove the ads caused the purchase.</p>
+
+      <div><span class="vlabel">What stands out</span>
+        <div class="stand">
+          <div class="stand__r" data-t="good"><span class="stand__k">Strongest</span>
+            <span>Conversion among summer liquor buyers <b>0.81 %</b> — 3.2× the campaign
+              average of 0.25 %</span></div>
+          <div class="stand__r" data-t="blocked"><span class="stand__k">Blocked</span>
+            <span>Attributed result — the attribution rule is not yet agreed</span></div>
+        </div></div>
+
+      <div><span class="vlabel">How strong is this claim?</span>
+        <div class="ladder">
+          <div class="ladder__s" data-s="current"><b>Descriptive
+            <span class="alias">“Alternative conversion”</span></b>
+            <small>what the selected shoppers bought</small></div>
+          <div class="ladder__s" data-s="blocked"><b>Attributed</b>
+            <small>purchases linked to exposure</small></div>
+          <div class="ladder__s" data-s="blocked"><b>Incremental</b>
+            <small>the extra outcome caused by the campaign</small></div>
+        </div>
+        <p class="hint" style="margin-top:6px">The report we deliver today is called
+          “Alternative conversion”. That is rung one of three, and saying so is what stops
+          “an effective campaign” drifting into “the ads caused this”.</p></div>
+    </section>
+
+    <div class="story">
+      <nav class="nav"><div style="padding:9px 12px;border-bottom:1px solid #e4e4e7">
+        <span class="vlabel">Contents</span></div>${nav}</nav>
+      <div class="doc">${SECTIONS.map(s => {
+        const st = sc[s.id];
+        return `<section class="sec ${st ? 'sec--blocked' : ''}" id="sec-${s.id}">
+          
+          <h3 class="sec__t"><span class="sec__n mono">${String(s.n).padStart(2,'0')}</span>
+            ${s.t}${st ? `<span class="sec__flag">· ${st[1]}</span>` : ''}</h3>
+          ${st ? stateBlock(st) : `<div class="sec__bd">
+            ${readBlock(s.id) ? `${readBlock(s.id)}` : ''}
+            ${s.body()}</div>
+            ${s.src ? `<p class="src">${s.src}</p>` : ''}`}
+        </section>`;
+      }).join('')}</div>
+    </div>
+`;
+
+  document.querySelectorAll('[data-goto]').forEach(b => b.onclick = () =>
+    document.getElementById('sec-' + b.dataset.goto)?.scrollIntoView({behavior:'smooth',block:'start'}));
+  document.getElementById('share').onclick = shareDialog;
+}
+
+
+function renderList() {
+  document.getElementById('head').innerHTML = `
+    <div class="phead__row"><div><h1>Retail Media</h1>
+      <p class="phead__sub">Campaigns you are permitted to see</p></div>
+      <div class="phead__tools"><button class="btn">Filters</button>
+        <button class="btn" data-go="compare">Compare campaigns</button></div></div>`;
+  document.getElementById('view').innerHTML = `
+    
+    <div class="doc"><div class="sec">
+      ${table(['Advertiser','Campaign','Period','Campaign','Measurement'],[
+        ['Maison Verte','Always-on category support','17/08 – 30/11/2026','Running','Processing'],
+        ['Brasserie Nord','Seasonal takeover','21/09 – 05/10/2026','Running','Data issue'],
+        ['Cave Lumière','Launch support','01/06 – 27/07/2026','Finished','Result published'],
+        ['Atelier du Thé','Awareness burst','06/04 – 18/05/2026','Finished','Partly suppressed']],
+        ['Saint Germain','Social Retail — Spring Launch','29/04 – 31/05/2026','Finished','Result published'])}
+      <p class="hint" style="margin-top:12px">One row per permitted campaign. Measurement
+        status is plain text; only exceptions need emphasis. Clicking a row opens the report.</p>
+    </div></div>`;
+  document.querySelectorAll('tbody tr').forEach(tr => tr.onclick = () => go('report'));
+}
+
+function renderCompare() {
+  document.getElementById('head').innerHTML = `
+    <div class="crumbs"><button data-go="list">Retail Media</button> › Compare campaigns</div>
+    <div class="phead__row"><div><h1>Compare campaigns</h1>
+      <p class="phead__sub">Every permitted campaign on the same fixed KPI set, each against
+        its own agreed revenue target</p></div>
+      <div class="phead__tools"><button class="btn">Filters</button>
+        <button class="btn">Export</button></div></div>`;
+  document.getElementById('view').innerHTML = `
+    
+    <div class="doc"><div class="sec">
+      ${table(['Campaign','Exposable group','Shoppers','Conv. rate','Revenue','Revenue / client','Repeat share','vs. target'],[
+        ['Maison Verte','6.1 M','19.4 K','0.32 %','€502 K','€25.9','11 %','90 %'],
+        ['Cave Lumière','1.2 M','4.1 K','0.34 %','€118 K','€28.8','7 %','118 %'],
+        ['Atelier du Thé','660 K','2.0 K','0.30 %','€44 K','€22.2','—','73 %'],
+        ['Brasserie Nord','940 K','—','—','—','—','—','—']],
+        ['Saint Germain','4.8 M','12.2 K','0.25 %','€334 K','€27.5','9 %','111 %'])}
+      <p class="hint" style="margin-top:12px">A campaign with no result shows why on hover
+        rather than being hidden. Never substitute a replacement result silently.</p>
+      <p class="hint" style="margin-top:8px"><b>Scope note.</b> A configurable explorer
+        depends on a KPI and dimension list that is still an open decision. This fixed list
+        keeps the comparison promise and can be estimated today. Comparing across <i>retail
+        media networks</i> — the thing advertisers say they want most — is a separate,
+        larger piece of work. See the concept document.</p>
+    </div></div>`;
+  document.querySelectorAll('td').forEach(td => { if (td.textContent === '—') {
+    td.className = 'sup'; td.title = 'Delivery data not supplied by the media partner'; }});
+  document.querySelectorAll('tbody tr').forEach((tr,i) => tr.onclick = () => i === 0 && go('report'));
+}
+
+function shareDialog() {
+  const d = document.createElement('div');
+  d.style.cssText = 'position:fixed;inset:0;background:rgba(24,24,27,.45);display:flex;'
+    + 'align-items:center;justify-content:center;z-index:100';
+  d.innerHTML = `<div style="background:#fff;border:1px solid #a1a1aa;width:540px">
+    
+    <div style="padding:16px 18px;border-bottom:1px solid #e4e4e7">
+      <h2 style="font-size:16px">Share approved result</h2></div>
+    <div style="padding:16px 18px;display:flex;flex-direction:column;gap:14px">
+      <div><span class="prop__l">Recipients</span>
+        <div style="border:1px solid #a1a1aa;padding:8px;margin-top:4px;color:#a1a1aa">
+          Search people or teams</div></div>
+      <div style="border:1px solid #e4e4e7;background:#fafafa;padding:12px">
+        <div style="font-size:13px;font-weight:600;margin-bottom:6px">The export will state</div>
+        ${kv([['Campaign scope', C.advertiser + ' · ' + C.id],
+              ['Result type','Alternative conversion — descriptive'],
+              ['Data period', C.measured],['Status and version','Published · v1.0']])}
+        <p class="hint" style="margin-top:8px">A fixed export header, independent of the
+          export format — which is still an open decision.</p></div>
+      <p class="hint">The link re-checks the recipient’s access when it is opened.</p></div>
+    <div style="padding:12px 18px;border-top:1px solid #e4e4e7;display:flex;gap:8px;
+      justify-content:flex-end"><button class="btn" id="x">Cancel</button>
+      <button class="btn btn--fill">Share</button></div></div>`;
+  d.onclick = e => { if (e.target === d || e.target.id === 'x') d.remove(); };
+  document.body.appendChild(d);
+}
+
+/* --- Steuerung ---------------------------------------------------------- */
+function go(s) { screen = s; render(); }
+function render() {
+  document.querySelectorAll('[data-screen]').forEach(b =>
+    b.setAttribute('aria-pressed', String(b.dataset.screen === screen)));
+  ({list:renderList, report:renderReport, compare:renderCompare})[screen]();
+  document.querySelectorAll('[data-go]').forEach(b => b.onclick = () => go(b.dataset.go));
+}
+document.querySelectorAll('[data-screen]').forEach(b => b.onclick = () => go(b.dataset.screen));
+render();
+</script>
+</body>
+</html>
